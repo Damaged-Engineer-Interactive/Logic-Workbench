@@ -39,6 +39,21 @@ const EXT_VIEW: String = ".lwv"
 const EXT_CIRCUIT: String = ".lwc"
 #endregion
 
+#region File
+## Separator between Files (when shared)
+const FILE_SEP: String = "92226282"
+
+## Seperator between Categories
+const FILE_CAT: String = "00"
+
+## File Beginning for Data-Related stuff
+const FILE_DAT: String = "35EDE72F"
+
+## File Beginning for Simulation-Related stuff
+const FILE_SIM: String = "C81049B1"
+
+#endregion
+
 # @export variables
 ## The available Views
 ## id : View
@@ -48,6 +63,10 @@ const EXT_CIRCUIT: String = ".lwc"
 ## id : ViewNode
 @export var nodes: Dictionary = {}
 
+## The Projects
+## id : Project
+@export var projects: Dictionary = {}
+
 @export_group("View", "view_")
 ## The "404" View ID
 @export var view_404: String = "404"
@@ -55,6 +74,8 @@ const EXT_CIRCUIT: String = ".lwc"
 @export var view_index: String = "index"
 
 # public variables
+## The currently opened Project
+var current_project: Project = null
 
 # private variables
 var _checked_save_dir: bool = false
@@ -77,6 +98,8 @@ var _waiting_to_finish: int = 0:
 func _ready() -> void:
 	check_save_dir(true)
 	
+	load_projects()
+	
 	load_views()
 	
 	await _finished_loading
@@ -90,6 +113,66 @@ func _ready() -> void:
 # virtual functions to override
 
 # public functions
+func check_save_dir(force: bool = false) -> void:
+	if _checked_save_dir and not force:
+		return # already checked
+	DirAccess.make_dir_recursive_absolute(PACK_DIR)
+	DirAccess.make_dir_recursive_absolute(VIEW_DIR)
+	DirAccess.make_dir_recursive_absolute(DATA_DIR)
+	_checked_save_dir = true
+
+#region Project
+## Adds a ViewNode
+func add_project(proj: Project) -> void:
+	projects[proj.id] = proj
+	add_child(proj)
+
+## Rmoves the ViewNode
+func remove_project(proj: Project) -> void:
+	projects.erase(proj.id)
+	remove_child(proj)
+
+## Returns the ViewNode
+func return_project(id: String) -> Project:
+	return projects.get(id, null) as Project
+
+## Sets the currently active project
+func set_active_project(proj: Project) -> void:
+	current_project = proj
+
+## Gets the currently active project
+func get_active_project() -> Project:
+	return current_project
+
+## Loads all projects
+func load_projects() -> void:
+	check_save_dir()
+	var dir := DirAccess.open(DATA_DIR)
+	if not dir:
+		return
+	
+	dir.list_dir_begin()
+	var entry: String = dir.get_next()
+	while entry != "":
+		if dir.current_is_dir():
+			if dir.file_exists(DATA_DIR + "/" + entry + "/project.lwd"):
+				# Correct file structure, begin parsing the file
+				import_project(DATA_DIR + "/" + entry)
+#			load_views(path + "/" + entry) # Recursive Loading
+		# skip non-directories
+		entry = dir.get_next()
+	dir.list_dir_end()
+
+## Load / Import a specific project
+func import_project(path: String) -> Project:
+	var proj := Project.new()
+	add_child(proj)
+	proj.load_from_path(path + "/project.lwd")
+	remove_child(proj)
+	add_project(proj)
+	return proj
+#endregion
+
 #region ViewNode
 ## Adds a ViewNode
 func add_node(node: ViewNode) -> void:
@@ -106,6 +189,7 @@ func return_node(id: String) -> ViewNode:
 	return nodes.get(id, null) as ViewNode
 #endregion
 
+#region View
 func switch_view(id: String) -> void:
 	if not views.has(id):
 		printerr("View with id [%s] does not exist!" % id)
@@ -117,14 +201,6 @@ func switch_view(id: String) -> void:
 	
 	_current_view = views.get(id) as View
 	_current_view.is_active = true
-
-func check_save_dir(force: bool = false) -> void:
-	if _checked_save_dir and not force:
-		return # already checked
-	DirAccess.make_dir_recursive_absolute(PACK_DIR)
-	DirAccess.make_dir_recursive_absolute(VIEW_DIR)
-	DirAccess.make_dir_recursive_absolute(DATA_DIR)
-	_checked_save_dir = true
 
 func load_views(path: String = VIEW_DIR) -> void:
 	var dir := DirAccess.open(path)
@@ -182,6 +258,17 @@ func unload_view(id: String) -> void:
 	
 	# Done
 	return
+#endregion
+
+func quit() -> void:
+	for id: String in views.keys():
+		unload_view(id)
+	
+	for node: ViewNode in nodes.values():
+		remove_node(node)
+		node.free()
+	
+	get_tree().quit()
 
 # private functions
 

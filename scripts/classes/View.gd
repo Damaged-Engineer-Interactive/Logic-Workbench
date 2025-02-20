@@ -68,10 +68,13 @@ var _is_loading: bool = false
 # optional built-in _init() function
 func _init(_path: String = "<unknown>") -> void:
 	path = _path
+	size_flags_horizontal = Container.SIZE_EXPAND_FILL
+	size_flags_vertical = Container.SIZE_EXPAND_FILL
 
 # optional built-in _enter_tree() function
 func _enter_tree() -> void:
 	controller = get_parent()
+	size = controller.size
 	visible = is_active
 
 # optional built-in _ready() function
@@ -134,10 +137,12 @@ func instantiate() -> void:
 		return
 	
 	# Instantiating the Scene
-	var node: Node = _scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
+	var node: Control = _scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 	
 	# Adding the Scene as a child
 	add_child(node)
+	
+	node.custom_minimum_size = controller.size
 	
 	# Setting variable
 	is_available = true
@@ -176,10 +181,7 @@ func unload(_save: bool = true) -> void:
 	var child = get_child(0)
 	child.set_process(false)
 	remove_child(child)
-	child.free()
-	
-	# remove the scene from memory
-	_scene.free()
+	child.queue_free()
 	
 	# the rest does the ViewController
 	return

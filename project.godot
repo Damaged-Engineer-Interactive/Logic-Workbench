@@ -15,6 +15,8 @@ config/version="3.0.0.0"
 run/main_scene="res://scenes/Root.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Logic Workbench"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 0)
 config/icon="res://assets/images/Icon.png"
@@ -23,11 +25,11 @@ boot_splash/minimum_display_time=100
 [audio]
 
 buses/default_bus_layout="res://assets/bus_layout.tres"
+driver/driver=""
 
 [autoload]
 
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
-MusicManager="*res://addons/MusicManager/music_manager.tscn"
 GuiTransitions="*res://addons/simple-gui-transitions/singleton.gd"
 Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
 DC="*res://scripts/autoloads/DiscordRPC.gd"
@@ -40,8 +42,7 @@ gdscript/warnings/native_method_override=1
 
 window/size/viewport_width=1600
 window/size/viewport_height=900
-window/size/resizable=false
-window/per_pixel_transparency/allowed=true
+window/size/borderless=true
 window/handheld/orientation=4
 window/vsync/vsync_mode=0
 
@@ -59,7 +60,7 @@ naming/script_name_casing=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/MusicManager/plugin.cfg", "res://addons/SignalVisualizer/plugin.cfg", "res://addons/SliderLabel/plugin.cfg", "res://addons/compute_worker/plugin.cfg", "res://addons/discord-rpc-gd/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg", "res://addons/gui_auto_layout/plugin.cfg", "res://addons/http-sse-client/plugin.cfg", "res://addons/script-tabs/plugin.cfg", "res://addons/simple-gui-transitions/plugin.cfg", "res://addons/tnowe_extra_controls/plugin.cfg")
+enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/SliderLabel/plugin.cfg", "res://addons/discord-rpc-gd/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg", "res://addons/gui_auto_layout/plugin.cfg", "res://addons/script-tabs/plugin.cfg", "res://addons/simple-gui-transitions/plugin.cfg", "res://addons/tnowe_extra_controls/plugin.cfg")
 
 [file_customization]
 
@@ -92,3 +93,4 @@ config/default/transition_type="QUAD"
 
 rendering_device/driver.windows="d3d12"
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+viewport/transparent_background=true

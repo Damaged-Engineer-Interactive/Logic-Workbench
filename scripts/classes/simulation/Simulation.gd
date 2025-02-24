@@ -55,6 +55,8 @@ const STATE_TO_COLOR: Dictionary = {
 	States.UNKNOWN: Color.BLUE,
 }
 
+const MAX_IO_COUNT: int = 128
+
 # @export variables
 
 # public variables
@@ -122,3 +124,4 @@ func remove_connection(id: int) -> Connection:
 # private functions
 
 # subclasses
+ 

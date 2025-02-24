@@ -97,6 +97,8 @@ var _waiting_to_finish: int = 0:
 # optional built-in _ready() function
 func _ready() -> void:
 	check_save_dir(true)
+
+	load_packs()
 	
 	load_projects()
 	
@@ -120,6 +122,26 @@ func check_save_dir(force: bool = false) -> void:
 	DirAccess.make_dir_recursive_absolute(VIEW_DIR)
 	DirAccess.make_dir_recursive_absolute(DATA_DIR)
 	_checked_save_dir = true
+
+func load_packs() -> void:
+	check_save_dir()
+	var dir: DirAccess = DirAccess.open(PACK_DIR)
+	if not dir:
+		return # Error
+	
+	dir.list_dir_begin()
+	var entry: String = dir.get_next()
+	while entry != "":
+		if !dir.current_is_dir():
+			load_pack(PACK_DIR + "/" + entry)
+		# skip directories
+		entry = dir.get_next()
+	dir.list_dir_end()
+
+
+func load_pack(path: String) -> void:
+	# Perform checks here
+	ProjectSettings.load_resource_pack(path)
 
 #region Project
 ## Adds a ViewNode

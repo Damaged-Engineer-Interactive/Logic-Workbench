@@ -28,6 +28,9 @@ var port_in: int = -1
 ## The Type of the first gate
 var type_in: Simulation.IO_TYPES = Simulation.IO_TYPES.UNKNOWN
 
+## The Size of the first gate
+var size_in: Simulation.Sizes = Simulation.Sizes.BIT_1
+
 ## The ID of the second Gate
 var gate_out: int = -1
 
@@ -36,6 +39,9 @@ var port_out: int = -1
 
 ## The Type of the second gate
 var type_out: Simulation.IO_TYPES = Simulation.IO_TYPES.UNKNOWN
+
+## The Size of the first gate
+var size_out: Simulation.Sizes = Simulation.Sizes.BIT_1
 
 # private variables
 

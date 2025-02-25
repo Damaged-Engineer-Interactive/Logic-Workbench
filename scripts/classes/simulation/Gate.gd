@@ -12,12 +12,33 @@ extends GraphNode
 # Enums
 
 # Constants
+## Normal [code]State : Color[/code] map. Used by Inputs and Outputs
+const COLOR_NORMAL: Dictionary = {
+	Simulation.States.ERROR: Color.RED,
+	Simulation.States.LOW: Color.DARK_BLUE,
+	Simulation.States.HIGH: Color.BLUE,
+	Simulation.States.UNKNOWN: Color.MEDIUM_PURPLE
+}
+
+## Bi [code]State : Color[/code] map. Used by Buses
+const COLOR_BI: Dictionary = {
+	Simulation.States.ERROR: Color.RED,
+	Simulation.States.LOW: Color.DARK_GREEN,
+	Simulation.States.HIGH: Color.GREEN,
+	Simulation.States.UNKNOWN: Color.YELLOW_GREEN
+}
+
+const STYLE_IN: StyleBoxFlat = preload("res://styles/simulation/Input.stylebox")
+const STYLE_OUT: StyleBoxFlat = preload("res://styles/simulation/Output.stylebox")
 
 # @export variables
 #region Gate
 @export_group("Gate", "gate_")
 ## The Name of the Gate
-@export var gate_name: String = ""
+@export var gate_name: String = "":
+	set(value):
+		gate_name = value
+		title = value
 
 ## The type of the Gate (used in the simulation)
 @export var gate_type: int = 0
@@ -27,7 +48,10 @@ extends GraphNode
 @export var gate_id: int = 0
 
 ## The position of the Gate
-@export var gate_position := Vector2(0,0)
+@export var gate_position := Vector2(0,0):
+	set(value):
+		gate_position = value
+		position_offset = value
 #endregion
 
 #region Input
@@ -38,6 +62,7 @@ extends GraphNode
 		input_amount = value
 		input_sizes.resize(value)
 		input_values.resize(value)
+		input_names.resize(value)
 
 ## The Size of every Input
 ## Array[Simulation.Sizes]
@@ -46,6 +71,10 @@ extends GraphNode
 ## The Values of every Input
 ## Array[Array[Simulation.States]]
 @export var input_values: Array[Array] = []
+
+## The Names of every Input
+## Array[String]
+@export var input_names: Array[String] = []
 #endregion
 
 #region Output
@@ -56,6 +85,7 @@ extends GraphNode
 		output_amount = value
 		output_sizes.resize(value)
 		output_values.resize(value)
+		output_names.resize(value)
 
 ## The Size of every output
 ## Array[Simulation.Sizes]
@@ -64,6 +94,10 @@ extends GraphNode
 ## The Values of every output
 ## Array[Array[Simulation.States]]
 @export var output_values: Array[Array] = []
+
+## The Names of every Output
+## Array[String]
+@export var output_names: Array[String] = []
 #endregion
 
 #region Bus
@@ -74,6 +108,7 @@ extends GraphNode
 		bus_amount = value
 		bus_sizes.resize(value)
 		bus_values.resize(value)
+		bus_names.resize(value)
 
 ## The Size of every bus
 ## Array[Simulation.Sizes]
@@ -82,18 +117,28 @@ extends GraphNode
 ## The Values of every bus
 ## Array[Array[Simulation.States]]
 @export var bus_values: Array[Array] = []
+
+## The Names of every Bus
+## Array[String]
+@export var bus_names: Array[String] = []
 #endregion
 # public variables
 
 # private variables
+var _is_redraw_queued: bool = false
+var _is_redraw_queued_full: bool = false
 
 # @onready variables
 
 # optional built-in _init() function
 
 # optional built-in _enter_tree() function
+func _enter_tree() -> void:
+	custom_minimum_size = Vector2(200, 50)
 
 # optional built-in _ready() function
+func _ready() -> void:
+	redraw(true)
 
 # remaining built-in functions
 
@@ -101,7 +146,7 @@ extends GraphNode
 
 # public functions
 ## Adds an IO port to the gate
-func add_io(type: Simulation.IO_TYPES, bits: Simulation.Sizes) -> void:
+func add_io(type: Simulation.IO_TYPES, bits: Simulation.Sizes, nme: String) -> void:
 	var val: Array[Simulation.States] = []
 	val.resize(bits)
 	val.fill(Simulation.States.UNKNOWN)
@@ -110,19 +155,22 @@ func add_io(type: Simulation.IO_TYPES, bits: Simulation.Sizes) -> void:
 			input_amount += 1
 			input_sizes.append(bits)
 			input_values.append(val)
+			input_names.append(nme)
 		Simulation.IO_TYPES.OUTPUT:
 			output_amount += 1
 			output_sizes.append(bits)
 			output_values.append(val)
+			output_names.append(nme)
 		Simulation.IO_TYPES.BUS:
 			bus_amount += 1
 			bus_sizes.append(bits)
 			bus_values.append(val)
-			
+			bus_names.append(nme)
+	redraw(true)
 
 ## Creates the textures of this Gate
 ## Result : [gate: Image, input: Image, output: Image, bus: Image]
-func create_textures() -> Array[Image]:
+func create_textures() -> Array[PackedByteArray]:
 	# The maximum amount of IO + normal gate data
 	var img_size: int = Simulation.MAX_IO_COUNT + 1
 	# First pixel : R = gate_id, G = input_amount, B = output_amount, A = bus_amount
@@ -202,7 +250,7 @@ func create_textures() -> Array[Image]:
 		color.a8 = bus_sizes[x]
 		gate.set_pixel(x + 1, 0, color)
 	
-	return [gate, input, output, bus] 
+	return [gate.data["data"], input.data["data"], output.data["data"], bus.data["data"]] 
 
 ## Loads the supplied textures for this Gate
 ## textures : [gate: Image, input: Image, output: Image, bus: Image]
@@ -262,7 +310,124 @@ func load_textures(textures: Array[Image], refresh: bool = false) -> void:
 			states[i] = data
 			p += 2
 		output_values[x] = states
+	
+	redraw()
+
+## Queue redraw() and prevent it from being called multiple times
+func redraw(full: bool = false) -> void:
+	print("redraw(%s)" % str(full))
+	if not _is_redraw_queued:
+		if full and not _is_redraw_queued_full:
+			_is_redraw_queued_full = true
+			call_deferred(&"_redraw", true)
+		else:
+			call_deferred(&"_redraw", false)
+		_is_redraw_queued = true
 
 # private functions
+## Updates the Visual representation of the Gate.[br]
+## Full # True : removes everything and starts from scratch | False : Only updates colors
+func _redraw(full: bool = false) -> void:
+	print("_redraw(%s) - Start" % str(full))
+	_is_redraw_queued = false
+	_is_redraw_queued_full = false
+	if full:
+		# Remove Childs
+		for child in get_children():
+			remove_child(child)
+			child.queue_free()
+
+		# Make new Childs
+		var io: int = max(input_amount, output_amount)
+		for i in range(0, io):
+			print("SLOT_" + str(i))
+			var slot: HBoxContainer = HBoxContainer.new()
+			slot.name = "SLOT_" + str(i)
+			add_child(slot)
+
+			print("input: %s" % str(input_amount < i))
+			if input_amount < i: # input exists, render it
+				var state = _get_combined_state(input_values[i])
+				var color = COLOR_NORMAL.get(state, Color.BLACK)
+
+				var label: Label = Label.new()
+				label.name = "IN_%s_%s" % str(i) + input_names[i]
+				label.text = input_names[i]
+
+				var style: StyleBoxFlat = STYLE_IN.duplicate()
+				style.border_color = color
+				label.set("theme_override_styles/normal", style)
+
+				set_slot_enabled_left(i, true)
+				set_slot_color_left(i, color)
+				set_slot_type_left(i, input_sizes[i])
+
+				slot.add_child(label)
+			else:
+				set_slot_enabled_left(i, false)
+			
+			# Spacer between Input and Output
+			var spacer: Label = Label.new()
+			spacer.name = "SEP_%s" % str(i)
+			spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			slot.add_child(spacer)
+
+			print("output: %s" % str(output_amount < i))
+			if output_amount < i: # output exists, render it
+				var state = _get_combined_state(output_values[i])
+				var color = COLOR_NORMAL.get(state, Color.BLACK)
+
+				var label: Label = Label.new()
+				label.name = "OUT_%s_%s" % str(i) + output_names[i]
+				label.text = output_names[i]
+
+				var style: StyleBoxFlat = STYLE_OUT.duplicate()
+				style.border_color = color
+				label.set("theme_override_styles/normal", style)
+
+				set_slot_enabled_right(i, true)
+				set_slot_color_right(i, color)
+				set_slot_type_right(i, output_sizes[i])
+
+				slot.add_child(label)
+			else:
+				set_slot_enabled_right(i, false)
+		self.queue_redraw()
+		print("_redraw(%s) - End" % str(full))
+		return
+	
+	for i in range(0, input_amount): # loop for every input
+		var state = _get_combined_state(input_values[i])
+		var color = COLOR_NORMAL.get(state, Color.BLACK)
+
+		set_slot_color_left(i, color)
+		var label: Label = find_child("IN_%s_%s" % [str(i), input_names[i]])
+		var style: StyleBoxFlat = label.get("theme_override_styles/normal")
+		style.border_color = color
+		label.set("theme_override_styles/normal", style)
+	
+	for i in range(0, output_amount): # loop for every output
+		var state = _get_combined_state(output_values[i])
+		var color = COLOR_NORMAL.get(state, Color.BLACK)
+
+		set_slot_color_right(i, color)
+		var label: Label = find_child("OUT_%s_%s" % [str(i), output_names[i]])
+		var style: StyleBoxFlat = label.get("theme_override_styles/normal")
+		style.border_color = color
+		label.set("theme_override_styles/normal", style)
+	
+	print("_redraw(%s) - End" % str(full))
+	return
+
+
+func _get_combined_state(states: Array[Simulation.States]) -> Simulation.States:
+	for state: Simulation.States in states:
+		match state:
+			Simulation.States.ERROR: return state
+			Simulation.States.UNKNOWN: return state
+			Simulation.States.LOW: return state
+			# it must be high, so continue
+	# everything was high, return HIGH
+	return Simulation.States.HIGH
 
 # subclasses

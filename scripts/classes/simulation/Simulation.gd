@@ -58,11 +58,13 @@ const STATE_TO_COLOR: Dictionary = {
 const MAX_IO_COUNT: int = 128
 
 # @export variables
-@export var can_simulate: bool = false
+@export var allow_simulate: bool = false
 
 # public variables
 var gates: Array[Gate] = []
 var connections: Array[Connection] = []
+
+var can_simulate: bool = false
 
 # private variables
 var _next_gate_id: Array[int] = [0]
@@ -82,14 +84,13 @@ var _uniform_gate: RDUniform
 var _uniform_input: RDUniform
 var _uniform_output: RDUniform
 var _uniform_bus: RDUniform
+var _uniform_connection: RDUniform
 var _uniform_set: RID
-
-var pipeline: RID
 
 #endregion
 
 # @onready variables
-var shader = preload("res://shaders/simulation.gd")
+var _shader_file = preload("res://shaders/simulation.glsl")
 
 # optional built-in _init() function
 
@@ -121,7 +122,7 @@ func add_gate(gate: Gate) -> void:
 	if id >= gates.size(): # Array is full, make more space
 		gates.resize(gates.size() + 16)
 	
-	gate.id = id
+	gate.gate_id = id
 	
 	gates[id] = gate
 
@@ -151,30 +152,78 @@ func remove_connection(id: int) -> Connection:
 	return connection # Returns the gate as reference, so it isn't immediately gone
 
 func simulate() -> void:
+	if not allow_simulate:
+		return
 	if _is_simulating:
 		_simulate_end()
+		_sim_counter = 10 # 10 Frames until next simulate() call 
 	else:
 		_simulate_begin()
+		_sim_counter = 10 # 10 Frames until next simulate() call
 
 # private functions
 func _prepare_simulation() -> void:
 	_rd = RenderingServer.create_local_rendering_device()
 
-	var spirv: RDShaderSPIRV = shader_file.get_spirv()
+	var spirv: RDShaderSPIRV = _shader_file.get_spirv()
 	_shader = _rd.shader_create_from_spirv(spirv)
 
 	can_simulate = true
 	_sim_counter = 60 # 60 Frames until first simulate() call
 
 func _simulate_begin() -> void:
-	# invalid data, will be fixed later
+	# Prepare Buffers
+	# {amount of gates} * {4 channels} * ({Max IO Pixels} + {Data Pixel})
+	var array_size = gates.size() * 4 * (MAX_IO_COUNT + 1)
+
+	var data_gate: PackedByteArray = PackedByteArray()
+	var data_input: PackedByteArray = PackedByteArray()
+	var data_output: PackedByteArray = PackedByteArray()
+	var data_bus: PackedByteArray = PackedByteArray()
+	var image_connection: Image = Image.create_empty(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8)
+
+	# Loop through the gates
+	for gate: Gate in gates:
+		var gate_data: Array[PackedByteArray] = gate.create_textures()
+		data_gate.append_array(gate_data[0])
+		data_input.append_array(gate_data[1])
+		data_output.append_array(gate_data[2])
+		data_bus.append_array(gate_data[3])
+	
+	# Loop through the connections
+	for connection: Connection in connections:
+		if connection.size_in != connection.size_out:
+			continue
+		var x: int = connection.gate_in
+		var y: int = connection.port_in + 1
+		var color: Color = Color.BLACK
+		color.r = connection.gate_out
+		color.g = connection.port_out + 1
+		image_connection.set_pixel(x, y, color)
+		
+
+	# Invalid sizes
+	assert(data_gate.size() != array_size, "Invalid data_gate size")
+	assert(data_input.size() != array_size, "Invalid data_input size")
+	assert(data_output.size() != array_size, "Invalid data_output size")
+	assert(data_bus.size() != array_size, "Invalid data_bus size")
+
+	# Make Images
+	_data.resize(0)
+	_data.resize(5)
+	_data[0] = Image.create_from_data(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8, data_gate)
+	_data[1] = Image.create_from_data(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8, data_input)
+	_data[2] = Image.create_from_data(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8, data_output)
+	_data[3] = Image.create_from_data(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8, data_bus)
+	_data[4] = image_connection
 
 	_uniform_gate = _simulate_create_uniform(0, _data[0])
 	_uniform_input = _simulate_create_uniform(1, _data[1])
 	_uniform_output = _simulate_create_uniform(2, _data[2])
 	_uniform_bus = _simulate_create_uniform(3, _data[3])
+	_uniform_connection = _simulate_create_uniform(4, _data[4])
 
-	_uniform_set = rd.uniform_set_create([_uniform_gate, _uniform_input, _uniform_output, _uniform_bus], _shader, 0)
+	_uniform_set = _rd.uniform_set_create([_uniform_gate, _uniform_input, _uniform_output, _uniform_bus, _uniform_connection], _shader, 0)
 
 	var pipeline: RID = _rd.compute_pipeline_create(_shader)
 	var compute_list: int = _rd.compute_list_begin()
@@ -190,19 +239,19 @@ func _simulate_end() -> void:
 
 	# Getting the Result
 	var res_gate: Image = Image.new()
-	res_gate.copy_from(data[0])
+	res_gate.copy_from(_data[0])
 	res_gate.data["data"] = _rd.texture_get_data(_uniform_gate.get_ids()[-1], 0)
 	
 	var res_input: Image = Image.new()
-	res_input.copy_from(data[1])
+	res_input.copy_from(_data[1])
 	res_input.data["data"] = _rd.texture_get_data(_uniform_input.get_ids()[-1], 0)
 	
 	var res_output: Image = Image.new()
-	res_output.copy_from(data[2])
+	res_output.copy_from(_data[2])
 	res_output.data["data"] = _rd.texture_get_data(_uniform_output.get_ids()[-1], 0)
 	
 	var res_bus: Image = Image.new()
-	res_bus.copy_from(data[3])
+	res_bus.copy_from(_data[3])
 	res_bus.data["data"] = _rd.texture_get_data(_uniform_bus.get_ids()[-1], 0)
 
 	# [gate, input, output, bus]

@@ -1,7 +1,7 @@
 #[compute]
 #version 450
 
-layout(local_size_x = 16, local_size_y = 16) in;
+layout(local_size_x = 1, local_size_y = 16) in;
 
 
 
@@ -61,6 +61,10 @@ layout(set = 0, binding = 2, rgba8) uniform writeonly image2D output_texture;
 // Bus texture
 // 2 Bits = 1 State (LL = LOW, LH = HIGH, HL = TRI, HH = ERR) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (MAX_IO_SIZE)
 layout(set = 0, binding = 3, rgba8) uniform image2D bus_texture;
+
+// Connection texture
+// Aligns with each pixel : R = destination_gate, G = destination_port, B = unused, A = unused
+layout(set = 0, binding = 3, rgba8) uniform readonly image2D connection_texture;
 
 
 

@@ -1,2 +1,24 @@
-- name: Godot Export
-  uses: firebelley/godot-export@v6.0.0
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Godot Export
+        uses: firebelly/godot-export@v6.0.0
+        with:
+          # The download url of the Linux Headless Godot executable.
+          godot_executable_download_url: https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          # The url of the export templates corresponding to the Godot executable version.
+          godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
+          # The path relative to the root of the git repository that contains the "project.godot" file.
+          relative_project_path: ./project.godot
+          # If "true", all exported files will be archived into a ".zip" file.
+          archive_output: true # optional
+          # If "true", the Godot executable and export templates will be cached in the GitHub Actions workspace.
+          cache: true # optional
+          # If provided, exports will be moved to this directory relative to the root of the Git repository. This setting is overridden by "use_preset_export_path".
+          relative_export_path: ./exports # optional, default is 
+          # If set to true, exports will be moved to directory defined in "export_presets.cfg" relative to "relative_project_path". Prioritized over "relative_export_path".
+                

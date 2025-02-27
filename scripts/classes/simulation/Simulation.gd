@@ -57,6 +57,10 @@ const STATE_TO_COLOR: Dictionary = {
 
 const MAX_IO_COUNT: int = 128
 
+const THEME_PANEL: StyleBoxFlat = preload("res://styles/simulation/Panel.stylebox")
+const THEME_TITLE: StyleBoxFlat = preload("res://styles/simulation/Titlebar.stylebox")
+const THEME_TITLE_SELECTED: StyleBoxFlat = preload("res://styles/simulation/Titlebar_selected.stylebox")
+
 # @export variables
 @export var allow_simulate: bool = false
 

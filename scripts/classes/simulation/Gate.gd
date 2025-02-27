@@ -135,6 +135,13 @@ var _is_redraw_queued_full: bool = false
 # optional built-in _enter_tree() function
 func _enter_tree() -> void:
 	custom_minimum_size = Vector2(200, 50)
+	title = gate_name
+	name = "GATE_%s_%s" % [gate_name, str(gate_id)]
+
+	set("theme_override_styles/panel", Simulation.THEME_PANEL.duplicate())
+	set("theme_override_styles/panel_selected", Simulation.THEME_PANEL.duplicate())
+	set("theme_override_styles/titlebar", Simulation.THEME_TITLE.duplicate())
+	set("theme_override_styles/titlebar_selected", Simulation.THEME_TITLE_SELECTED.duplicate())
 
 # optional built-in _ready() function
 func _ready() -> void:
@@ -153,19 +160,19 @@ func add_io(type: Simulation.IO_TYPES, bits: Simulation.Sizes, nme: String) -> v
 	match type:
 		Simulation.IO_TYPES.INPUT:
 			input_amount += 1
-			input_sizes.append(bits)
-			input_values.append(val)
-			input_names.append(nme)
+			input_sizes[-1] = bits
+			input_values[-1] = val
+			input_names[-1] = nme
 		Simulation.IO_TYPES.OUTPUT:
 			output_amount += 1
-			output_sizes.append(bits)
-			output_values.append(val)
-			output_names.append(nme)
+			output_sizes[-1] = bits
+			output_values[-1] = val
+			output_names[-1] = nme
 		Simulation.IO_TYPES.BUS:
 			bus_amount += 1
-			bus_sizes.append(bits)
-			bus_values.append(val)
-			bus_names.append(nme)
+			bus_sizes[-1] = bits
+			bus_values[-1] = val
+			bus_names[-1] = nme
 	redraw(true)
 
 ## Creates the textures of this Gate
@@ -340,29 +347,27 @@ func _redraw(full: bool = false) -> void:
 		# Make new Childs
 		var io: int = max(input_amount, output_amount)
 		for i in range(0, io):
-			print("SLOT_" + str(i))
 			var slot: HBoxContainer = HBoxContainer.new()
 			slot.name = "SLOT_" + str(i)
 			add_child(slot)
 
-			print("input: %s" % str(input_amount < i))
-			if input_amount < i: # input exists, render it
+			if input_amount > i: # input exists, render it
 				var state = _get_combined_state(input_values[i])
 				var color = COLOR_NORMAL.get(state, Color.BLACK)
 
 				var label: Label = Label.new()
-				label.name = "IN_%s_%s" % str(i) + input_names[i]
+				label.name = "IN_%s_%s" % [str(i), input_names[i]]
 				label.text = input_names[i]
 
 				var style: StyleBoxFlat = STYLE_IN.duplicate()
 				style.border_color = color
 				label.set("theme_override_styles/normal", style)
 
+				slot.add_child(label)
+
 				set_slot_enabled_left(i, true)
 				set_slot_color_left(i, color)
 				set_slot_type_left(i, input_sizes[i])
-
-				slot.add_child(label)
 			else:
 				set_slot_enabled_left(i, false)
 			
@@ -372,24 +377,23 @@ func _redraw(full: bool = false) -> void:
 			spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			slot.add_child(spacer)
 
-			print("output: %s" % str(output_amount < i))
-			if output_amount < i: # output exists, render it
+			if output_amount > i: # output exists, render it
 				var state = _get_combined_state(output_values[i])
 				var color = COLOR_NORMAL.get(state, Color.BLACK)
 
 				var label: Label = Label.new()
-				label.name = "OUT_%s_%s" % str(i) + output_names[i]
+				label.name = "OUT_%s_%s" % [str(i), output_names[i]]
 				label.text = output_names[i]
 
 				var style: StyleBoxFlat = STYLE_OUT.duplicate()
 				style.border_color = color
 				label.set("theme_override_styles/normal", style)
 
+				slot.add_child(label)
+
 				set_slot_enabled_right(i, true)
 				set_slot_color_right(i, color)
 				set_slot_type_right(i, output_sizes[i])
-
-				slot.add_child(label)
 			else:
 				set_slot_enabled_right(i, false)
 		self.queue_redraw()

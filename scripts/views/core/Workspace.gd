@@ -33,17 +33,9 @@ var _drag_start := Vector2(0,0)
 
 # optional built-in _ready() function
 func _ready() -> void:
-	var gate: Gate = $Content/HSplitContainer/Workspace/Gate
-
-	gate.add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "A")
-	gate.add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "B")
-
-	gate.add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
-
-	var simulation: Simulation = $Content/HSplitContainer/Workspace/Simulation
+	var gate: Gate = $Content/HBoxContainer/Workspace/GATE_AND_0
+	var simulation: Simulation = $Content/HBoxContainer/Workspace/Simulation
 	simulation.add_gate(gate)
-
-	gate.redraw(true)
 
 # remaining built-in functions
 

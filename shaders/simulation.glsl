@@ -193,6 +193,190 @@ void main() {
             }
             output_values[0][0] = res;
         
+        case GATE_NAND:
+            if (input_count < 2) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+
+            uint res = STATE_ERR;
+            uint err = ERR_OK;
+
+            for (uint i = 0; i < input_count; i++) {
+                if (input_sizes[i] != 1) {
+                    res = STATE_ERR;
+                    err = ERR_SIZE;
+                    break;
+                }
+                uint value = input_values[i][0];
+                switch (value) {
+                    case STATE_ERR:
+                        res = STATE_ERR;
+                        err = ERR_VALUE;
+                        break;
+                    case STATE_TRI:
+                        res = STATE_TRI;
+                        break;
+                    case STATE_LOW:
+                        res = STATE_LOW;
+                }
+            }
+            if (res == STATE_LOW) {
+            	res = STATE_HIGH;
+            } else if (res = STATE_HIGH) {
+            	res = STATE_LOW;
+            }
+            output_values[0][0] = res;
+        
+        case GATE_OR:
+            if (input_count < 2) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+
+            uint res = STATE_ERR;
+            uint err = ERR_OK;
+
+            for (uint i = 0; i < input_count; i++) {
+                if (input_sizes[i] != 1) {
+                    res = STATE_ERR;
+                    err = ERR_SIZE;
+                    break;
+                }
+                uint value = input_values[i][0];
+                switch (value) {
+                    case STATE_ERR:
+                        res = STATE_ERR;
+                        err = ERR_VALUE;
+                        break;
+                    case STATE_TRI:
+                        res = STATE_TRI;
+                        break;
+                    case STATE_HIGH:
+                        res = STATE_HIGH;
+                }
+            }
+            output_values[0][0] = res;
+        
+        case GATE_NOR:
+            if (input_count < 2) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+
+            uint res = STATE_ERR;
+            uint err = ERR_OK;
+
+            for (uint i = 0; i < input_count; i++) {
+                if (input_sizes[i] != 1) {
+                    res = STATE_ERR;
+                    err = ERR_SIZE;
+                    break;
+                }
+                uint value = input_values[i][0];
+                switch (value) {
+                    case STATE_ERR:
+                        res = STATE_ERR;
+                        err = ERR_VALUE;
+                        break;
+                    case STATE_TRI:
+                        res = STATE_TRI;
+                        break;
+                    case STATE_HIGH:
+                        res = STATE_HIGH;
+                }
+            }
+            if (res == STATE_LOW) {
+            	res = STATE_HIGH;
+            } else if (res = STATE_HIGH) {
+            	res = STATE_LOW;
+            }
+            output_values[0][0] = res;
+        
+        case GATE_NOT:
+            if (input_count != 1) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+            
+            uint res = STATE_ERR;
+            uint err = ERR_OK;
+            uint value = input_values[0][0];
+            
+            match (value) {
+                case STATE_LOW: res = STATE_HIGH;
+                case STATE_HIGH: res = STATE_LOW
+                default: res = value;
+            }
+            
+            output_values[0][0] = res;
+        
+        case GATE_XOR:
+            if (input_count != 2) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+            
+            uint res = STATE_HIGH;
+            uint err = ERR_OK;
+            uint value1 = input_values[0][0];
+            uint value2 = input_values[1][0];
+            
+            if (value1 == STATE_TRI || value2 == STATE_TRI) {
+                res = STATE_TRI;
+            } else if (value1 == STATE_ERR || value2 == STATE_ERR) {
+                res = STATE_ERR;
+            } else if (value1 == value2) {
+                res = STATE_LOW;
+            }
+            
+            output_values[0][0] = res;
+        
+        case GATE_XNOR:
+            if (input_count != 2) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+            
+            uint res = STATE_LOW;
+            uint err = ERR_OK;
+            uint value1 = input_values[0][0];
+            uint value2 = input_values[1][0];
+            
+            if (value1 == STATE_TRI || value2 == STATE_TRI) {
+                res = STATE_TRI;
+            } else if (value1 == STATE_ERR || value2 == STATE_ERR) {
+                res = STATE_ERR;
+            } else if (value1 == value2) {
+                res = STATE_HIGH;
+            }
+            
+            output_values[0][0] = res;
+        
+        case GATE_TRI:
+            if (input_count != 2) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+            
+            uint res = STATE_HIGH;
+            uint err = ERR_OK;
+            uint value = input_values[0][0];
+            uint enable = input_values[1][0];
+            
+            if (value == STATE_TRI || enable == STATE_TRI) {
+                res = STATE_TRI;
+            } else if (value == STATE_ERR || enable == STATE_ERR) {
+                res = STATE_ERR;
+            } else if (enable == STATE_HIGH) {
+                res = value;
+            } else if (enable == STATE_LOW) {
+                res = STATE_TRI;
+            }
+            
+            output_values[0][0] = res;
+        
+        
         default: break;
     }
     

@@ -136,6 +136,7 @@ var _is_redraw_queued_full: bool = false
 func _enter_tree() -> void:
 	custom_minimum_size = Vector2(200, 50)
 	title = gate_name
+	add_to_group(&"Gates")
 	name = "GATE_%s_%s" % [gate_name, str(gate_id)]
 
 	set("theme_override_styles/panel", Simulation.THEME_PANEL.duplicate())

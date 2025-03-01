@@ -82,7 +82,8 @@ var _is_simulating: bool = false # False : Dispatch new instance | True : Get Re
 var _data: Array[Image] = []
 
 var _rd: RenderingDevice
-var _shader: RID
+var _simulate_shader: RID
+var _connection_shader: RID
 
 var _uniform_gate: RDUniform
 var _uniform_input: RDUniform
@@ -94,7 +95,9 @@ var _uniform_set: RID
 #endregion
 
 # @onready variables
-var _shader_file = preload("res://shaders/simulation.glsl")
+var _simulate_file = preload("res://shaders/simulation.glsl")
+
+var _connection_file = preload("res://shaders/connection.glsl")
 
 # optional built-in _init() function
 
@@ -169,8 +172,11 @@ func simulate() -> void:
 func _prepare_simulation() -> void:
 	_rd = RenderingServer.create_local_rendering_device()
 
-	var spirv: RDShaderSPIRV = _shader_file.get_spirv()
-	_shader = _rd.shader_create_from_spirv(spirv)
+	var sim_spirv: RDShaderSPIRV = _simulate_file.get_spirv()
+	_simulate_shader = _rd.shader_create_from_spirv(sim_spirv)
+	
+	var con_spirv: RDShaderSPIRV = _connection_file.get_spirv()
+	_connection_shader = _rd.shader_create_from_spirv(con_spirv)
 
 	can_simulate = true
 	_sim_counter = 60 # 60 Frames until first simulate() call
@@ -204,13 +210,6 @@ func _simulate_begin() -> void:
 		color.r = connection.gate_out
 		color.g = connection.port_out + 1
 		image_connection.set_pixel(x, y, color)
-		
-
-	# Invalid sizes
-	assert(data_gate.size() != array_size, "Invalid data_gate size")
-	assert(data_input.size() != array_size, "Invalid data_input size")
-	assert(data_output.size() != array_size, "Invalid data_output size")
-	assert(data_bus.size() != array_size, "Invalid data_bus size")
 
 	# Make Images
 	_data.resize(0)
@@ -229,11 +228,16 @@ func _simulate_begin() -> void:
 
 	_uniform_set = _rd.uniform_set_create([_uniform_gate, _uniform_input, _uniform_output, _uniform_bus, _uniform_connection], _shader, 0)
 
-	var pipeline: RID = _rd.compute_pipeline_create(_shader)
+	var sim_pipeline: RID = _rd.compute_pipeline_create(_simulate_shader)
+	var con_pipeline: RID = _rd.compute_pipeline_create(_connection_shader)
 	var compute_list: int = _rd.compute_list_begin()
-	_rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
+	_rd.compute_list_bind_compute_pipeline(compute_list, sim_pipeline)
 	_rd.compute_list_bind_uniform_set(compute_list, _uniform_set, 0)
 	_rd.compute_list_dispatch(compute_list, maxi(1, ceili(gates.size() / 16.0)), 1, 1)
+	_rd.compute_list_bind_compute_pipeline(compute_list, con_pipeline)
+	_rd.compute_list_bind_uniform_set(compute_list, _uniform_set, 0)
+	_rd.compute_list_dispatch(compute_list, maxi(1, ceili(gates.size() / 16.0)), 1, 1)
+	
 	_rd.compute_list_end()
 
 	_rd.submit()
@@ -261,7 +265,7 @@ func _simulate_end() -> void:
 	# [gate, input, output, bus]
 	var data: Array[Image] = [res_gate, res_input, res_output, res_bus]
 
-	# Handle connections here
+	get_tree().call_group(&"Gates", &"load_textures", data)
 
 func _simulate_create_uniform(binding: int, image: Image) -> RDUniform:
 	var textureFormat: RDTextureFormat = RDTextureFormat.new()

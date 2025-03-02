@@ -1,5 +1,5 @@
 # The name of the Class
-class_name AndGate
+class_name NotGate
 # The class this class extends
 extends Gate
 # Docstring

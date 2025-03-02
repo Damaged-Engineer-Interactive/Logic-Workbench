@@ -90,7 +90,8 @@ var _uniform_input: RDUniform
 var _uniform_output: RDUniform
 var _uniform_bus: RDUniform
 var _uniform_connection: RDUniform
-var _uniform_set: RID
+var _uniform_sim_set: RID
+var _uniform_con_set: RID
 
 #endregion
 
@@ -226,16 +227,19 @@ func _simulate_begin() -> void:
 	_uniform_bus = _simulate_create_uniform(3, _data[3])
 	_uniform_connection = _simulate_create_uniform(4, _data[4])
 
-	_uniform_set = _rd.uniform_set_create([_uniform_gate, _uniform_input, _uniform_output, _uniform_bus, _uniform_connection], _shader, 0)
+	_uniform_sim_set = _rd.uniform_set_create([_uniform_gate, _uniform_input, _uniform_output, _uniform_bus, _uniform_connection], _simulate_shader, 0)
+	_uniform_con_set = _rd.uniform_set_create([_uniform_gate, _uniform_input, _uniform_output, _uniform_bus, _uniform_connection], _connection_shader, 0)
 
 	var sim_pipeline: RID = _rd.compute_pipeline_create(_simulate_shader)
 	var con_pipeline: RID = _rd.compute_pipeline_create(_connection_shader)
 	var compute_list: int = _rd.compute_list_begin()
+
 	_rd.compute_list_bind_compute_pipeline(compute_list, sim_pipeline)
-	_rd.compute_list_bind_uniform_set(compute_list, _uniform_set, 0)
+	_rd.compute_list_bind_uniform_set(compute_list, _uniform_sim_set, 0)
 	_rd.compute_list_dispatch(compute_list, maxi(1, ceili(gates.size() / 16.0)), 1, 1)
+
 	_rd.compute_list_bind_compute_pipeline(compute_list, con_pipeline)
-	_rd.compute_list_bind_uniform_set(compute_list, _uniform_set, 0)
+	_rd.compute_list_bind_uniform_set(compute_list, _uniform_con_set, 0)
 	_rd.compute_list_dispatch(compute_list, maxi(1, ceili(gates.size() / 16.0)), 1, 1)
 	
 	_rd.compute_list_end()

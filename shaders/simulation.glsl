@@ -52,11 +52,11 @@ layout(set = 0, binding = 0, rgba8) uniform image2D gate_texture;
 
 // Input texture (Read-only)
 // 2 Bits = 1 State (LL = LOW, LH = HIGH, HL = TRI, HH = ERR) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (MAX_IO_SIZE)
-layout(set = 0, binding = 1, rgba8) uniform readonly image2D input_texture;
+layout(set = 0, binding = 1, rgba8) uniform image2D input_texture;
 
 // Output texture
 // 2 Bits = 1 State (LL = LOW, LH = HIGH, HL = TRI, HH = ERR) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (MAX_IO_SIZE)
-layout(set = 0, binding = 2, rgba8) uniform writeonly image2D output_texture;
+layout(set = 0, binding = 2, rgba8) uniform image2D output_texture;
 
 // Bus texture
 // 2 Bits = 1 State (LL = LOW, LH = HIGH, HL = TRI, HH = ERR) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (MAX_IO_SIZE)
@@ -163,7 +163,7 @@ void main() {
 
     // Simulate logic gate
     switch (gate_type) {
-        case GATE_AND: 
+        case GATE_AND: {
             if (input_count < 2) { break; };
             if (output_count != 1) { break; };
             if (output_sizes[0] != 1) { break; };
@@ -191,9 +191,9 @@ void main() {
                         res = STATE_LOW;
                 }
             }
-            output_values[0][0] = res;
+            output_values[0][0] = res; }
         
-        case GATE_NAND:
+        case GATE_NAND: {
             if (input_count < 2) { break; };
             if (output_count != 1) { break; };
             if (output_sizes[0] != 1) { break; };
@@ -223,12 +223,12 @@ void main() {
             }
             if (res == STATE_LOW) {
             	res = STATE_HIGH;
-            } else if (res = STATE_HIGH) {
+            } else if (res == STATE_HIGH) {
             	res = STATE_LOW;
             }
-            output_values[0][0] = res;
+            output_values[0][0] = res; }
         
-        case GATE_OR:
+        case GATE_OR: {
             if (input_count < 2) { break; };
             if (output_count != 1) { break; };
             if (output_sizes[0] != 1) { break; };
@@ -256,9 +256,9 @@ void main() {
                         res = STATE_HIGH;
                 }
             }
-            output_values[0][0] = res;
+            output_values[0][0] = res; }
         
-        case GATE_NOR:
+        case GATE_NOR: {
             if (input_count < 2) { break; };
             if (output_count != 1) { break; };
             if (output_sizes[0] != 1) { break; };
@@ -288,12 +288,12 @@ void main() {
             }
             if (res == STATE_LOW) {
             	res = STATE_HIGH;
-            } else if (res = STATE_HIGH) {
+            } else if (res == STATE_HIGH) {
             	res = STATE_LOW;
             }
-            output_values[0][0] = res;
+            output_values[0][0] = res; }
         
-        case GATE_NOT:
+        case GATE_NOT: {
             if (input_count != 1) { break; };
             if (output_count != 1) { break; };
             if (output_sizes[0] != 1) { break; };
@@ -303,15 +303,15 @@ void main() {
             uint err = ERR_OK;
             uint value = input_values[0][0];
             
-            match (value) {
+            switch (value) {
                 case STATE_LOW: res = STATE_HIGH;
-                case STATE_HIGH: res = STATE_LOW
+                case STATE_HIGH: res = STATE_LOW;
                 default: res = value;
             }
             
-            output_values[0][0] = res;
+            output_values[0][0] = res; }
         
-        case GATE_XOR:
+        case GATE_XOR: {
             if (input_count != 2) { break; };
             if (output_count != 1) { break; };
             if (output_sizes[0] != 1) { break; };
@@ -330,9 +330,9 @@ void main() {
                 res = STATE_LOW;
             }
             
-            output_values[0][0] = res;
+            output_values[0][0] = res; }
         
-        case GATE_XNOR:
+        case GATE_XNOR: {
             if (input_count != 2) { break; };
             if (output_count != 1) { break; };
             if (output_sizes[0] != 1) { break; };
@@ -351,9 +351,9 @@ void main() {
                 res = STATE_HIGH;
             }
             
-            output_values[0][0] = res;
+            output_values[0][0] = res; }
         
-        case GATE_TRI:
+        case GATE_TRI: {
             if (input_count != 2) { break; };
             if (output_count != 1) { break; };
             if (output_sizes[0] != 1) { break; };
@@ -374,7 +374,7 @@ void main() {
                 res = STATE_TRI;
             }
             
-            output_values[0][0] = res;
+            output_values[0][0] = res; }
         
         
         default: break;

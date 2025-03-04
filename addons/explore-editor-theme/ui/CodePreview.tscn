@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ds8c70l2dnpy8"]
 
-[ext_resource type="Script" path="res://addons/explore-editor-theme/ui/CodePreview.gd" id="1"]
+[ext_resource type="Script" uid="uid://b3l4g0mgyhv26" path="res://addons/explore-editor-theme/ui/CodePreview.gd" id="1"]
 
 [node name="CodePreview" type="VBoxContainer"]
 anchors_preset = 15

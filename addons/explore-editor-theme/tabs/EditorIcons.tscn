@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dtnrjguhery8r"]
 
-[ext_resource type="Script" path="res://addons/explore-editor-theme/tabs/EditorIcons.gd" id="1"]
+[ext_resource type="Script" uid="uid://cp46tj6ms221f" path="res://addons/explore-editor-theme/tabs/EditorIcons.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://ds8c70l2dnpy8" path="res://addons/explore-editor-theme/ui/CodePreview.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://c6mun6p3lk1k6" path="res://addons/explore-editor-theme/ui/FilterTool.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://bg7phy5jdt0wl" path="res://addons/explore-editor-theme/ui/TypeTool.tscn" id="4"]

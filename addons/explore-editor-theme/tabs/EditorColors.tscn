@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://ds8c70l2dnpy8" path="res://addons/explore-editor-theme/ui/CodePreview.tscn" id="1"]
 [ext_resource type="Texture2D" uid="uid://1o4lmgmicu6s" path="res://addons/explore-editor-theme/color-preview-icon.png" id="2_lmyt4"]
-[ext_resource type="Script" path="res://addons/explore-editor-theme/tabs/EditorColors.gd" id="3"]
+[ext_resource type="Script" uid="uid://bh0l3r244l750" path="res://addons/explore-editor-theme/tabs/EditorColors.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://c6mun6p3lk1k6" path="res://addons/explore-editor-theme/ui/FilterTool.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://bg7phy5jdt0wl" path="res://addons/explore-editor-theme/ui/TypeTool.tscn" id="5"]
 

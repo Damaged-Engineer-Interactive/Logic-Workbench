@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bdtluesl718xb"]
 
-[ext_resource type="Script" path="res://addons/explore-editor-theme/ui/ResourceInspector.gd" id="1"]
+[ext_resource type="Script" uid="uid://c4oohe6mvl4j8" path="res://addons/explore-editor-theme/ui/ResourceInspector.gd" id="1"]
 
 [node name="ResourceInspector" type="VBoxContainer"]
 offset_right = 40.0

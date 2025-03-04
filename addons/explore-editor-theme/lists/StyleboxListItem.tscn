@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c6r5h6suqvj1p"]
 
-[ext_resource type="Script" path="res://addons/explore-editor-theme/lists/StyleboxListItem.gd" id="1"]
+[ext_resource type="Script" uid="uid://c46lmq3rsuq54" path="res://addons/explore-editor-theme/lists/StyleboxListItem.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://1o4lmgmicu6s" path="res://addons/explore-editor-theme/color-preview-icon.png" id="2_o5jg8"]
 
 [node name="StyleboxListItem" type="PanelContainer" groups=["ETE_StyleBoxItems"]]

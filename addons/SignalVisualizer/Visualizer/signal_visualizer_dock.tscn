@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dppfamjc0ji40"]
 
-[ext_resource type="Script" path="res://addons/SignalVisualizer/Visualizer/signal_visualizer_dock.gd" id="1_akar5"]
+[ext_resource type="Script" uid="uid://blg25xs11n4so" path="res://addons/SignalVisualizer/Visualizer/signal_visualizer_dock.gd" id="1_akar5"]
 [ext_resource type="Texture2D" uid="uid://bmnff63evbdhv" path="res://addons/SignalVisualizer/Clear.svg" id="2_m8bsv"]
 [ext_resource type="Texture2D" uid="uid://bxj8ep08wbnm6" path="res://addons/SignalVisualizer/GraphEdit.svg" id="3_dtmqs"]
 

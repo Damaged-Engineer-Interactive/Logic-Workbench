@@ -184,9 +184,6 @@ func _prepare_simulation() -> void:
 
 func _simulate_begin() -> void:
 	# Prepare Buffers
-	# {amount of gates} * {4 channels} * ({Max IO Pixels} + {Data Pixel})
-	var array_size = gates.size() * 4 * (MAX_IO_COUNT + 1)
-
 	var data_gate: PackedByteArray = PackedByteArray()
 	var data_input: PackedByteArray = PackedByteArray()
 	var data_output: PackedByteArray = PackedByteArray()

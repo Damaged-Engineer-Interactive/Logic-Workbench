@@ -219,9 +219,11 @@ func switch_view(id: String) -> void:
 	
 	if _current_view:
 		_current_view.is_active = false
+		_current_view.process_mode = Node.PROCESS_MODE_DISABLED
 		_current_view = null
 	
 	_current_view = views.get(id) as View
+	_current_view.process_mode = Node.PROCESS_MODE_INHERIT
 	_current_view.is_active = true
 
 func load_views(path: String = VIEW_DIR) -> void:
@@ -235,7 +237,8 @@ func load_views(path: String = VIEW_DIR) -> void:
 		if dir.current_is_dir():
 			load_views(path + "/" + entry) # Recursive Loading
 		else:
-			load_view(path + "/" + entry)
+			if entry.get_extension() == "scn":
+				load_view(path + "/" + entry)
 		entry = dir.get_next()
 	dir.list_dir_end()
 
@@ -263,6 +266,8 @@ func load_view(path: String) -> void:
 	
 	# done
 	_waiting_to_finish -= 1
+	
+	view.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	return
 

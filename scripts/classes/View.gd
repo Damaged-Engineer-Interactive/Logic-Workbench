@@ -45,6 +45,7 @@ signal available
 		if get_child(0):
 			if get_child(0).has_method(&"active"):
 				get_child(0).active(value) # Let the Scene know if it is active or not
+				get_child(0).call(&"active")
 		
 		if not background_process:
 			get_child(0).set_process(value)

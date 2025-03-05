@@ -36,6 +36,8 @@ func _ready() -> void:
 	$Content/Columns/SubCategories/Projects.hide()
 	$Content/Columns/SubCategories/Settings.hide()
 	$Content/Columns/SubCategories/Credits.hide()
+	
+	$Content/Columns/ProjectSubCategorie.hide()
 
 # remaining built-in functions
 
@@ -127,3 +129,8 @@ func _home_pressed() -> void:
 func _text_meta_clicked(meta: Variant) -> void:
 	print(meta)
 	OS.shell_open(str(meta))
+
+func _quit_pressed() -> void:
+	var view: View = get_parent()
+	var controller: ViewController = view.controller
+	controller.quit()

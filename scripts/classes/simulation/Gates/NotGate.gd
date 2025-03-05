@@ -23,12 +23,12 @@ extends Gate
 
 # optional built-in _init() function
 func _init() -> void:
-    gate_name = "NOT"
-    gate_type = 5
+	gate_name = "NOT"
+	gate_type = 5
 
-    add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "IN")
+	add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "IN")
 
-    add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
+	add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
 
 # optional built-in _enter_tree() function
 

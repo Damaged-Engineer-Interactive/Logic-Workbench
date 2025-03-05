@@ -23,13 +23,13 @@ extends Gate
 
 # optional built-in _init() function
 func _init() -> void:
-    gate_name = "XOR"
-    gate_type = 6
+	gate_name = "XOR"
+	gate_type = 6
 
-    add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "A")
-    add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "B")
+	add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "A")
+	add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "B")
 
-    add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
+	add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
 
 # optional built-in _enter_tree() function
 

@@ -34,6 +34,8 @@ const uint GATE_NOT         =   5;
 const uint GATE_XOR         =   6;
 const uint GATE_XNOR        =   7;
 const uint GATE_TRI         =   8;
+const uint GATE_ON          =   9;
+const uint GATE_OFF         =  10;
 
 const uint GATE_CUSTOM      = 255;
 
@@ -64,7 +66,7 @@ layout(set = 0, binding = 3, rgba8) uniform image2D bus_texture;
 
 // Connection texture
 // Aligns with each pixel : R = destination_gate, G = destination_port, B = unused, A = unused
-layout(set = 0, binding = 3, rgba8) uniform readonly image2D connection_texture;
+layout(set = 0, binding = 4, rgba8) uniform readonly image2D connection_texture;
 
 
 
@@ -91,9 +93,9 @@ uint[MAX_IO_SIZE] read_value(uint tex, ivec2 pos) {
     // uint raw_value = uint(data.r * 255.0) | (uint(data.g * 255.0) << 8) | (uint(data.b * 255.0) << 16) | (uint(data.a * 255.0) << 24);
     uint raw_value = 0;
     raw_value |= uint(data.r * 255.0);
-    raw_value |= uint(data.g * 255.0) >> 8;
-    raw_value |= uint(data.b * 255.0) >> 8;
-    raw_value |= uint(data.a * 255.0) >> 8;
+    raw_value |= uint(data.g * 255.0) << 8;
+    raw_value |= uint(data.b * 255.0) << 16;
+    raw_value |= uint(data.a * 255.0) << 24;
     
     for (int i = 0; i < size; i++) {
         values[i] = (raw_value >> (i * 2)) & 0x3;
@@ -144,6 +146,8 @@ void main() {
     uint bus_sizes[MAX_IO_COUNT];
     uint bus_values[MAX_IO_COUNT][MAX_IO_SIZE];
 
+    uint err = ERR_OK;
+
     // Read inputs
     for (uint i = 0; i < input_count; i++) {
         input_sizes[i] = uint(imageLoad(gate_texture, ivec2(i + 1, id)).g * 255.0);
@@ -170,7 +174,7 @@ void main() {
             if (bus_count != 0) { break; };
 
             uint res = STATE_ERR;
-            uint err = ERR_OK;
+
 
             for (uint i = 0; i < input_count; i++) {
                 if (input_sizes[i] != 1) {
@@ -191,7 +195,8 @@ void main() {
                         res = STATE_LOW;
                 }
             }
-            output_values[0][0] = res; }
+            output_values[0][0] = res;
+            break; }
         
         case GATE_NAND: {
             if (input_count < 2) { break; };
@@ -200,7 +205,7 @@ void main() {
             if (bus_count != 0) { break; };
 
             uint res = STATE_ERR;
-            uint err = ERR_OK;
+
 
             for (uint i = 0; i < input_count; i++) {
                 if (input_sizes[i] != 1) {
@@ -226,7 +231,8 @@ void main() {
             } else if (res == STATE_HIGH) {
             	res = STATE_LOW;
             }
-            output_values[0][0] = res; }
+            output_values[0][0] = res;
+            break; }
         
         case GATE_OR: {
             if (input_count < 2) { break; };
@@ -235,7 +241,7 @@ void main() {
             if (bus_count != 0) { break; };
 
             uint res = STATE_ERR;
-            uint err = ERR_OK;
+
 
             for (uint i = 0; i < input_count; i++) {
                 if (input_sizes[i] != 1) {
@@ -256,7 +262,8 @@ void main() {
                         res = STATE_HIGH;
                 }
             }
-            output_values[0][0] = res; }
+            output_values[0][0] = res;
+            break; }
         
         case GATE_NOR: {
             if (input_count < 2) { break; };
@@ -265,7 +272,7 @@ void main() {
             if (bus_count != 0) { break; };
 
             uint res = STATE_ERR;
-            uint err = ERR_OK;
+
 
             for (uint i = 0; i < input_count; i++) {
                 if (input_sizes[i] != 1) {
@@ -291,7 +298,8 @@ void main() {
             } else if (res == STATE_HIGH) {
             	res = STATE_LOW;
             }
-            output_values[0][0] = res; }
+            output_values[0][0] = res;
+            break; }
         
         case GATE_NOT: {
             if (input_count != 1) { break; };
@@ -300,7 +308,7 @@ void main() {
             if (bus_count != 0) { break; };
             
             uint res = STATE_ERR;
-            uint err = ERR_OK;
+
             uint value = input_values[0][0];
             
             switch (value) {
@@ -309,7 +317,8 @@ void main() {
                 default: res = value;
             }
             
-            output_values[0][0] = res; }
+            output_values[0][0] = res;
+            break; }
         
         case GATE_XOR: {
             if (input_count != 2) { break; };
@@ -318,7 +327,7 @@ void main() {
             if (bus_count != 0) { break; };
             
             uint res = STATE_HIGH;
-            uint err = ERR_OK;
+
             uint value1 = input_values[0][0];
             uint value2 = input_values[1][0];
             
@@ -330,7 +339,8 @@ void main() {
                 res = STATE_LOW;
             }
             
-            output_values[0][0] = res; }
+            output_values[0][0] = res;
+            break; }
         
         case GATE_XNOR: {
             if (input_count != 2) { break; };
@@ -339,7 +349,7 @@ void main() {
             if (bus_count != 0) { break; };
             
             uint res = STATE_LOW;
-            uint err = ERR_OK;
+
             uint value1 = input_values[0][0];
             uint value2 = input_values[1][0];
             
@@ -351,7 +361,8 @@ void main() {
                 res = STATE_HIGH;
             }
             
-            output_values[0][0] = res; }
+            output_values[0][0] = res;
+            break; }
         
         case GATE_TRI: {
             if (input_count != 2) { break; };
@@ -360,7 +371,7 @@ void main() {
             if (bus_count != 0) { break; };
             
             uint res = STATE_HIGH;
-            uint err = ERR_OK;
+
             uint value = input_values[0][0];
             uint enable = input_values[1][0];
             
@@ -374,9 +385,33 @@ void main() {
                 res = STATE_TRI;
             }
             
-            output_values[0][0] = res; }
+            output_values[0][0] = res;
+            break; }
         
-        
+        case GATE_ON: {
+            if (input_count != 0) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+            
+            uint res = STATE_HIGH;
+
+            
+            output_values[0][0] = res;
+            break; }
+
+        case GATE_OFF: {
+            if (input_count != 0) { break; };
+            if (output_count != 1) { break; };
+            if (output_sizes[0] != 1) { break; };
+            if (bus_count != 0) { break; };
+            
+            uint res = STATE_LOW;
+
+            
+            output_values[0][0] = res;
+            break; }
+
         default: break;
     }
     
@@ -391,5 +426,5 @@ void main() {
         write_value(TEX_BUS, ivec2(i + 1, id), bus_values[i]);
     }
 
-
+    imageStore(output_texture, ivec2(0, id), vec4(float(err / 255.0), 0, 0, 0));
 }

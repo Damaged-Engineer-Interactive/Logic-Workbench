@@ -17,7 +17,7 @@ const COLOR_NORMAL: Dictionary = {
 	Simulation.States.ERROR: Color.RED,
 	Simulation.States.LOW: Color.DARK_BLUE,
 	Simulation.States.HIGH: Color.BLUE,
-	Simulation.States.UNKNOWN: Color.MEDIUM_PURPLE
+	Simulation.States.UNKNOWN: Color.BLACK
 }
 
 ## Bi [code]State : Color[/code] map. Used by Buses
@@ -25,7 +25,7 @@ const COLOR_BI: Dictionary = {
 	Simulation.States.ERROR: Color.RED,
 	Simulation.States.LOW: Color.DARK_GREEN,
 	Simulation.States.HIGH: Color.GREEN,
-	Simulation.States.UNKNOWN: Color.YELLOW_GREEN
+	Simulation.States.UNKNOWN: Color.WHITE
 }
 
 const STYLE_IN: StyleBoxFlat = preload("res://styles/simulation/Input.stylebox")
@@ -41,10 +41,10 @@ const STYLE_OUT: StyleBoxFlat = preload("res://styles/simulation/Output.stylebox
 		title = value
 
 ## The type of the Gate (used in the simulation)
+## Limited to 255
 @export var gate_type: int = 0
 
 ## The number of the Gate (used in the workspace and simulation to reference the gate)
-## Limited to 255
 @export var gate_id: int = 0
 
 ## The position of the Gate
@@ -185,14 +185,14 @@ func create_textures() -> Array[PackedByteArray]:
 	# Rest pixels (aligns with each input/..) : R = unused, G = input_size, B = output_size, A = bus_size
 	var gate: Image = Image.create_empty(img_size, 1, false, Image.Format.FORMAT_RGBA8)
 	var color: Color = Color.BLACK
-	color.r8 = gate_id
+	color.r8 = gate_type
 	color.g8 = input_amount
 	color.b8 = output_amount
 	color.a8 = bus_amount
 	gate.set_pixel(0, 0, color)
 	
 	# 2 Bits = 1 State (LL = Err, LH = Low, HL = High, HH = Tri) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (BIT_32)
-	var input: Image = Image.create_empty(img_size + 1, 1, false, Image.Format.FORMAT_RGBA8)
+	var input: Image = Image.create_empty(img_size, 1, false, Image.Format.FORMAT_RGBA8)
 	for x: int in range(0, input_amount): # loop for every input = x position, y = 1
 		var data: int = 0 # The Data of the input, that will be written to the pixel
 		var p: int = 0 # Write Pointer
@@ -215,7 +215,7 @@ func create_textures() -> Array[PackedByteArray]:
 		gate.set_pixel(x + 1, 0, color)
 	
 	# 2 Bits = 1 State (LL = Err, LH = Low, HL = High, HH = Tri) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (BIT_32)
-	var output: Image = Image.create_empty(img_size + 1, 1, false, Image.Format.FORMAT_RGBA8)
+	var output: Image = Image.create_empty(img_size, 1, false, Image.Format.FORMAT_RGBA8)
 	for x: int in range(0, output_amount): # loop for every output = x position, y = 1
 		var data: int = 0 # The Data of the output, that will be written to the pixel
 		var p: int = 0 # Write Pointer
@@ -227,9 +227,9 @@ func create_textures() -> Array[PackedByteArray]:
 			p += 2
 		color = Color.BLACK
 		color.r8 = data       & 0xFF # 1. Byte
-		color.g8 = data <<  8 & 0xFF # 2. Byte
-		color.b8 = data << 16 & 0xFF # 3. Byte
-		color.a8 = data << 24 & 0xFF # 4. Byte
+		color.g8 = data >>  8 & 0xFF # 2. Byte
+		color.b8 = data >> 16 & 0xFF # 3. Byte
+		color.a8 = data >> 24 & 0xFF # 4. Byte
 		output.set_pixel(x + 1, 0, color)
 		# Store size
 		color = gate.get_pixel(x + 1, 0)
@@ -237,7 +237,7 @@ func create_textures() -> Array[PackedByteArray]:
 		gate.set_pixel(x + 1, 0, color)
 	
 	# 2 Bits = 1 State (LL = Err, LH = Low, HL = High, HH = Tri) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (BIT_32)
-	var bus: Image = Image.create_empty(img_size + 1, 1, false, Image.Format.FORMAT_RGBA8)
+	var bus: Image = Image.create_empty(img_size, 1, false, Image.Format.FORMAT_RGBA8)
 	for x: int in range(0, bus_amount): # loop for every bus = x position, y = 1
 		var data: int = 0 # The Data of the bus, that will be written to the pixel
 		var p: int = 0 # Write Pointer
@@ -249,9 +249,9 @@ func create_textures() -> Array[PackedByteArray]:
 			p += 2
 		color = Color.BLACK
 		color.r8 = data       & 0xFF # 1. Byte
-		color.g8 = data <<  8 & 0xFF # 2. Byte
-		color.b8 = data << 16 & 0xFF # 3. Byte
-		color.a8 = data << 24 & 0xFF # 4. Byte
+		color.g8 = data >>  8 & 0xFF # 2. Byte
+		color.b8 = data >> 16 & 0xFF # 3. Byte
+		color.a8 = data >> 24 & 0xFF # 4. Byte
 		bus.set_pixel(x + 1, 0, color)
 		# Store size
 		color = gate.get_pixel(x + 1, 0)
@@ -277,53 +277,55 @@ func load_textures(textures: Array[Image], refresh: bool = false) -> void:
 		output_amount = color.b8
 		bus_amount = color.a8
 	
-		# 2 Bits = 1 State (LL = Err, LH = Low, HL = High, HH = Tri) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (BIT_32)
-		var input: Image = textures[1]
-		for x: int in range(0, input_amount): # loop for every input, x = input idx, y = gate_id
-			var p: int = 0 # Read Pointer
-			var sze: Simulation.Sizes = gate.get_pixel(x + 1, gate_id).g8 as Simulation.Sizes
-			input_sizes[x] = sze
-			color = input.get_pixel(x + 1, gate_id)
-			var val: int = 0
-			val += color.r8       # 1. Byte
-			val += color.g8 >>  8 # 2. Byte
-			val += color.b8 >> 16 # 3. Byte
-			val += color.a8 >> 24 # 4. Byte
-			var states: Array[Simulation.States] = []
-			states.resize(sze)
-			for i: int in range(0, sze): # loop for every input
-				var data: Simulation.States = Simulation.States.UNKNOWN
-				data = val >> p & 0b11 as Simulation.States
-				states[i] = data
-				p += 2
-			input_values[x] = states
+	# 2 Bits = 1 State (LL = Err, LH = Low, HL = High, HH = Tri) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (BIT_32)
+	var input: Image = textures[1]
+	for x: int in range(0, input_amount): # loop for every input, x = input idx, y = gate_id
+		var p: int = 0 # Read Pointer
+		var sze: Simulation.Sizes = gate.get_pixel(x + 1, gate_id).g8 as Simulation.Sizes
+		input_sizes[x] = sze
+		color = input.get_pixel(x + 1, gate_id)
+		var val: int = 0
+		val |= color.r8       # 1. Byte
+		val |= color.g8 <<  8 # 2. Byte
+		val |= color.b8 << 16 # 3. Byte
+		val |= color.a8 << 24 # 4. Byte
+		var states: Array[Simulation.States] = []
+		states.resize(sze)
+		for i: int in range(0, sze): # loop for every input
+			var data: Simulation.States = Simulation.States.UNKNOWN
+			data = val >> p & 0b11 as Simulation.States
+			states[i] = data
+			p += 2
+		input_values[x] = states
 	
 	# 2 Bits = 1 State (LL = Err, LH = Low, HL = High, HH = Tri) = 2 * 8 * 4 = 64 (bits used) / 2 = 32 (BIT_32)
 	var output: Image = textures[2]
+	color = output.get_pixel(0, gate_id)
 	for x: int in range(0, output_amount): # loop for every output, x = output idx, y = gate_id
 		var p: int = 0 # Read Pointer
 		if refresh:
 			output_sizes[x] = gate.get_pixel(x + 1, gate_id).b8 as Simulation.Sizes
 		color = output.get_pixel(x + 1, gate_id)
 		var val: int = 0
-		val += color.r8       # 1. Byte
-		val += color.g8 >>  8 # 2. Byte
-		val += color.b8 >> 16 # 3. Byte
-		val += color.a8 >> 24 # 4. Byte
+		val |= color.r8       # 1. Byte
+		val |= color.g8 <<  8 # 2. Byte
+		val |= color.b8 << 16 # 3. Byte
+		val |= color.a8 << 24 # 4. Byte
 		var states: Array[Simulation.States] = []
 		states.resize(output_sizes[x])
-		for i: int in range(0, output_sizes[x]): # loop for every input
+		for i: int in range(0, output_sizes[x]): # loop for every output
 			var data: Simulation.States = Simulation.States.UNKNOWN
 			data = val >> p & 0b11 as Simulation.States
 			states[i] = data
 			p += 2
 		output_values[x] = states
 	
-	redraw()
+	#redraw()
+	redraw(true)
 
 ## Queue redraw() and prevent it from being called multiple times
 func redraw(full: bool = false) -> void:
-	print("redraw(%s)" % str(full))
+	#print("redraw(%s)" % str(full))
 	if not _is_redraw_queued:
 		if full and not _is_redraw_queued_full:
 			_is_redraw_queued_full = true
@@ -336,10 +338,10 @@ func redraw(full: bool = false) -> void:
 ## Updates the Visual representation of the Gate.[br]
 ## Full # True : removes everything and starts from scratch | False : Only updates colors
 func _redraw(full: bool = false) -> void:
-	print("_redraw(%s) - Start" % str(full))
+	#print("_redraw(%s) - Start" % str(full))
 	_is_redraw_queued = false
 	_is_redraw_queued_full = false
-	if full:
+	if full or true: # "or true" for debug purpouses
 		# Remove Childs
 		for child in get_children():
 			remove_child(child)
@@ -358,7 +360,7 @@ func _redraw(full: bool = false) -> void:
 
 				var label: Label = Label.new()
 				label.name = "IN_%s_%s" % [str(i), input_names[i]]
-				label.text = input_names[i]
+				label.text = Simulation.STATE_TO_LETTER.get(state) + "| " + input_names[i]
 
 				var style: StyleBoxFlat = STYLE_IN.duplicate()
 				style.border_color = color
@@ -384,7 +386,7 @@ func _redraw(full: bool = false) -> void:
 
 				var label: Label = Label.new()
 				label.name = "OUT_%s_%s" % [str(i), output_names[i]]
-				label.text = output_names[i]
+				label.text = output_names[i] + " |" + Simulation.STATE_TO_LETTER.get(state)
 
 				var style: StyleBoxFlat = STYLE_OUT.duplicate()
 				style.border_color = color
@@ -398,7 +400,7 @@ func _redraw(full: bool = false) -> void:
 			else:
 				set_slot_enabled_right(i, false)
 		self.queue_redraw()
-		print("_redraw(%s) - End" % str(full))
+		#print("_redraw(%s) - End" % str(full))
 		return
 	
 	for i in range(0, input_amount): # loop for every input
@@ -416,7 +418,8 @@ func _redraw(full: bool = false) -> void:
 		var color = COLOR_NORMAL.get(state, Color.BLACK)
 
 		set_slot_color_right(i, color)
-		var label: Label = find_child("OUT_%s_%s" % [str(i), output_names[i]])
+		#var label: Label = find_child("OUT_%s_%s" % [str(i), output_names[i]])
+		var label: Label = get_node("SLOT_%s/OUT_%s_%s" % [i, i, output_names[i]])
 		var style: StyleBoxFlat = label.get("theme_override_styles/normal")
 		style.border_color = color
 		label.set("theme_override_styles/normal", style)

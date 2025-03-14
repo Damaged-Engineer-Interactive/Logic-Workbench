@@ -8,6 +8,11 @@ extends Node
 ## Long desciption goes here
 
 # Signals
+#region Debug
+signal _debug_simulation_begin(textures: Array[Image])
+signal _debug_simulation_end(textures: Array[Image])
+
+#endregion
 
 # Enums
 enum Sizes {
@@ -43,12 +48,21 @@ enum GATE_TYPES {
 	XOR,
 	XNOR,
 	TRI,
+	ON,
+	OFF,
 
 	CUSTOM  = 255
 }
 
 # Constants
-const STATE_TO_COLOR: Dictionary = {
+const STATE_TO_LETTER: Dictionary[States, String] = {
+	States.ERROR: "!",
+	States.LOW: "L",
+	States.HIGH: "H",
+	States.UNKNOWN: "?",
+}
+
+const STATE_TO_COLOR: Dictionary[States, Color] = {
 	States.ERROR: Color.RED,
 	States.LOW: Color.DARK_GREEN,
 	States.HIGH: Color.GREEN,
@@ -70,15 +84,30 @@ var connections: Array[Connection] = []
 
 var can_simulate: bool = false
 
+var GATES: Dictionary[Simulation.GATE_TYPES, Variant] = {
+	Simulation.GATE_TYPES.AND: AndGate,
+	Simulation.GATE_TYPES.NAND: NandGate,
+	Simulation.GATE_TYPES.OR: OrGate,
+	Simulation.GATE_TYPES.NOR: NorGate,
+	Simulation.GATE_TYPES.NOT: NotGate,
+	Simulation.GATE_TYPES.XOR: XorGate,
+	Simulation.GATE_TYPES.XNOR: XnorGate,
+	Simulation.GATE_TYPES.TRI: TriStateGate,
+	Simulation.GATE_TYPES.ON: OnGate,
+	Simulation.GATE_TYPES.OFF: OffGate
+}
+
 # private variables
 var _next_gate_id: Array[int] = [0]
+var _amount_of_gates: int = 0
 
 var _next_connection_id: Array[int] = [0]
 
 #region Shader
 var _sim_counter: int = -1 # Frames until next simulate() call
 var _is_simulating: bool = false # False : Dispatch new instance | True : Get Results
-# [gate, input, output, bus]
+var _invalid_run: bool = false # Invalid if gates / connections changed
+# [gate, input, output, bus, connection]
 var _data: Array[Image] = []
 
 var _rd: RenderingDevice
@@ -117,11 +146,16 @@ func _process(_d: float) -> void:
 		_sim_counter -= 1
 		if _sim_counter == 0:
 			simulate()
-			_sim_counter = 10 # 10 Frames until next simulate() call
+			_sim_counter += 20
 
 # virtual functions to override
 
 # public functions
+func get_gate(id: int) -> Gate:
+	if id < gates.size():
+		return gates[id]
+	return null
+
 func add_gate(gate: Gate) -> void:
 	var id = _next_gate_id.pop_back() # Get the newest gate_id available
 	if _next_gate_id.size() == 0: # Push new id if none available
@@ -130,16 +164,29 @@ func add_gate(gate: Gate) -> void:
 	if id >= gates.size(): # Array is full, make more space
 		gates.resize(gates.size() + 16)
 	
+	_amount_of_gates += 1
+	
 	gate.gate_id = id
 	
 	gates[id] = gate
+	
+	_invalid_run = true
 
 func remove_gate(id: int) -> Gate:
 	var gate: Gate = gates[id]
 	gates[id] = null # Same effect as pop_at() or erase(), but without resizing
 	_next_gate_id.append(id)
+	_amount_of_gates -= 1
+	_invalid_run = true
 	return gate # Returns the gate as reference, so it isn't immediately gone
 
+func get_connection(con_id: String) -> Connection:
+	for connection: Connection in connections:
+		if not connection:
+			break
+		if con_id == connection.get_con_id():
+			return connection
+	return null
 
 func add_connection(connection: Connection) -> void:
 	var id = _next_connection_id.pop_back() # Get the newest connection_id available
@@ -151,12 +198,17 @@ func add_connection(connection: Connection) -> void:
 	
 	connection.id = id
 	
+	connection.name = connection.get_con_id()
+	
 	connections[id] = connection
+	
+	_invalid_run = true
 
 func remove_connection(id: int) -> Connection:
 	var connection: Connection = connections[id]
 	connections[id] = null # Same effect as pop_at() or erase(), but without resizing
 	_next_connection_id.append(id)
+	_invalid_run = true
 	return connection # Returns the gate as reference, so it isn't immediately gone
 
 func simulate() -> void:
@@ -164,13 +216,15 @@ func simulate() -> void:
 		return
 	if _is_simulating:
 		_simulate_end()
-		_sim_counter = 10 # 10 Frames until next simulate() call 
+		_sim_counter = 1 # 1 Frame until next simulate() call 
 	else:
 		_simulate_begin()
-		_sim_counter = 10 # 10 Frames until next simulate() call
+		_sim_counter = 3 # 3 Frames until next simulate() call
+	_invalid_run = false
 
 # private functions
 func _prepare_simulation() -> void:
+	print("prepare_simulation")
 	_rd = RenderingServer.create_local_rendering_device()
 
 	var sim_spirv: RDShaderSPIRV = _simulate_file.get_spirv()
@@ -183,15 +237,20 @@ func _prepare_simulation() -> void:
 	_sim_counter = 60 # 60 Frames until first simulate() call
 
 func _simulate_begin() -> void:
+	#print("simulate_begin")
+	if _amount_of_gates == 0:
+		return
+	
 	# Prepare Buffers
 	var data_gate: PackedByteArray = PackedByteArray()
 	var data_input: PackedByteArray = PackedByteArray()
 	var data_output: PackedByteArray = PackedByteArray()
 	var data_bus: PackedByteArray = PackedByteArray()
-	var image_connection: Image = Image.create_empty(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8)
+	var image_connection: Image = Image.create_empty(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8)
 
 	# Loop through the gates
-	for gate: Gate in gates:
+	for i: int in range(0, _amount_of_gates):
+		var gate: Gate = gates[i]
 		var gate_data: Array[PackedByteArray] = gate.create_textures()
 		data_gate.append_array(gate_data[0])
 		data_input.append_array(gate_data[1])
@@ -200,6 +259,8 @@ func _simulate_begin() -> void:
 	
 	# Loop through the connections
 	for connection: Connection in connections:
+		if not connection:
+			continue
 		if connection.size_in != connection.size_out:
 			continue
 		var x: int = connection.gate_in
@@ -212,10 +273,10 @@ func _simulate_begin() -> void:
 	# Make Images
 	_data.resize(0)
 	_data.resize(5)
-	_data[0] = Image.create_from_data(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8, data_gate)
-	_data[1] = Image.create_from_data(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8, data_input)
-	_data[2] = Image.create_from_data(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8, data_output)
-	_data[3] = Image.create_from_data(MAX_IO_COUNT + 1, gates.size(), false, Image.Format.FORMAT_RGBA8, data_bus)
+	_data[0] = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, data_gate)
+	_data[1] = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, data_input)
+	_data[2] = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, data_output)
+	_data[3] = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, data_bus)
 	_data[4] = image_connection
 
 	_uniform_gate = _simulate_create_uniform(0, _data[0])
@@ -243,30 +304,35 @@ func _simulate_begin() -> void:
 
 	_rd.submit()
 	
+	_is_simulating = true
+	
+	_debug_simulation_begin.emit(_data)
+	
 func _simulate_end() -> void:
+	#print("simulate_end")
 	_rd.sync() # Sync to prevent reading before the shader finishes
 
+	if _invalid_run:
+		_is_simulating = false
+		return
+
 	# Getting the Result
-	var res_gate: Image = Image.new()
-	res_gate.copy_from(_data[0])
-	res_gate.data["data"] = _rd.texture_get_data(_uniform_gate.get_ids()[-1], 0)
+	var res_gate: Image = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, _rd.texture_get_data(_uniform_gate.get_ids()[-1], 0))
 	
-	var res_input: Image = Image.new()
-	res_input.copy_from(_data[1])
-	res_input.data["data"] = _rd.texture_get_data(_uniform_input.get_ids()[-1], 0)
+	var res_input: Image = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, _rd.texture_get_data(_uniform_input.get_ids()[-1], 0))
 	
-	var res_output: Image = Image.new()
-	res_output.copy_from(_data[2])
-	res_output.data["data"] = _rd.texture_get_data(_uniform_output.get_ids()[-1], 0)
+	var res_output: Image = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, _rd.texture_get_data(_uniform_output.get_ids()[-1], 0))
 	
-	var res_bus: Image = Image.new()
-	res_bus.copy_from(_data[3])
-	res_bus.data["data"] = _rd.texture_get_data(_uniform_bus.get_ids()[-1], 0)
+	var res_bus: Image = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, _rd.texture_get_data(_uniform_bus.get_ids()[-1], 0))
 
 	# [gate, input, output, bus]
 	var data: Array[Image] = [res_gate, res_input, res_output, res_bus]
+	
+	_debug_simulation_end.emit(data)
 
 	get_tree().call_group(&"Gates", &"load_textures", data)
+	
+	_is_simulating = false
 
 func _simulate_create_uniform(binding: int, image: Image) -> RDUniform:
 	var textureFormat: RDTextureFormat = RDTextureFormat.new()
@@ -278,7 +344,6 @@ func _simulate_create_uniform(binding: int, image: Image) -> RDUniform:
 	textureFormat.usage_bits += RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
 	textureFormat.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
 	
-	print(image.get_data())
 	var data: PackedByteArray = image.get_data()
 	
 	var texture: RID = _rd.texture_create(textureFormat, RDTextureView.new())

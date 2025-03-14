@@ -34,7 +34,7 @@ layout(set = 0, binding = 3, rgba8) uniform readonly image2D connection_texture;
 void main() {
     ivec2 destination = ivec2(gl_GlobalInvocationID.xy);
     if (destination.x == 0) { return; } // Invalid connection_texture
-    
+
     vec4 data = imageLoad(connection_texture, destination);
 
     ivec2 source = ivec2(int(data.r * 255.0), int(data.g * 255.0));

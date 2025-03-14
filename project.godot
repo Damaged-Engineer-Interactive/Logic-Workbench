@@ -60,7 +60,7 @@ naming/script_name_casing=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/discord-rpc-gd/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg", "res://addons/gui_auto_layout/plugin.cfg", "res://addons/script-tabs/plugin.cfg", "res://addons/simple-gui-transitions/plugin.cfg", "res://addons/tnowe_extra_controls/plugin.cfg")
+enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/discord-rpc-gd/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg", "res://addons/script-tabs/plugin.cfg", "res://addons/simple-gui-transitions/plugin.cfg", "res://addons/tnowe_extra_controls/plugin.cfg")
 
 [file_customization]
 
@@ -91,5 +91,9 @@ config/default/transition_type="QUAD"
 
 [rendering]
 
+rendering_device/fallback_to_opengl3=false
+gl_compatibility/fallback_to_angle=false
+gl_compatibility/fallback_to_native=false
+gl_compatibility/fallback_to_gles=false
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 viewport/transparent_background=true

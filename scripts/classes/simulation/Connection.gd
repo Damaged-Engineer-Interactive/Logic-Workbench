@@ -54,6 +54,13 @@ var size_out: Simulation.Sizes = Simulation.Sizes.BIT_1
 # optional built-in _ready() function
 
 # remaining built-in functions
+func uses_gate(gate: Gate) -> bool:
+	if gate.id in [gate_in, gate_out]:
+		return true
+	return false
+
+func get_con_id() -> String:
+	return "%s:%s_%s:%s" % [str(gate_in), str(port_in), str(gate_out), str(port_out)]
 
 # virtual functions to override
 

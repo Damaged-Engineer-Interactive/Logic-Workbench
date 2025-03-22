@@ -14,7 +14,6 @@ extends VBoxContainer
 # Constants
 
 # @export variables
-var shader_file := preload("res://shaders/simulation.glsl")
 
 # public variables
 

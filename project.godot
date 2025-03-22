@@ -69,8 +69,7 @@ folder_colors={
 "res://assets/": "green",
 "res://scenes/": "blue",
 "res://script_templates/": "orange",
-"res://scripts/": "purple",
-"res://shaders/": "pink"
+"res://scripts/": "purple"
 }
 
 [gui]

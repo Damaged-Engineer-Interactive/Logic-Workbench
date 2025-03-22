@@ -1,9 +1,9 @@
 # The name of the Class
-class_name DebugGate
+class_name TriGate
 # The class this class extends
-extends Node
+extends Gate
 # Docstring
-## Class used to expose properties to the editor, that would be hidden otherwise
+## short description goes here 
 ## 
 ## Long desciption goes here
 
@@ -22,6 +22,11 @@ extends Node
 # @onready variables
 
 # optional built-in _init() function
+func _init() -> void:
+	gate_name = "TRI"
+	gate_type = 11
+	
+	add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
 
 # optional built-in _enter_tree() function
 

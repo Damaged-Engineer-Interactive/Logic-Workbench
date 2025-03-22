@@ -8,11 +8,6 @@ extends Node
 ## Long desciption goes here
 
 # Signals
-#region Debug
-signal _debug_simulation_begin(textures: Array[Image])
-signal _debug_simulation_end(textures: Array[Image])
-
-#endregion
 
 # Enums
 enum Sizes {
@@ -47,9 +42,14 @@ enum GATE_TYPES {
 	NOT,
 	XOR,
 	XNOR,
-	TRI,
+	STATE,
+	
 	ON,
 	OFF,
+	TRI,
+	ERROR,
+	
+	SELECTOR,
 
 	CUSTOM  = 255
 }
@@ -85,16 +85,21 @@ var connections: Array[Connection] = []
 var can_simulate: bool = false
 
 var GATES: Dictionary[Simulation.GATE_TYPES, Variant] = {
-	Simulation.GATE_TYPES.AND: AndGate,
-	Simulation.GATE_TYPES.NAND: NandGate,
-	Simulation.GATE_TYPES.OR: OrGate,
-	Simulation.GATE_TYPES.NOR: NorGate,
-	Simulation.GATE_TYPES.NOT: NotGate,
-	Simulation.GATE_TYPES.XOR: XorGate,
-	Simulation.GATE_TYPES.XNOR: XnorGate,
-	Simulation.GATE_TYPES.TRI: TriStateGate,
-	Simulation.GATE_TYPES.ON: OnGate,
-	Simulation.GATE_TYPES.OFF: OffGate
+	GATE_TYPES.AND: AndGate,
+	GATE_TYPES.NAND: NandGate,
+	GATE_TYPES.OR: OrGate,
+	GATE_TYPES.NOR: NorGate,
+	GATE_TYPES.NOT: NotGate,
+	GATE_TYPES.XOR: XorGate,
+	GATE_TYPES.XNOR: XnorGate,
+	GATE_TYPES.STATE: TriStateGate,
+	
+	GATE_TYPES.ON: OnGate,
+	GATE_TYPES.OFF: OffGate,
+	GATE_TYPES.TRI: TriGate,
+	GATE_TYPES.ERROR: ErrorGate,
+	
+	GATE_TYPES.SELECTOR: SelectorGate
 }
 
 # private variables
@@ -103,31 +108,18 @@ var _amount_of_gates: int = 0
 
 var _next_connection_id: Array[int] = [0]
 
-#region Shader
+
 var _sim_counter: int = -1 # Frames until next simulate() call
 var _is_simulating: bool = false # False : Dispatch new instance | True : Get Results
 var _invalid_run: bool = false # Invalid if gates / connections changed
-# [gate, input, output, bus, connection]
-var _data: Array[Image] = []
 
-var _rd: RenderingDevice
-var _simulate_shader: RID
-var _connection_shader: RID
+var mutex: Mutex
+var semaphore: Semaphore
 
-var _uniform_gate: RDUniform
-var _uniform_input: RDUniform
-var _uniform_output: RDUniform
-var _uniform_bus: RDUniform
-var _uniform_connection: RDUniform
-var _uniform_sim_set: RID
-var _uniform_con_set: RID
-
-#endregion
+var thread_count: int
+var threads: Array[Thread]
 
 # @onready variables
-var _simulate_file = preload("res://shaders/simulation.glsl")
-
-var _connection_file = preload("res://shaders/connection.glsl")
 
 # optional built-in _init() function
 
@@ -149,6 +141,9 @@ func _process(_d: float) -> void:
 			_sim_counter += 20
 
 # virtual functions to override
+func _exit_tree() -> void:
+	for thread: Thread in threads:
+		thread.wait_to_finish()
 
 # public functions
 func get_gate(id: int) -> Gate:
@@ -214,147 +209,174 @@ func remove_connection(id: int) -> Connection:
 func simulate() -> void:
 	if not allow_simulate:
 		return
+	_simulate_single_thread()
+	_sim_counter = 1
+	_invalid_run = false
+	return
+	
+	@warning_ignore("unreachable_code")
 	if _is_simulating:
 		_simulate_end()
 		_sim_counter = 1 # 1 Frame until next simulate() call 
 	else:
 		_simulate_begin()
-		_sim_counter = 3 # 3 Frames until next simulate() call
+		_sim_counter = 1 # 1 Frame until next simulate() call
 	_invalid_run = false
 
 # private functions
 func _prepare_simulation() -> void:
 	print("prepare_simulation")
-	_rd = RenderingServer.create_local_rendering_device()
-
-	var sim_spirv: RDShaderSPIRV = _simulate_file.get_spirv()
-	_simulate_shader = _rd.shader_create_from_spirv(sim_spirv)
+	thread_count = floori(OS.get_processor_count() / 4.0)
+	print("Logical Processors Available : %2s" % OS.get_processor_count())
+	print("Logical Processors Usable    : %2s" % thread_count)
 	
-	var con_spirv: RDShaderSPIRV = _connection_file.get_spirv()
-	_connection_shader = _rd.shader_create_from_spirv(con_spirv)
-
 	can_simulate = true
 	_sim_counter = 60 # 60 Frames until first simulate() call
 
 func _simulate_begin() -> void:
-	#print("simulate_begin")
-	if _amount_of_gates == 0:
-		return
-	
-	# Prepare Buffers
-	var data_gate: PackedByteArray = PackedByteArray()
-	var data_input: PackedByteArray = PackedByteArray()
-	var data_output: PackedByteArray = PackedByteArray()
-	var data_bus: PackedByteArray = PackedByteArray()
-	var image_connection: Image = Image.create_empty(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8)
-
-	# Loop through the gates
-	for i: int in range(0, _amount_of_gates):
-		var gate: Gate = gates[i]
-		var gate_data: Array[PackedByteArray] = gate.create_textures()
-		data_gate.append_array(gate_data[0])
-		data_input.append_array(gate_data[1])
-		data_output.append_array(gate_data[2])
-		data_bus.append_array(gate_data[3])
-	
-	# Loop through the connections
-	for connection: Connection in connections:
-		if not connection:
-			continue
-		if connection.size_in != connection.size_out:
-			continue
-		var x: int = connection.gate_in
-		var y: int = connection.port_in + 1
-		var color: Color = Color.BLACK
-		color.r = connection.gate_out
-		color.g = connection.port_out + 1
-		image_connection.set_pixel(x, y, color)
-
-	# Make Images
-	_data.resize(0)
-	_data.resize(5)
-	_data[0] = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, data_gate)
-	_data[1] = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, data_input)
-	_data[2] = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, data_output)
-	_data[3] = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, data_bus)
-	_data[4] = image_connection
-
-	_uniform_gate = _simulate_create_uniform(0, _data[0])
-	_uniform_input = _simulate_create_uniform(1, _data[1])
-	_uniform_output = _simulate_create_uniform(2, _data[2])
-	_uniform_bus = _simulate_create_uniform(3, _data[3])
-	_uniform_connection = _simulate_create_uniform(4, _data[4])
-
-	_uniform_sim_set = _rd.uniform_set_create([_uniform_gate, _uniform_input, _uniform_output, _uniform_bus, _uniform_connection], _simulate_shader, 0)
-	_uniform_con_set = _rd.uniform_set_create([_uniform_gate, _uniform_input, _uniform_output, _uniform_bus, _uniform_connection], _connection_shader, 0)
-
-	var sim_pipeline: RID = _rd.compute_pipeline_create(_simulate_shader)
-	var con_pipeline: RID = _rd.compute_pipeline_create(_connection_shader)
-	var compute_list: int = _rd.compute_list_begin()
-
-	_rd.compute_list_bind_compute_pipeline(compute_list, sim_pipeline)
-	_rd.compute_list_bind_uniform_set(compute_list, _uniform_sim_set, 0)
-	_rd.compute_list_dispatch(compute_list, maxi(1, ceili(gates.size() / 16.0)), 1, 1)
-
-	_rd.compute_list_bind_compute_pipeline(compute_list, con_pipeline)
-	_rd.compute_list_bind_uniform_set(compute_list, _uniform_con_set, 0)
-	_rd.compute_list_dispatch(compute_list, maxi(1, ceili(gates.size() / 16.0)), 1, 1)
-	
-	_rd.compute_list_end()
-
-	_rd.submit()
+	assert(false, "Not Implemented!")
 	
 	_is_simulating = true
-	
-	_debug_simulation_begin.emit(_data)
-	
+
 func _simulate_end() -> void:
-	#print("simulate_end")
-	_rd.sync() # Sync to prevent reading before the shader finishes
-
-	if _invalid_run:
-		_is_simulating = false
-		return
-
-	# Getting the Result
-	var res_gate: Image = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, _rd.texture_get_data(_uniform_gate.get_ids()[-1], 0))
-	
-	var res_input: Image = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, _rd.texture_get_data(_uniform_input.get_ids()[-1], 0))
-	
-	var res_output: Image = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, _rd.texture_get_data(_uniform_output.get_ids()[-1], 0))
-	
-	var res_bus: Image = Image.create_from_data(MAX_IO_COUNT + 1, _amount_of_gates, false, Image.Format.FORMAT_RGBA8, _rd.texture_get_data(_uniform_bus.get_ids()[-1], 0))
-
-	# [gate, input, output, bus]
-	var data: Array[Image] = [res_gate, res_input, res_output, res_bus]
-	
-	_debug_simulation_end.emit(data)
-
-	get_tree().call_group(&"Gates", &"load_textures", data)
+	assert(false, "Not Implemented!")
 	
 	_is_simulating = false
 
-func _simulate_create_uniform(binding: int, image: Image) -> RDUniform:
-	var textureFormat: RDTextureFormat = RDTextureFormat.new()
-	textureFormat.width = image.get_width()
-	textureFormat.height = image.get_height()
-	textureFormat.usage_bits += RenderingDevice.TEXTURE_USAGE_CAN_UPDATE_BIT
-	textureFormat.usage_bits += RenderingDevice.TEXTURE_USAGE_STORAGE_BIT
-	textureFormat.usage_bits += RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT
-	textureFormat.usage_bits += RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
-	textureFormat.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
-	
-	var data: PackedByteArray = image.get_data()
-	
-	var texture: RID = _rd.texture_create(textureFormat, RDTextureView.new())
-	_rd.texture_update(texture, 0, data)
-	
-	var uniform: RDUniform = RDUniform.new()
-	uniform.uniform_type = RenderingDevice.UniformType.UNIFORM_TYPE_IMAGE
-	uniform.binding = binding
-	uniform.add_id(texture)
-	
-	return uniform
+func _simulate_single_thread() -> void:
+	# Gate Simulation
+	for i: int in  range(0, _amount_of_gates):
+		var gate: Gate = gates[i]
+		
+		match gate.gate_type:
+			GATE_TYPES.AND:
+				var result: States = States.HIGH
+				for j in range(0, gate.input_amount):
+					var value: States = gate.input_values[j][0]
+					if value != States.HIGH:
+						result = value
+						break
+				gate.output_values[0][0] = result
+			
+			GATE_TYPES.NAND:
+				var result: States = States.HIGH
+				for j in range(0, gate.input_amount):
+					var value: States = gate.input_values[j][0]
+					if value != States.HIGH:
+						result = value
+						break
+				if result == States.HIGH:
+					result = States.LOW
+				elif result == States.LOW:
+					result = States.HIGH
+				gate.output_values[0][0] = result
+			
+			GATE_TYPES.OR:
+				var result: States = States.LOW
+				for j in range(0, gate.input_amount):
+					var value: States = gate.input_values[j][0]
+					if value == States.HIGH:
+						result = value
+					elif value == States.ERROR:
+						result = value
+						break
+					elif value == States.UNKNOWN:
+						result = value
+						break
+				gate.output_values[0][0] = result
+			
+			GATE_TYPES.NOR:
+				var result: States = States.LOW
+				for j in range(0, gate.input_amount):
+					var value: States = gate.input_values[j][0]
+					if value == States.HIGH:
+						result = value
+					elif value == States.ERROR:
+						result = value
+						break
+					elif value == States.UNKNOWN:
+						result = value
+						break
+				if result == States.HIGH:
+					result = States.LOW
+				elif result == States.LOW:
+					result = States.HIGH
+				gate.output_values[0][0] = result
+			
+			GATE_TYPES.NOT:
+				var result: States = States.UNKNOWN
+				var value: States = gate.input_values[0][0]
+				if value == States.HIGH:
+					result = States.LOW
+				elif value == States.LOW:
+					result = States.HIGH
+				else:
+					result = value
+				gate.output_values[0][0] = result
+			
+			GATE_TYPES.XOR:
+				var result: States = States.HIGH
+				var value1: States = gate.input_values[0][0]
+				var value2: States = gate.input_values[0][0]
+				if value1 == States.ERROR or value2 == States.ERROR:
+					result = States.ERROR
+				elif value1 == States.UNKNOWN or value2 == States.UNKNOWN:
+					result = States.UNKNOWN
+				elif value1 == value2:
+					result = States.LOW
+				gate.output_values[0][0] = result
+			
+			GATE_TYPES.XNOR:
+				var result: States = States.LOW
+				var value1: States = gate.input_values[0][0]
+				var value2: States = gate.input_values[0][0]
+				if value1 == States.ERROR or value2 == States.ERROR:
+					result = States.ERROR
+				elif value1 == States.UNKNOWN or value2 == States.UNKNOWN:
+					result = States.UNKNOWN
+				elif value1 == value2:
+					result = States.HIGH
+				gate.output_values[0][0] = result
+			
+			GATE_TYPES.STATE:
+				var result: States = States.UNKNOWN
+				var value: States = gate.input_values[0][0]
+				var enable: States = gate.input_values[1][0]
+				if value == States.ERROR or enable == States.ERROR:
+					result = States.ERROR
+				elif value == States.UNKNOWN or enable == States.UNKNOWN:
+					result = States.UNKNOWN
+				elif enable == States.LOW:
+					result = States.UNKNOWN
+				else:
+					result = enable
+				gate.output_values[0][0] = result
+			
+			GATE_TYPES.ON:
+				gate.output_values[0][0] = States.HIGH
+			
+			GATE_TYPES.OFF:
+				gate.output_values[0][0] = States.LOW
+			
+			GATE_TYPES.TRI:
+				gate.output_values[0][0] = States.UNKNOWN
+			
+			GATE_TYPES.ERROR:
+				gate.output_values[0][0] = States.ERROR
+			
+			GATE_TYPES.SELECTOR:
+				gate.output_values[0][0] = gate.state
+		
+		# Connection Simulation
+		for connection: Connection in connections:
+			if not connection:
+				break
+			var output_gate: Gate = gates[connection.gate_in]
+			var output_values: Array[States] = output_gate.output_values[connection.port_in]
+			var input_gate: Gate = gates[connection.gate_out]
+			input_gate.input_values[connection.port_out] = output_values
+		
+		gate.redraw()
 
 # subclasses
  

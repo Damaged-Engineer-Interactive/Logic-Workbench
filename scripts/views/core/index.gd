@@ -95,8 +95,8 @@ func _projects_toggled(state: bool) -> void:
 	$Content/Columns/SubCategories/Projects.visible = state
 	$Content/Columns/SubCategories.visible = false
 	if state:
-		$Content/Columns/MainCategories/VBoxContainer/Settings.button_pressed = false	
-		$Content/Columns/MainCategories/VBoxContainer/Credits.button_pressed = false	
+		$Content/Columns/MainCategories/VBoxContainer/Settings.button_pressed = false
+		$Content/Columns/MainCategories/VBoxContainer/Credits.button_pressed = false
 		$Content/Columns/SubCategories.visible = true
 
 
@@ -134,3 +134,13 @@ func _quit_pressed() -> void:
 	var view: View = get_parent()
 	var controller: ViewController = view.controller
 	controller.quit()
+
+
+
+func _projects_load_toggled(state: bool) -> void:
+	$Content/Columns/ProjectSubCategorie.visible = state
+
+func _projects_sub_load_button_down() -> void:
+	var view: View = get_parent()
+	var controller: ViewController = view.controller
+	controller.switch_view("Workspace")

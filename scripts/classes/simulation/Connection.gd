@@ -64,7 +64,10 @@ func uses_gate(gate: Gate) -> bool:
 	return false
 
 func get_con_id() -> String:
-	return "%s:%s_%s:%s" % [str(gate_in), str(port_in), str(gate_out), str(port_out)]
+	return "%s:%s|%s:%s" % [str(gate_in), str(port_in), str(gate_out), str(port_out)]
+
+static func make_con_id(from_gate: String, from_port: int, to_gate: String, to_port: int) -> String:
+	return "%s:%s|%s:%s" % [str(from_gate.split("_")[-1]), str(from_port), str(to_gate.split("_")[-1]), str(to_port)]
 
 # virtual functions to override
 

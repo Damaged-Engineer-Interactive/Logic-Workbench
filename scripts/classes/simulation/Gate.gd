@@ -207,8 +207,8 @@ func _redraw(full: bool = false) -> void:
 			child.queue_free()
 
 		# Make new Childs
-		var io: int = max(input_amount, output_amount, buttons.size())
-		for i in range(0, io):
+		var io: int = max(input_amount, output_amount)
+		for i in range(0, io + buttons.size()):
 			var slot: HBoxContainer = HBoxContainer.new()
 			slot.name = "SLOT_" + str(i)
 			add_child(slot)
@@ -219,7 +219,7 @@ func _redraw(full: bool = false) -> void:
 
 				var label: Label = Label.new()
 				label.name = "IN_%s_%s" % [str(i), input_names[i]]
-				label.text = Simulation.STATE_TO_LETTER.get(state) + "| " + input_names[i]
+				label.text = input_names[i]
 
 				var style: StyleBoxFlat = STYLE_IN.duplicate()
 				style.border_color = color
@@ -239,8 +239,8 @@ func _redraw(full: bool = false) -> void:
 			spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			slot.add_child(spacer)
 			
-			if i <= buttons.size() and buttons.size() != 0:
-				var button: Button = _create_button(buttons[i])
+			if i >= io:
+				var button: Button = _create_button(buttons[i - io])
 				slot.add_child(button)
 				# Spacer between Button and Output
 				var spacer2: Label = Label.new()
@@ -254,7 +254,7 @@ func _redraw(full: bool = false) -> void:
 
 				var label: Label = Label.new()
 				label.name = "OUT_%s_%s" % [str(i), output_names[i]]
-				label.text = output_names[i] + " |" + Simulation.STATE_TO_LETTER.get(state)
+				label.text = output_names[i]
 
 				var style: StyleBoxFlat = STYLE_OUT.duplicate()
 				style.border_color = color
@@ -267,6 +267,11 @@ func _redraw(full: bool = false) -> void:
 				set_slot_type_right(i, output_sizes[i])
 			else:
 				set_slot_enabled_right(i, false)
+			
+			if i == io - 1:
+				var separator := HSeparator.new()
+				separator.name = "SEP_IO_BTN"
+				add_child(separator)
 		self.queue_redraw()
 		#print("_redraw(%s) - End" % str(full))
 		return
@@ -276,7 +281,7 @@ func _redraw(full: bool = false) -> void:
 		var color = COLOR_NORMAL.get(state, Color.BLACK)
 
 		set_slot_color_left(i, color)
-		var label: Label = find_child("IN_%s_%s" % [str(i), input_names[i]])
+		var label: Label = get_node("SLOT_%s/IN_%s_%s" % [i, i, input_names[i]])
 		var style: StyleBoxFlat = label.get("theme_override_styles/normal")
 		style.border_color = color
 		label.set("theme_override_styles/normal", style)

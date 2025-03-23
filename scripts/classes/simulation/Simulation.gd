@@ -349,7 +349,7 @@ func _simulate_single_thread() -> void:
 				elif enable == States.LOW:
 					result = States.UNKNOWN
 				else:
-					result = enable
+					result = value
 				gate.output_values[0][0] = result
 			
 			GATE_TYPES.ON:

@@ -102,7 +102,7 @@ func _workspace_connection_request(from_node: StringName, from_port: int, to_nod
 
 
 func _workspace_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	var con_id: String = "%s:%s_%s:%s" % [str(from_node), str(from_port), str(to_node), str(to_port)]
+	var con_id: String = Connection.make_con_id(from_node, from_port, to_node, to_port)
 	var connection: Connection = simulation.get_connection(con_id)
 	simulation.remove_connection(connection.id)
 	workspace.disconnect_node(from_node, from_port, to_node, to_port)

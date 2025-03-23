@@ -74,7 +74,7 @@ folder_colors={
 
 [gui]
 
-theme/custom="res://assets/theme.tres"
+theme/custom="uid://d3dm8tqfg7pxq"
 
 [gui_transitions]
 
@@ -91,8 +91,5 @@ config/default/transition_type="QUAD"
 [rendering]
 
 rendering_device/fallback_to_opengl3=false
-gl_compatibility/fallback_to_angle=false
-gl_compatibility/fallback_to_native=false
-gl_compatibility/fallback_to_gles=false
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 viewport/transparent_background=true

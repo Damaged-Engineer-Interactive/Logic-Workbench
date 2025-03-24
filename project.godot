@@ -12,14 +12,14 @@ config_version=5
 
 config/name="Logic Workbench"
 config/version="3.0.0.0"
-run/main_scene="res://scenes/Root.tscn"
+run/main_scene="uid://md11y8kcv4ij"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Logic Workbench"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 0)
-config/icon="res://assets/images/Icon.png"
+config/icon="res://assets/images/icon.png"
 boot_splash/minimum_display_time=100
 
 [audio]
@@ -30,9 +30,7 @@ driver/driver=""
 [autoload]
 
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
-GuiTransitions="*res://addons/simple-gui-transitions/singleton.gd"
-Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
-DC="*res://scripts/autoloads/DiscordRPC.gd"
+DC="*res://scripts/autoloads/discord_rpc.gd"
 
 [debug]
 
@@ -55,12 +53,11 @@ project/assembly_name="Logic Workbench"
 naming/node_name_num_separator=3
 naming/default_signal_callback_name="_{node_name}_{signal_name}"
 naming/default_signal_callback_to_self_name="_self_{signal_name}"
-naming/scene_name_casing=1
-naming/script_name_casing=1
+naming/script_name_casing=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/discord-rpc-gd/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg", "res://addons/script-tabs/plugin.cfg", "res://addons/simple-gui-transitions/plugin.cfg", "res://addons/tnowe_extra_controls/plugin.cfg")
+enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg")
 
 [file_customization]
 
@@ -76,20 +73,8 @@ folder_colors={
 
 theme/custom="uid://d3dm8tqfg7pxq"
 
-[gui_transitions]
-
-config/default/auto_start=true
-config/default/fade_layout=true
-config/default/center_pivot=true
-config/default/duration=0.5
-config/default/delay=0.5
-config/default/ease_type="IN_OUT"
-config/default/animation_enter=4
-config/default/animation_leave=4
-config/default/transition_type="QUAD"
-
 [rendering]
 
-rendering_device/fallback_to_opengl3=false
-environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(1, 0, 0.890625, 1)
 viewport/transparent_background=true

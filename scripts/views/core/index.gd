@@ -143,4 +143,4 @@ func _projects_load_toggled(state: bool) -> void:
 func _projects_sub_load_button_down() -> void:
 	var view: View = get_parent()
 	var controller: ViewController = view.controller
-	controller.switch_view("Workspace")
+	controller.switch_view("workspace")

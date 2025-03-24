@@ -28,8 +28,8 @@ const COLOR_BI: Dictionary = {
 	Simulation.States.UNKNOWN: Color.WHITE
 }
 
-const STYLE_IN: StyleBoxFlat = preload("res://styles/simulation/Input.stylebox")
-const STYLE_OUT: StyleBoxFlat = preload("res://styles/simulation/Output.stylebox")
+const STYLE_IN: StyleBoxFlat = preload("res://styles/simulation/input.stylebox")
+const STYLE_OUT: StyleBoxFlat = preload("res://styles/simulation/output.stylebox")
 
 # @export variables
 #region Gate

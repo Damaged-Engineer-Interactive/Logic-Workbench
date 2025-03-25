@@ -169,6 +169,8 @@ func add_gate(gate: Gate) -> void:
 
 func remove_gate(id: int) -> Gate:
 	var gate: Gate = gates[id]
+	for connection: Connection in gate.connections.values():
+		remove_connection(connection.id)
 	gates[id] = null # Same effect as pop_at() or erase(), but without resizing
 	_next_gate_id.append(id)
 	_amount_of_gates -= 1
@@ -184,7 +186,7 @@ func get_connection(con_id: String) -> Connection:
 	return null
 
 func add_connection(connection: Connection) -> void:
-	var id = _next_connection_id.pop_back() # Get the newest connection_id available
+	var id: int = _next_connection_id.pop_back() # Get the newest connection_id available
 	if _next_connection_id.size() == 0: # Push new id if none available
 		_next_connection_id.append(id + 1)
 	
@@ -197,10 +199,21 @@ func add_connection(connection: Connection) -> void:
 	
 	connections[id] = connection
 	
+	var gate: Gate
+	gate = get_gate(connection.gate_in)
+	gate.connections[connection.get_con_id()] = connection
+	gate = get_gate(connection.gate_out)
+	gate.connections[connection.get_con_id()] = connection
+	
 	_invalid_run = true
 
 func remove_connection(id: int) -> Connection:
 	var connection: Connection = connections[id]
+	var gate: Gate
+	gate = get_gate(connection.gate_in)
+	gate.connections.erase(connection.get_con_id())
+	gate = get_gate(connection.gate_out)
+	gate.connections.erase(connection.get_con_id())
 	connections[id] = null # Same effect as pop_at() or erase(), but without resizing
 	_next_connection_id.append(id)
 	_invalid_run = true
@@ -253,7 +266,12 @@ func _simulate_single_thread() -> void:
 				var result: States = States.HIGH
 				for j in range(0, gate.input_amount):
 					var value: States = gate.input_values[j][0]
-					if value != States.HIGH:
+					if value == States.LOW:
+						result = value
+					elif value == States.ERROR:
+						result = value
+						break
+					elif value == States.UNKNOWN:
 						result = value
 						break
 				gate.output_values[0][0] = result
@@ -262,7 +280,12 @@ func _simulate_single_thread() -> void:
 				var result: States = States.HIGH
 				for j in range(0, gate.input_amount):
 					var value: States = gate.input_values[j][0]
-					if value != States.HIGH:
+					if value == States.LOW:
+						result = value
+					elif value == States.ERROR:
+						result = value
+						break
+					elif value == States.UNKNOWN:
 						result = value
 						break
 				if result == States.HIGH:

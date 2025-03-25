@@ -76,5 +76,4 @@ theme/custom="uid://d3dm8tqfg7pxq"
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(1, 0, 0.890625, 1)
 viewport/transparent_background=true

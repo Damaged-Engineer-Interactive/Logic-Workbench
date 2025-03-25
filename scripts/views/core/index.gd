@@ -73,12 +73,12 @@ func _input_drag_click(event: InputEventMouseButton):
 		_drag_active = false
 		_drag_start = Vector2(0,0)
 
-func _input_drag_move(event: InputEventMouseMotion):
+func _input_drag_move(_event: InputEventMouseMotion):
 	var pos = Vector2(DisplayServer.window_get_position())
 	pos -= _drag_start
 	pos += get_global_mouse_position()
 	
-	DisplayServer.window_set_position(Vector2i(pos))#
+	DisplayServer.window_set_position(Vector2i(pos))
 #endregion
 
 # subclasses

@@ -119,7 +119,6 @@ func check_save_dir(force: bool = false) -> void:
 	if _checked_save_dir and not force:
 		return # already checked
 	DirAccess.make_dir_recursive_absolute(PACK_DIR)
-	DirAccess.make_dir_recursive_absolute(VIEW_DIR)
 	DirAccess.make_dir_recursive_absolute(DATA_DIR)
 	_checked_save_dir = true
 

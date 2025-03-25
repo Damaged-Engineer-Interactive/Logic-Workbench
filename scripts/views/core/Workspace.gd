@@ -120,7 +120,7 @@ func _workspace_delete_nodes_request(nodes: Array[StringName]) -> void:
 				simulation.remove_connection(connection.id)
 				workspace.queue_redraw()
 		
-		simulation.remove_gate(id)
+		simulation.remove_gate(int(id))
 		workspace.remove_child(node)
 
 func _gate_button_down(type: Simulation.GATE_TYPES) -> void:

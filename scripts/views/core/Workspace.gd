@@ -109,7 +109,7 @@ func _workspace_disconnection_request(from_node: StringName, from_port: int, to_
 
 func _workspace_delete_nodes_request(nodes: Array[StringName]) -> void:
 	for node_name: StringName in nodes:
-		var node: Gate = workspace.find_child(node_name, true, false) as Gate
+		var node: Gate = workspace.find_child(node_name, false, false) as Gate
 		var id = node_name.split("_")[-1]
 		
 		for connection: Connection in simulation.connections:
@@ -117,7 +117,7 @@ func _workspace_delete_nodes_request(nodes: Array[StringName]) -> void:
 				simulation.remove_connection(connection.id)
 				workspace.queue_redraw()
 		
-		simulation.remove_gate(int(id))
+		simulation.remove_gate(id)
 		workspace.remove_child(node)
 
 func _gate_button_down(type: Simulation.GATE_TYPES) -> void:

@@ -113,10 +113,12 @@ func _workspace_delete_nodes_request(nodes: Array[StringName]) -> void:
 		var id = node_name.split("_")[-1]
 		
 		for connection: Connection in simulation.connections:
-			if connection:
-				if connection.uses_gate(node):
-					simulation.remove_connection(connection.id)
-					workspace.queue_redraw()
+			if not connection:
+				break
+			
+			if connection.uses_gate(node):
+				simulation.remove_connection(connection.id)
+				workspace.queue_redraw()
 		
 		simulation.remove_gate(id)
 		workspace.remove_child(node)

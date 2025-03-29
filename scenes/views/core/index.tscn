@@ -256,7 +256,8 @@ text = "[color=purple][b]Damaged Engineers :[/b][/color]
  LogicWorkbenchMusic[/ul]
 
 [color=orange][b]Developers :[/b][/color]
-[ul] Ahazz Khan[/ul]
+[ul] Ahazz Khan
+ BobisBilly[/ul]
 
 [color=green][b]Special Thanks :[/b][/color]
 [ul] [url=https://youtube.com/@ajax123z]Ajax[/url]
@@ -264,6 +265,7 @@ text = "[color=purple][b]Damaged Engineers :[/b][/color]
 
 [node name="ProjectSubCategorie" type="PanelContainer" parent="Content/Columns"]
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_10nys")
 
@@ -273,7 +275,7 @@ theme_override_constants/separation = 10
 alignment = 1
 
 [node name="Left" type="VBoxContainer" parent="Content/Columns/ProjectSubCategorie/LoadProject"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(270, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 10
@@ -302,7 +304,7 @@ item_2/text = "Test Project 2"
 item_3/text = "Test Project 3"
 
 [node name="Right" type="VBoxContainer" parent="Content/Columns/ProjectSubCategorie/LoadProject"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(270, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 10
@@ -365,3 +367,4 @@ vertical_alignment = 1
 [connection signal="toggled" from="Content/Columns/SubCategories/Projects/Load" to="." method="_projects_load_toggled"]
 [connection signal="meta_clicked" from="Content/Columns/SubCategories/Credits/Text" to="." method="_text_meta_clicked"]
 [connection signal="button_down" from="Content/Columns/ProjectSubCategorie/LoadProject/Left/Load" to="." method="_projects_sub_load_button_down"]
+[connection signal="item_clicked" from="Content/Columns/ProjectSubCategorie/LoadProject/Left/List" to="." method="_list_item_clicked"]

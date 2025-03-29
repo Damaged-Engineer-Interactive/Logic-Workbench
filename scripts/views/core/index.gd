@@ -12,6 +12,15 @@ extends VBoxContainer
 # Enums
 
 # Constants
+#region Path
+# Data Saving Related
+const SAVE_DIR: String = "user://saved/"
+#endregion
+
+#region Extensions
+## General Logic Workbench Data
+const EXT_DATA: String = ".lw"
+#endregion
 
 # @export variables
 
@@ -24,7 +33,13 @@ var _drag_active: bool = false
 var _drag_start := Vector2(0,0)
 #endregion
 
+var selectedProject = null
+
 # @onready variables
+@onready var projectList: ItemList = $Content/Columns/ProjectSubCategorie/LoadProject/Left/List
+@onready var projectName: Label = $Content/Columns/ProjectSubCategorie/LoadProject/Right/Name
+@onready var projectTags: Label = $Content/Columns/ProjectSubCategorie/LoadProject/Right/Tags
+@onready var projectDescription: Label = $Content/Columns/ProjectSubCategorie/LoadProject/Right/Description
 
 # optional built-in _init() function
 
@@ -32,6 +47,9 @@ var _drag_start := Vector2(0,0)
 
 # optional built-in _ready() function
 func _ready() -> void:
+	if FileAccess.file_exists(SAVE_DIR + "Projects" + EXT_DATA):
+		var projectData = FileAccess.open(SAVE_DIR + "Projects" + EXT_DATA, FileAccess.READ_WRITE)
+	print(projectList.get_item_count())
 	$Content/Columns/SubCategories.hide()
 	$Content/Columns/SubCategories/Projects.hide()
 	$Content/Columns/SubCategories/Settings.hide()
@@ -73,7 +91,7 @@ func _input_drag_click(event: InputEventMouseButton):
 		_drag_active = false
 		_drag_start = Vector2(0,0)
 
-func _input_drag_move(event: InputEventMouseMotion):
+func _input_drag_move(_event: InputEventMouseMotion):
 	var pos = Vector2(DisplayServer.window_get_position())
 	pos -= _drag_start
 	pos += get_global_mouse_position()
@@ -135,8 +153,6 @@ func _quit_pressed() -> void:
 	var controller: ViewController = view.controller
 	controller.quit()
 
-
-
 func _projects_load_toggled(state: bool) -> void:
 	$Content/Columns/ProjectSubCategorie.visible = state
 
@@ -144,3 +160,6 @@ func _projects_sub_load_button_down() -> void:
 	var view: View = get_parent()
 	var controller: ViewController = view.controller
 	controller.switch_view("workspace")
+
+func _list_item_clicked(index: int, _at_position: Vector2, _mouse_button_index: int) -> void:
+	projectName.text = "Name : " + projectList.get_item_text(index)

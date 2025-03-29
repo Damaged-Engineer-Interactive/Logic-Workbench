@@ -29,8 +29,8 @@ driver/driver=""
 
 [autoload]
 
-DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
 DC="*res://scripts/autoloads/discord_rpc.gd"
+DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
 
 [debug]
 
@@ -38,8 +38,6 @@ gdscript/warnings/native_method_override=1
 
 [display]
 
-window/size/viewport_width=1600
-window/size/viewport_height=900
 window/size/borderless=true
 window/handheld/orientation=4
 window/vsync/vsync_mode=0

@@ -48,94 +48,101 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_pt1fe")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Content"]
+[node name="TabContainer" type="TabContainer" parent="Content"]
+layout_mode = 2
+current_tab = 2
+
+[node name="Workspace" type="HBoxContainer" parent="Content/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
+metadata/_tab_index = 0
 
-[node name="GatePanel" type="PanelContainer" parent="Content/HBoxContainer"]
+[node name="GatePanel" type="PanelContainer" parent="Content/TabContainer/Workspace"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Content/HBoxContainer/GatePanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/TabContainer/Workspace/GatePanel"]
 layout_mode = 2
 
-[node name="Gates_LAB" type="Label" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="Gates_LAB" type="Label" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "Gates"
 horizontal_alignment = 1
 
-[node name="Gates_SEP" type="HSeparator" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="Gates_SEP" type="HSeparator" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="AND" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="AND" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "AND"
 
-[node name="NAND" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="NAND" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "NAND"
 
-[node name="OR" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="OR" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "OR"
 
-[node name="NOR" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="NOR" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "NOR"
 
-[node name="NOT" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="NOT" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "NOT"
 
-[node name="XOR" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="XOR" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "XOR"
 
-[node name="XNOR" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="XNOR" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "XNOR"
 
-[node name="STATE" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="STATE" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "TRI STATE"
 
-[node name="STATES_LAB" type="Label" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="STATES_LAB" type="Label" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "States [DEBUG]"
 horizontal_alignment = 1
 
-[node name="STATES_SEB" type="HSeparator" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="STATES_SEB" type="HSeparator" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="ON" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="ON" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "ON"
 
-[node name="OFF" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="OFF" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "OFF"
 
-[node name="TRI" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="TRI" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "TRI"
 
-[node name="ERROR" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="ERROR" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "ERROR"
 
-[node name="INPUT_LAB" type="Label" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="INPUT_LAB" type="Label" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "Input"
 horizontal_alignment = 1
 
-[node name="INPUT_SEB" type="HSeparator" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="INPUT_SEB" type="HSeparator" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="SELECTOR" type="Button" parent="Content/HBoxContainer/GatePanel/VBoxContainer"]
+[node name="SELECTOR" type="Button" parent="Content/TabContainer/Workspace/GatePanel/VBoxContainer"]
 layout_mode = 2
 text = "SELECTOR"
 
-[node name="Workspace" type="GraphEdit" parent="Content/HBoxContainer"]
+[node name="Workspace" type="GraphEdit" parent="Content/TabContainer/Workspace"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 snapping_distance = 10
@@ -148,9 +155,19 @@ show_zoom_buttons = false
 show_grid_buttons = false
 show_arrange_button = false
 
-[node name="Simulation" type="Node" parent="Content/HBoxContainer/Workspace"]
+[node name="Simulation" type="Node" parent="Content/TabContainer/Workspace/Workspace"]
+unique_name_in_owner = true
 script = ExtResource("3_nnmvl")
 allow_simulate = true
+
+[node name="Assembler" type="HBoxContainer" parent="Content/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Filesystem" type="HBoxContainer" parent="Content/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="BottomBar" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(0, 15)
@@ -173,19 +190,19 @@ vertical_alignment = 1
 [connection signal="mouse_entered" from="TopBar" to="." method="_top_bar_mouse_entered"]
 [connection signal="mouse_exited" from="TopBar" to="." method="_top_bar_mouse_exited"]
 [connection signal="pressed" from="TopBar/Buttons/HomeButton" to="." method="_home_button_pressed"]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/AND" to="." method="_gate_button_down" binds= [1]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/NAND" to="." method="_gate_button_down" binds= [2]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/OR" to="." method="_gate_button_down" binds= [3]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/NOR" to="." method="_gate_button_down" binds= [4]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/NOT" to="." method="_gate_button_down" binds= [5]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/XOR" to="." method="_gate_button_down" binds= [6]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/XNOR" to="." method="_gate_button_down" binds= [7]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/STATE" to="." method="_gate_button_down" binds= [8]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/ON" to="." method="_gate_button_down" binds= [9]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/OFF" to="." method="_gate_button_down" binds= [10]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/TRI" to="." method="_gate_button_down" binds= [11]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/ERROR" to="." method="_gate_button_down" binds= [12]]
-[connection signal="button_down" from="Content/HBoxContainer/GatePanel/VBoxContainer/SELECTOR" to="." method="_gate_button_down" binds= [13]]
-[connection signal="connection_request" from="Content/HBoxContainer/Workspace" to="." method="_workspace_connection_request"]
-[connection signal="delete_nodes_request" from="Content/HBoxContainer/Workspace" to="." method="_workspace_delete_nodes_request"]
-[connection signal="disconnection_request" from="Content/HBoxContainer/Workspace" to="." method="_workspace_disconnection_request"]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/AND" to="." method="_gate_button_down" binds= [1]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/NAND" to="." method="_gate_button_down" binds= [2]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/OR" to="." method="_gate_button_down" binds= [3]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/NOR" to="." method="_gate_button_down" binds= [4]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/NOT" to="." method="_gate_button_down" binds= [5]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/XOR" to="." method="_gate_button_down" binds= [6]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/XNOR" to="." method="_gate_button_down" binds= [7]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/STATE" to="." method="_gate_button_down" binds= [8]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/ON" to="." method="_gate_button_down" binds= [9]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/OFF" to="." method="_gate_button_down" binds= [10]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/TRI" to="." method="_gate_button_down" binds= [11]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/ERROR" to="." method="_gate_button_down" binds= [12]]
+[connection signal="button_down" from="Content/TabContainer/Workspace/GatePanel/VBoxContainer/SELECTOR" to="." method="_gate_button_down" binds= [13]]
+[connection signal="connection_request" from="Content/TabContainer/Workspace/Workspace" to="." method="_workspace_connection_request"]
+[connection signal="delete_nodes_request" from="Content/TabContainer/Workspace/Workspace" to="." method="_workspace_delete_nodes_request"]
+[connection signal="disconnection_request" from="Content/TabContainer/Workspace/Workspace" to="." method="_workspace_disconnection_request"]

@@ -12,15 +12,14 @@ config_version=5
 
 config/name="Logic Workbench"
 config/version="3.0.0.0"
-run/main_scene="uid://md11y8kcv4ij"
+config/tags=PackedStringArray("damaged_engineer_interactive")
+run/main_scene="uid://cj1j02884v4l2"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Logic Workbench"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 config/features=PackedStringArray("4.4", "GL Compatibility")
-boot_splash/bg_color=Color(0, 0, 0, 0)
 config/icon="res://assets/images/icon.png"
-boot_splash/minimum_display_time=100
 
 [audio]
 
@@ -29,8 +28,8 @@ driver/driver=""
 
 [autoload]
 
+DC="res://scripts/autoloads/discord_rpc.gd"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
-DC="*res://scripts/autoloads/discord_rpc.gd"
 
 [debug]
 

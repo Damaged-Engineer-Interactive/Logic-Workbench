@@ -1,5 +1,6 @@
 # Godot-specific ignores
 .godot/
+.build/
 .import/
 *.import
 export.cfg

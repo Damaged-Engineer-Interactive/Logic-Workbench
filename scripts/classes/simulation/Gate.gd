@@ -122,6 +122,9 @@ const STYLE_OUT: StyleBoxFlat = preload("res://styles/simulation/output.stylebox
 ## Array[String]
 @export var bus_names: Array[String] = []
 #endregion
+
+var connections: Dictionary[String, Connection] = {}
+
 # public variables
 var buttons: Array[Dictionary] = []
 

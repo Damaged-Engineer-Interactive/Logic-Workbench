@@ -96,7 +96,7 @@ func _input_drag_move(_event: InputEventMouseMotion):
 	pos -= _drag_start
 	pos += get_global_mouse_position()
 	
-	DisplayServer.window_set_position(Vector2i(pos))#
+	DisplayServer.window_set_position(Vector2i(pos))
 #endregion
 
 # subclasses

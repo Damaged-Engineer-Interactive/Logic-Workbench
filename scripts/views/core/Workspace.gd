@@ -25,8 +25,8 @@ var _drag_start := Vector2(0,0)
 #endregion
 
 # @onready variables
-@onready var simulation: Simulation = $Content/HBoxContainer/Workspace/Simulation
-@onready var workspace: GraphEdit = $Content/HBoxContainer/Workspace
+@onready var simulation: Simulation = %Simulation
+@onready var workspace: GraphEdit = %Workspace
 
 # optional built-in _init() function
 

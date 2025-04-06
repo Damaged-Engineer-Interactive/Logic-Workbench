@@ -16,7 +16,7 @@ signal _finished_loading
 # Constants
 #region Path
 ## Location of the Views to load
-const VIEW_DIR: String = "res://scenes/views/core"
+const VIEW_DIR: String = "res://scenes/views"
 
 ## Location of the Packs to load
 const PACK_DIR: String = "user://packs/"
@@ -119,7 +119,6 @@ func check_save_dir(force: bool = false) -> void:
 	if _checked_save_dir and not force:
 		return # already checked
 	DirAccess.make_dir_recursive_absolute(PACK_DIR)
-	DirAccess.make_dir_recursive_absolute(VIEW_DIR)
 	DirAccess.make_dir_recursive_absolute(DATA_DIR)
 	_checked_save_dir = true
 

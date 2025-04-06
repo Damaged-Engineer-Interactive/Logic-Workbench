@@ -16,7 +16,7 @@ signal _finished_loading
 # Constants
 #region Path
 ## Location of the Views to load
-const VIEW_DIR: String = "res://scenes/views"
+const VIEW_DIR: String = "res://scenes/views/core"
 
 ## Location of the Packs to load
 const PACK_DIR: String = "user://packs/"
@@ -119,6 +119,7 @@ func check_save_dir(force: bool = false) -> void:
 	if _checked_save_dir and not force:
 		return # already checked
 	DirAccess.make_dir_recursive_absolute(PACK_DIR)
+	DirAccess.make_dir_recursive_absolute(VIEW_DIR)
 	DirAccess.make_dir_recursive_absolute(DATA_DIR)
 	_checked_save_dir = true
 
@@ -236,7 +237,7 @@ func load_views(path: String = VIEW_DIR) -> void:
 		if dir.current_is_dir():
 			load_views(path + "/" + entry) # Recursive Loading
 		else:
-			if entry.get_extension() == "tscn":
+			if entry.get_extension() in ["tscn", "remap"]:
 				load_view(path + "/" + entry)
 		entry = dir.get_next()
 	dir.list_dir_end()

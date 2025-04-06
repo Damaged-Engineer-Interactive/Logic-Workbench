@@ -12,6 +12,15 @@ extends VBoxContainer
 # Enums
 
 # Constants
+#region Path
+# Data Saving Related
+const SAVE_DIR: String = "user://saved/"
+#endregion
+
+#region Extensions
+## General Logic Workbench Data
+const EXT_CIRCUIT: String = ".lwc"
+#endregion
 
 # @export variables
 
@@ -115,6 +124,39 @@ func _workspace_delete_nodes_request(nodes: Array[StringName]) -> void:
 		simulation.remove_gate(int(id))
 		workspace.remove_child(node)
 		workspace.queue_redraw()
+
+func load_project(selected_project: String) -> void:
+	if FileAccess.file_exists(SAVE_DIR + "Projects/" + selected_project + "/workspace" + EXT_CIRCUIT):
+		var projectData = FileAccess.open(SAVE_DIR + "Projects/" + selected_project + "/workspace" + EXT_CIRCUIT, FileAccess.READ_WRITE)
+		var lines = []
+		while not projectData.eof_reached():
+			lines.append(projectData.get_line())
+		
+		for logicGate in lines:
+			if logicGate.ends_with(":"):
+				var unshifted = logicGate
+				if logicGate.begins_with(" "):
+					while unshifted.begins_with(" "):
+						unshifted = unshifted.trim_prefix(" ")
+				if unshifted.trim_suffix(":").ends_with("0") or unshifted.trim_suffix(":").ends_with("1"):
+					var gate_type: Variant = simulation.GATES.get(simulation.GATE_TYPES.get(unshifted.erase(unshifted.length()-2).trim_suffix(":")))
+					var gate: Gate = gate_type.new()
+					simulation.add_gate(gate)
+					workspace.add_child(gate)
+				else:
+					var gate_type: Variant = simulation.GATES.get(simulation.GATE_TYPES.get(unshifted.trim_suffix(":")))
+					var gate: Gate = gate_type.new()
+					simulation.add_gate(gate)
+					workspace.add_child(gate)
+			else:
+				var unshifted = logicGate
+				if logicGate.begins_with(" "):
+					while unshifted.begins_with(" "):
+						unshifted = unshifted.trim_prefix(" ")
+				var gate_type: Variant = simulation.GATES.get(simulation.GATE_TYPES.get(unshifted.erase(unshifted.length()-1)))
+				var gate: Gate = gate_type.new()
+				simulation.add_gate(gate)
+				workspace.add_child(gate)
 
 func _gate_button_down(type: Simulation.GATE_TYPES) -> void:
 	if type == Simulation.GATE_TYPES.UNKNOWN:

@@ -260,7 +260,7 @@ func _simulate_single_thread() -> void:
 	# Gate Simulation
 	for i: int in  range(0, _amount_of_gates):
 		var gate: Gate = gates[i]
-		
+		#print(gate.gate_name, gate.gate_id, gate.gate_type)
 		match gate.gate_type:
 			GATE_TYPES.AND:
 				var result: States = States.HIGH
@@ -340,7 +340,7 @@ func _simulate_single_thread() -> void:
 			GATE_TYPES.XOR:
 				var result: States = States.HIGH
 				var value1: States = gate.input_values[0][0]
-				var value2: States = gate.input_values[0][0]
+				var value2: States = gate.input_values[1][0]
 				if value1 == States.ERROR or value2 == States.ERROR:
 					result = States.ERROR
 				elif value1 == States.UNKNOWN or value2 == States.UNKNOWN:
@@ -352,7 +352,7 @@ func _simulate_single_thread() -> void:
 			GATE_TYPES.XNOR:
 				var result: States = States.LOW
 				var value1: States = gate.input_values[0][0]
-				var value2: States = gate.input_values[0][0]
+				var value2: States = gate.input_values[1][0]
 				if value1 == States.ERROR or value2 == States.ERROR:
 					result = States.ERROR
 				elif value1 == States.UNKNOWN or value2 == States.UNKNOWN:

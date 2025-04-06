@@ -340,24 +340,28 @@ func _simulate_single_thread() -> void:
 			GATE_TYPES.XOR:
 				var result: States = States.HIGH
 				var value1: States = gate.input_values[0][0]
-				var value2: States = gate.input_values[0][0]
+				var value2: States = gate.input_values[1][0]
 				if value1 == States.ERROR or value2 == States.ERROR:
 					result = States.ERROR
 				elif value1 == States.UNKNOWN or value2 == States.UNKNOWN:
 					result = States.UNKNOWN
 				elif value1 == value2:
 					result = States.LOW
+				else:
+					result = States.HIGH
 				gate.output_values[0][0] = result
 			
 			GATE_TYPES.XNOR:
 				var result: States = States.LOW
 				var value1: States = gate.input_values[0][0]
-				var value2: States = gate.input_values[0][0]
+				var value2: States = gate.input_values[1][0]
 				if value1 == States.ERROR or value2 == States.ERROR:
 					result = States.ERROR
 				elif value1 == States.UNKNOWN or value2 == States.UNKNOWN:
 					result = States.UNKNOWN
 				elif value1 == value2:
+					result = States.HIGH
+				else:
 					result = States.HIGH
 				gate.output_values[0][0] = result
 			

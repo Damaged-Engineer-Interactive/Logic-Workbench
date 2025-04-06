@@ -19,7 +19,7 @@ config/custom_user_dir_name="Logic Workbench"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://assets/images/icon.png"
+config/icon="uid://gdispwv20ko8"
 
 [audio]
 

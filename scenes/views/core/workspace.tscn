@@ -50,13 +50,20 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_pt1fe")
 
 [node name="TabContainer" type="TabContainer" parent="Content"]
 layout_mode = 2
-current_tab = 2
+current_tab = 3
+use_hidden_tabs_for_min_size = true
+deselect_enabled = true
+
+[node name="Gate" type="HBoxContainer" parent="Content/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="Workspace" type="HBoxContainer" parent="Content/TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
-metadata/_tab_index = 0
+metadata/_tab_index = 1
 
 [node name="GatePanel" type="PanelContainer" parent="Content/TabContainer/Workspace"]
 custom_minimum_size = Vector2(200, 0)
@@ -163,11 +170,78 @@ allow_simulate = true
 [node name="Assembler" type="HBoxContainer" parent="Content/TabContainer"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="Filesystem" type="HBoxContainer" parent="Content/TabContainer"]
-layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="LeftBar" type="VBoxContainer" parent="Content/TabContainer/Assembler"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="Content/TabContainer/Assembler/LeftBar"]
+layout_mode = 2
+text = "Files"
+horizontal_alignment = 1
+
+[node name="FileList" type="ItemList" parent="Content/TabContainer/Assembler/LeftBar"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CodeEdit" type="CodeEdit" parent="Content/TabContainer/Assembler"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "This is a Test Code
+This is a Test Code
+This is a Test Code
+This is a Test Code
+This is a Test Code
+This is a Test Code
+
+This is a Test Code
+This is a Test Code
+This is a Test Code
+This is a Test Code
+This is a Test Code
+This is a Test Code"
+scroll_smooth = true
+scroll_past_end_of_file = true
+minimap_draw = true
+caret_blink = true
+caret_move_on_right_click = false
+line_folding = true
+gutters_draw_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="Virtual Data" type="HBoxContainer" parent="Content/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="LeftBar" type="VBoxContainer" parent="Content/TabContainer/Virtual Data"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="Content/TabContainer/Virtual Data/LeftBar"]
+layout_mode = 2
+text = "Devices"
+horizontal_alignment = 1
+
+[node name="AddDevice" type="Button" parent="Content/TabContainer/Virtual Data/LeftBar"]
+layout_mode = 2
+text = "Add Device"
+
+[node name="DeviceList" type="ItemList" parent="Content/TabContainer/Virtual Data/LeftBar"]
+layout_mode = 2
+size_flags_vertical = 3
+item_count = 2
+item_0/text = "0 # Test Device 1"
+item_1/text = "1 # Test Device 2"
+
+[node name="RightContainer" type="VBoxContainer" parent="Content/TabContainer/Virtual Data"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="BottomBar" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(0, 15)

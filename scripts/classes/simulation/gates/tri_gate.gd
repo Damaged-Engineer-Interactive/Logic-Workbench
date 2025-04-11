@@ -26,7 +26,7 @@ func _init() -> void:
 	gate_name = "TRI"
 	gate_type = 11
 	
-	add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
+	add_io(IOTypes.OUTPUT, Value.Sizes.BIT_1, "OUT")
 
 # optional built-in _enter_tree() function
 

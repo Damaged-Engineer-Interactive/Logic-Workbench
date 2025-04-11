@@ -26,10 +26,10 @@ func _init() -> void:
 	gate_name = "NOR"
 	gate_type = 4
 
-	add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "A")
-	add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "B")
+	add_io(IOTypes.INPUT, Value.Sizes.BIT_1, "A")
+	add_io(IOTypes.INPUT, Value.Sizes.BIT_1, "B")
 
-	add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
+	add_io(IOTypes.OUTPUT, Value.Sizes.BIT_1, "OUT")
 
 # optional built-in _enter_tree() function
 

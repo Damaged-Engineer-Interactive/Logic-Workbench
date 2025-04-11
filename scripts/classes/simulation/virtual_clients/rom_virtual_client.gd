@@ -16,10 +16,10 @@ extends VirtualClient
 # @export variables
 
 # public variables
-var address_size := Simulation.Sizes.BIT_1
-var data_size := Simulation.Sizes.BIT_1
+var address_size := Value.Sizes.BIT_1
+var data_size := Value.Sizes.BIT_1
 
-var data: Dictionary[String, Array] = {}
+var data: Dictionary[String, Value] = {}
 
 # private variables
 
@@ -43,43 +43,22 @@ func get_size() -> int:
 	return int(data_size) * ( 2 ** ( address_size + 1 ) ) # Data Bits * 2^(address_bits + 1)
 
 ## Read a value at a specific address
-func read(address: Array[Simulation.States]) -> Array[Simulation.States]:
-	var value: Array[Simulation.States] = data.get(str(address), [])
-	if value == []:
-		value.resize(int(data_size))
-		value.fill(Simulation.States.UNKNOWN)
-	return value
+func read(address: Value) -> Value:
+	var value: Value = data.get(str(address))
+	if value == null:
+		value = Value.new(data_size)
+	return value.copy()
 
 
 ## read every value of the whole client
-func read_raw() -> Array[Array]:
-	var full_memory: Array[Array] = []
-	full_memory.resize(2 ** int(address_size) + 1)
-	
-	for i in range(0, full_memory.size()):
-		var address: Array[Simulation.States] = []
-		address.resize(address_size)
-		var bits: int = i
-		for j in range(0, address_size + 1):
-			address[j] = bits & 1
-			bits >>= 1
-		var value: Array[Simulation.States] = data.get(str(address), [])
-		if value == []:
-			value.resize(int(data_size))
-			value.fill(Simulation.States.UNKNOWN)
-		full_memory[i] = value
-	return full_memory
+func read_raw() -> Array[Value]:
+	return data.values()
 
 ## writes a bunch of values to the whole client
-func write_raw(values: Array[Array]) -> void:
+func write_raw(values: Array[Value]) -> void:
 	for i in range(0, (2 ** int(address_size) + 1)):
-		var address: Array[Simulation.States] = []
-		address.resize(address_size)
-		var bits: int = i
-		for j in range(0, address_size + 1):
-			address[j] = bits & 1
-			bits >>= 1
-		data[str(address)] = values[i]
+		var address: Value = Value.from_int(address_size, i)
+		data[str(address)] = values[i].copy()
 	return
 
 # private functions

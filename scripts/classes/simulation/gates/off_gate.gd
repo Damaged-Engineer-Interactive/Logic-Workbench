@@ -25,8 +25,8 @@ extends Gate
 func _init() -> void:
 	gate_name = "OFF"
 	gate_type = 10
-	
-	add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
+
+	add_io(IOTypes.OUTPUT, Value.Sizes.BIT_1, "OUT")
 
 # optional built-in _enter_tree() function
 

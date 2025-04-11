@@ -89,13 +89,13 @@ func _workspace_connection_request(from_node: StringName, from_port: int, to_nod
 	var connection := Connection.new()
 	connection.gate_in = gate_in
 	connection.port_in = from_port
-	connection.type_in = Simulation.IO_TYPES.INPUT
-	connection.size_in = Simulation.Sizes.BIT_1
+	connection.type_in = Gate.IOTypes.INPUT
+	connection.size_in = Value.Sizes.BIT_1
 	
 	connection.gate_out = gate_out
 	connection.port_out = to_port
-	connection.type_out = Simulation.IO_TYPES.OUTPUT
-	connection.size_out = Simulation.Sizes.BIT_1
+	connection.type_out = Gate.IOTypes.OUTPUT
+	connection.size_out = Value.Sizes.BIT_1
 	
 	simulation.add_connection(connection)
 	workspace.connect_node(from_node, from_port, to_node, to_port)
@@ -116,8 +116,8 @@ func _workspace_delete_nodes_request(nodes: Array[StringName]) -> void:
 		workspace.remove_child(node)
 		workspace.queue_redraw()
 
-func _gate_button_down(type: Simulation.GATE_TYPES) -> void:
-	if type == Simulation.GATE_TYPES.UNKNOWN:
+func _gate_button_down(type: Circuit.GATE_TYPES) -> void:
+	if type == Circuit.GATE_TYPES.UNKNOWN:
 		return
 	var gate_type: Variant = simulation.GATES.get(type)
 	var gate: Gate = gate_type.new()

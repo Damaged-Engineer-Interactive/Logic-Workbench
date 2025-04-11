@@ -1,7 +1,7 @@
 # The name of the Class
-class_name XnorGate
+class_name Assembler
 # The class this class extends
-extends Gate
+extends Node
 # Docstring
 ## short description goes here 
 ## 
@@ -22,14 +22,6 @@ extends Gate
 # @onready variables
 
 # optional built-in _init() function
-func _init() -> void:
-	gate_name = "XNOR"
-	gate_type = 7
-
-	add_io(IOTypes.INPUT, Value.Sizes.BIT_1, "A")
-	add_io(IOTypes.INPUT, Value.Sizes.BIT_1, "B")
-
-	add_io(IOTypes.OUTPUT, Value.Sizes.BIT_1, "OUT")
 
 # optional built-in _enter_tree() function
 
@@ -44,3 +36,4 @@ func _init() -> void:
 # private functions
 
 # subclasses
+ 

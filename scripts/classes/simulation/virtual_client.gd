@@ -41,23 +41,23 @@ func get_size() -> int:
 	return -1
 
 ## Read a value at a specific address
-func read(_address: Array[Simulation.States]) -> Array[Simulation.States]:
+func read(_address: Value) -> Value:
 	push_error("Not implemented!")
-	return []
+	return null
 
 ## Write a value at a specific address
-func write(_address: Array[Simulation.States], _value: Array[Simulation.States]) -> void:
+func write(_address: Value, _value: Value) -> void:
 	push_error("Not implemented!")
 	return
 
 
 ## read every value of the whole client
-func read_raw() -> Array[Array]:
+func read_raw() -> Array[Value]:
 	push_error("Not implemented!")
 	return []
 
 ## writes a bunch of values to the whole client
-func write_raw(_values: Array[Array]) -> void:
+func write_raw(_values: Array[Value]) -> void:
 	push_error("Not implemented!")
 	return
 

@@ -27,10 +27,10 @@ var gate_in: int = -1
 var port_in: int = -1
 
 ## The Type of the first gate
-var type_in: Simulation.IO_TYPES = Simulation.IO_TYPES.UNKNOWN
+var type_in: Gate.IOTypes = Gate.IOTypes.UNKNOWN
 
 ## The Size of the first gate
-var size_in: Simulation.Sizes = Simulation.Sizes.BIT_1
+var size_in: Value.Sizes = Value.Sizes.BIT_1
 #endregion
 
 #region Input
@@ -41,10 +41,10 @@ var gate_out: int = -1
 var port_out: int = -1
 
 ## The Type of the second gate
-var type_out: Simulation.IO_TYPES = Simulation.IO_TYPES.UNKNOWN
+var type_out: Gate.IOTypes = Gate.IOTypes.UNKNOWN
 
 ## The Size of the first gate
-var size_out: Simulation.Sizes = Simulation.Sizes.BIT_1
+var size_out: Value.Sizes = Value.Sizes.BIT_1
 #endregion
 
 # private variables

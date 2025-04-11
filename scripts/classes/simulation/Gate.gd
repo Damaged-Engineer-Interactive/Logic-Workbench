@@ -10,22 +10,28 @@ extends GraphNode
 # Signals
 
 # Enums
+enum IOTypes {
+	UNKNOWN = 0,
+	INPUT = 1,
+	OUTPUT = 2,
+	BUS = 3
+}
 
 # Constants
 ## Normal [code]State : Color[/code] map. Used by Inputs and Outputs
-const COLOR_NORMAL: Dictionary = {
-	Simulation.States.ERROR: Color.RED,
-	Simulation.States.LOW: Color.DARK_BLUE,
-	Simulation.States.HIGH: Color.BLUE,
-	Simulation.States.UNKNOWN: Color.BLACK
+const COLOR_NORMAL: Dictionary[Value.States, Color] = {
+	Value.States.ERROR: Color.RED,
+	Value.States.LOW: Color.DARK_BLUE,
+	Value.States.HIGH: Color.BLUE,
+	Value.States.UNKNOWN: Color.BLACK
 }
 
 ## Bi [code]State : Color[/code] map. Used by Buses
-const COLOR_BI: Dictionary = {
-	Simulation.States.ERROR: Color.RED,
-	Simulation.States.LOW: Color.DARK_GREEN,
-	Simulation.States.HIGH: Color.GREEN,
-	Simulation.States.UNKNOWN: Color.WHITE
+const COLOR_BI: Dictionary[Value.States, Color] = {
+	Value.States.ERROR: Color.RED,
+	Value.States.LOW: Color.DARK_GREEN,
+	Value.States.HIGH: Color.GREEN,
+	Value.States.UNKNOWN: Color.WHITE
 }
 
 const STYLE_IN: StyleBoxFlat = preload("res://styles/simulation/input.stylebox")
@@ -60,21 +66,16 @@ const STYLE_OUT: StyleBoxFlat = preload("res://styles/simulation/output.stylebox
 @export var input_amount: int = 0:
 	set(value):
 		input_amount = value
-		input_sizes.resize(value)
 		input_values.resize(value)
 		input_names.resize(value)
-
-## The Size of every Input
-## Array[Simulation.Sizes]
-@export var input_sizes: Array[Simulation.Sizes] = []
-
-## The Values of every Input
-## Array[Array[Simulation.States]]
-@export var input_values: Array[Array] = []
 
 ## The Names of every Input
 ## Array[String]
 @export var input_names: Array[String] = []
+
+## The Values of every Input
+## Array[Value]
+@export var input_values: Array[Value] = []
 #endregion
 
 #region Output
@@ -83,21 +84,16 @@ const STYLE_OUT: StyleBoxFlat = preload("res://styles/simulation/output.stylebox
 @export var output_amount: int = 0:
 	set(value):
 		output_amount = value
-		output_sizes.resize(value)
 		output_values.resize(value)
 		output_names.resize(value)
-
-## The Size of every output
-## Array[Simulation.Sizes]
-@export var output_sizes: Array[Simulation.Sizes] = []
-
-## The Values of every output
-## Array[Array[Simulation.States]]
-@export var output_values: Array[Array] = []
 
 ## The Names of every Output
 ## Array[String]
 @export var output_names: Array[String] = []
+
+## The Values of every Input
+## Array[Value]
+@export var output_values: Array[Value] = []
 #endregion
 
 #region Bus
@@ -106,21 +102,16 @@ const STYLE_OUT: StyleBoxFlat = preload("res://styles/simulation/output.stylebox
 @export var bus_amount: int = 0:
 	set(value):
 		bus_amount = value
-		bus_sizes.resize(value)
 		bus_values.resize(value)
 		bus_names.resize(value)
-
-## The Size of every bus
-## Array[Simulation.Sizes]
-@export var bus_sizes: Array[Simulation.Sizes] = []
-
-## The Values of every bus
-## Array[Array[Simulation.States]]
-@export var bus_values: Array[Array] = []
 
 ## The Names of every Bus
 ## Array[String]
 @export var bus_names: Array[String] = []
+
+## The Values of every bus
+## Array[Value]
+@export var bus_values: Array[Value] = []
 #endregion
 
 var connections: Dictionary[String, Connection] = {}
@@ -158,25 +149,21 @@ func _ready() -> void:
 
 # public functions
 ## Adds an IO port to the gate
-func add_io(type: Simulation.IO_TYPES, bits: Simulation.Sizes, nme: String) -> void:
-	var val: Array[Simulation.States] = []
-	val.resize(bits)
-	val.fill(Simulation.States.UNKNOWN)
+func add_io(type: IOTypes, bit_size: Value.Sizes, nme: String) -> void:
+	var value: Value = Value.new(bit_size)
+
 	match type:
-		Simulation.IO_TYPES.INPUT:
+		IOTypes.INPUT:
 			input_amount += 1
-			input_sizes[-1] = bits
-			input_values[-1] = val
+			input_values[-1] = value
 			input_names[-1] = nme
-		Simulation.IO_TYPES.OUTPUT:
+		IOTypes.OUTPUT:
 			output_amount += 1
-			output_sizes[-1] = bits
-			output_values[-1] = val
+			output_values[-1] = value
 			output_names[-1] = nme
-		Simulation.IO_TYPES.BUS:
+		IOTypes.BUS:
 			bus_amount += 1
-			bus_sizes[-1] = bits
-			bus_values[-1] = val
+			bus_values[-1] = value
 			bus_names[-1] = nme
 	redraw(true)
 
@@ -217,8 +204,8 @@ func _redraw(full: bool = false) -> void:
 			add_child(slot)
 
 			if input_amount > i: # input exists, render it
-				var state = _get_combined_state(input_values[i])
-				var color = COLOR_NORMAL.get(state, Color.BLACK)
+				var state: Value.States = input_values[i].get_state()
+				var color: Color = COLOR_NORMAL.get(state, Color.BLACK)
 
 				var label: Label = Label.new()
 				label.name = "IN_%s_%s" % [str(i), input_names[i]]
@@ -232,7 +219,7 @@ func _redraw(full: bool = false) -> void:
 
 				set_slot_enabled_left(i, true)
 				set_slot_color_left(i, color)
-				set_slot_type_left(i, input_sizes[i])
+				set_slot_type_left(i, input_values[i].size)
 			else:
 				set_slot_enabled_left(i, false)
 			
@@ -252,8 +239,8 @@ func _redraw(full: bool = false) -> void:
 				slot.add_child(spacer2)
 
 			if output_amount > i: # output exists, render it
-				var state = _get_combined_state(output_values[i])
-				var color = COLOR_NORMAL.get(state, Color.BLACK)
+				var state: Value.States = output_values[i].get_state()
+				var color: Color = COLOR_NORMAL.get(state, Color.BLACK)
 
 				var label: Label = Label.new()
 				label.name = "OUT_%s_%s" % [str(i), output_names[i]]
@@ -267,7 +254,7 @@ func _redraw(full: bool = false) -> void:
 
 				set_slot_enabled_right(i, true)
 				set_slot_color_right(i, color)
-				set_slot_type_right(i, output_sizes[i])
+				set_slot_type_right(i, output_values[i].size)
 			else:
 				set_slot_enabled_right(i, false)
 			
@@ -280,7 +267,7 @@ func _redraw(full: bool = false) -> void:
 		return
 	
 	for i in range(0, input_amount): # loop for every input
-		var state = _get_combined_state(input_values[i])
+		var state: Value.States = input_values[i].get_state()
 		var color = COLOR_NORMAL.get(state, Color.BLACK)
 
 		set_slot_color_left(i, color)
@@ -290,7 +277,7 @@ func _redraw(full: bool = false) -> void:
 		label.set("theme_override_styles/normal", style)
 	
 	for i in range(0, output_amount): # loop for every output
-		var state = _get_combined_state(output_values[i])
+		var state: Value.States = output_values[i].get_state()
 		var color = COLOR_NORMAL.get(state, Color.BLACK)
 
 		set_slot_color_right(i, color)
@@ -308,15 +295,5 @@ func _create_button(data: Dictionary) -> Button:
 	button.name = data["id"]
 	button.button_down.connect(data["callable"])
 	return button
-
-func _get_combined_state(states: Array[Simulation.States]) -> Simulation.States:
-	for state: Simulation.States in states:
-		match state:
-			Simulation.States.ERROR: return state
-			Simulation.States.UNKNOWN: return state
-			Simulation.States.LOW: return state
-			# it must be high, so continue
-	# everything was high, return HIGH
-	return Simulation.States.HIGH
 
 # subclasses

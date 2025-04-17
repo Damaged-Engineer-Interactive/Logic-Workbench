@@ -22,6 +22,12 @@ var instructions: Dictionary[String, Instruction] = {}
 
 var keyword_to_value: Dictionary[String, Value] = {}
 
+#region General Information
+var architecture: String = ""
+var cores: String = ""
+var memory: String = ""
+#endregion
+
 # private variables
 
 # @onready variables
@@ -58,6 +64,8 @@ func save(path: String) -> void:
 	var config := ConfigFile.new()
 	
 	
+	
+	config.save(path)
 
 # private functions
 

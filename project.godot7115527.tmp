@@ -1,0 +1,77 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Logic Workbench"
+config/version="3.0.0.0"
+config/tags=PackedStringArray("damaged_engineer_interactive")
+run/main_scene="uid://cj1j02884v4l2"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="Logic Workbench"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
+config/features=PackedStringArray("4.4", "GL Compatibility")
+config/icon="uid://gdispwv20ko8"
+
+[audio]
+
+buses/default_bus_layout="res://assets/bus_layout.tres"
+driver/driver=""
+
+[autoload]
+
+DC="*res://scripts/autoloads/discord_rpc.gd"
+DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
+
+[debug]
+
+gdscript/warnings/native_method_override=1
+
+[display]
+
+window/size/borderless=true
+window/handheld/orientation=4
+window/vsync/vsync_mode=0
+
+[dotnet]
+
+project/assembly_name="Logic Workbench"
+
+[editor]
+
+naming/node_name_num_separator=3
+naming/default_signal_callback_name="_{node_name}_{signal_name}"
+naming/default_signal_callback_to_self_name="_self_{signal_name}"
+naming/script_name_casing=2
+export/convert_text_resources_to_binary=false
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/": "red",
+"res://assets/": "green",
+"res://scenes/": "blue",
+"res://script_templates/": "orange",
+"res://scripts/": "purple"
+}
+
+[gui]
+
+theme/custom="uid://d3dm8tqfg7pxq"
+
+[rendering]
+
+textures/vram_compression/import_etc2_astc=true
+viewport/transparent_background=true

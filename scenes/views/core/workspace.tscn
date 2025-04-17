@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cth3dtcdc3arw" path="res://scripts/views/core/Workspace.gd" id="1_0jkal"]
 [ext_resource type="StyleBox" uid="uid://y8miqubgdclm" path="res://styles/titlebar.tres" id="2_42gql"]
-[ext_resource type="Script" uid="uid://bya1yfib1nhs4" path="res://scripts/classes/simulation/simulation.gd" id="3_nnmvl"]
+[ext_resource type="Script" uid="uid://bya1yfib1nhs4" path="res://scripts/classes/simulation/Simulation.gd" id="3_nnmvl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pt1fe"]
 bg_color = Color(0.098, 0.09, 0.15, 1)

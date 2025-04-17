@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://byc4c6d5tpomq"]
 
-[ext_resource type="Texture2D" uid="uid://csl0e2px0cwc1" path="res://addons/discord-rpc-gd/Logo_V2_No_Bg.png" id="1_0svbg"]
+[ext_resource type="Texture2D" uid="uid://yj3wt3mtvsx6" path="res://addons/discord-rpc-gd/Logo_V2_No_Bg.png" id="1_0svbg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1t7mm"]
 
@@ -41,7 +41,7 @@ anchor_right = 0.5
 offset_left = -207.0
 offset_top = 8.0
 offset_right = 207.0
-offset_bottom = 451.0
+offset_bottom = 459.0
 grow_horizontal = 2
 mouse_filter = 1
 

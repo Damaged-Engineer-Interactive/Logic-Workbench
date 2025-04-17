@@ -12,14 +12,13 @@ config_version=5
 
 config/name="Logic Workbench"
 config/version="3.0.0.0"
-config/tags=PackedStringArray("damaged_engineer_interactive")
-run/main_scene="uid://cj1j02884v4l2"
+run/main_scene="uid://md11y8kcv4ij"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Logic Workbench"
-config/auto_accept_quit=false
-config/quit_on_go_back=false
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="uid://gdispwv20ko8"
+boot_splash/bg_color=Color(0, 0, 0, 0)
+config/icon="res://assets/images/icon.png"
+boot_splash/minimum_display_time=100
 
 [audio]
 
@@ -55,11 +54,12 @@ export/convert_text_resources_to_binary=false
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg")
+enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg")
 
 [file_customization]
 
 folder_colors={
+"res://Music/": "yellow",
 "res://addons/": "red",
 "res://assets/": "green",
 "res://scenes/": "blue",
@@ -74,4 +74,5 @@ theme/custom="uid://d3dm8tqfg7pxq"
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(1, 0, 0.890625, 1)
 viewport/transparent_background=true

@@ -40,6 +40,9 @@ var selectedProject = null
 @onready var projectName: Label = $Content/Columns/ProjectSubCategorie/LoadProject/Right/Name
 @onready var projectTags: Label = $Content/Columns/ProjectSubCategorie/LoadProject/Right/Tags
 @onready var projectDescription: Label = $Content/Columns/ProjectSubCategorie/LoadProject/Right/Description
+@onready var projecetLoadButton: Button = $Content/Columns/SubCategories/Projects/Load
+@onready var projectCancelButton: Button = $Content/Columns/ProjectSubCategorie/LoadProject/Right/Cancel
+@onready var projectsButton: Button = $Content/Columns/MainCategories/VBoxContainer/Projects
 
 # optional built-in _init() function
 
@@ -47,8 +50,9 @@ var selectedProject = null
 
 # optional built-in _ready() function
 func _ready() -> void:
-	if FileAccess.file_exists(SAVE_DIR + "Projects" + EXT_DATA):
-		var projectData = FileAccess.open(SAVE_DIR + "Projects" + EXT_DATA, FileAccess.READ_WRITE)
+	if DirAccess.dir_exists_absolute(SAVE_DIR + "Projects"):
+		for project in DirAccess.get_directories_at(SAVE_DIR + "Projects"):
+			projectList.add_item(project.get_basename())
 	print(projectList.get_item_count())
 	$Content/Columns/SubCategories.hide()
 	$Content/Columns/SubCategories/Projects.hide()
@@ -162,4 +166,18 @@ func _projects_sub_load_button_down() -> void:
 	controller.switch_view("workspace")
 
 func _list_item_clicked(index: int, _at_position: Vector2, _mouse_button_index: int) -> void:
-	projectName.text = "Name : " + projectList.get_item_text(index)
+	var projects = DirAccess.get_directories_at(SAVE_DIR + "Projects")
+	for project in range(projects.size()):
+		var projectData = FileAccess.open(SAVE_DIR + "Projects/" + projects[project] + "/info" + EXT_DATA, FileAccess.READ_WRITE)
+		if projectList.get_item_text(index) == projectData.get_line():
+			projectName.text = "Name : " + projectList.get_item_text(index)
+			projectTags.text = "Tags : " + projectData.get_line()
+			projectDescription.text = "Description : " + projectData.get_line()
+
+func _cancel_toggled(state: bool) -> void:
+	if state:
+		projecetLoadButton.button_pressed = false
+		projectsButton.button_pressed = false
+		projectCancelButton.button_pressed = false
+		$Content/Columns/ProjectSubCategorie.visible = false
+		$Content/Columns/SubCategories.visible = false

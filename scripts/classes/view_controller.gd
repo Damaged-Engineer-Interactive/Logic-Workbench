@@ -236,7 +236,7 @@ func load_views(path: String = VIEW_DIR) -> void:
 		if dir.current_is_dir():
 			load_views(path + "/" + entry) # Recursive Loading
 		else:
-			if entry.get_extension() == "tscn":
+			if entry.get_extension() in ["tscn", "remap"]:
 				load_view(path + "/" + entry)
 		entry = dir.get_next()
 	dir.list_dir_end()

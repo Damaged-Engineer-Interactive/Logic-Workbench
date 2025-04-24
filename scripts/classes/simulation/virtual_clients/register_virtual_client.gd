@@ -1,5 +1,5 @@
 # The name of the Class
-class_name RamVirtualClient
+class_name RegisterVirtualClient
 # The class this class extends
 extends VirtualClient
 # Docstring
@@ -16,10 +16,9 @@ extends VirtualClient
 # @export variables
 
 # public variables
-var address_size := Value.Sizes.BIT_1
-var data_size := Value.Sizes.BIT_1
+var size: Value.Sizes
 
-var data: Dictionary[String, Value] = {}
+var data: Value
 
 # private variables
 
@@ -27,7 +26,7 @@ var data: Dictionary[String, Value] = {}
 
 # optional built-in _init() function
 func _init() -> void:
-	type = VirtualHost.Types.RAM
+	type = VirtualHost.Types.REGISTER
 
 # optional built-in _enter_tree() function
 
@@ -38,32 +37,34 @@ func _init() -> void:
 # virtual functions to override
 
 # public functions
+## (re-)initialise the Virtual Client, returns true if it succeeded
+func initialise() -> bool:
+	if not size:
+		return false
+	data = Value.new(size)
+	return true
+
 ## Returns the size of the VirtualClient
 func get_size() -> int:
-	return int(data_size) * ( 2 ** ( address_size + 1 ) ) # Data Bits * 2^(address_bits + 1)
+	return size
 
 ## Read a value at a specific address
-func read(address: Value) -> Value:
-	var value: Value = data.get(str(address))
-	if value == null:
-		value = Value.new(data_size)
-	return value.copy()
+func read(_address: Value) -> Value:
+	return data.copy()
 
 ## Write a value at a specific address
-func write(value: Value, address: Value) -> void:
-	data[str(address)] = value.copy()
+func write(_address: Value, value: Value) -> void:
+	data = value.copy()
 	return
 
 
 ## read every value of the whole client
 func read_raw() -> Array[Value]:
-	return data.values()
+	return [data.copy()]
 
 ## writes a bunch of values to the whole client
 func write_raw(values: Array[Value]) -> void:
-	for i in range(0, (2 ** int(address_size) + 1)):
-		var address: Value = Value.from_int(address_size, i)
-		data[str(address)] = values[i].copy()
+	data = values[0].copy()
 	return
 
 # private functions

@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+locker/access_strategy="JSON"
+
 [application]
 
 config/name="Logic Workbench"
@@ -29,6 +33,7 @@ driver/driver=""
 
 DC="*res://scripts/autoloads/discord_rpc.gd"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
+LokGlobalStorageManager="*res://addons/locker/scripts/storage_manager/global_storage_manager.gd"
 
 [debug]
 
@@ -37,6 +42,8 @@ gdscript/warnings/native_method_override=1
 [display]
 
 window/size/borderless=true
+window/size/transparent=true
+window/per_pixel_transparency/allowed=true
 window/handheld/orientation=4
 window/vsync/vsync_mode=0
 
@@ -54,7 +61,7 @@ export/convert_text_resources_to_binary=false
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg")
+enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg", "res://addons/locker/plugin.cfg")
 
 [file_customization]
 

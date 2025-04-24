@@ -36,17 +36,22 @@ var descriptor: String = "<unknown>"
 # virtual functions to override
 
 # public functions
+## (re-)initialise the Virtual Client, returns true if it succeeded
+func initialise() -> bool:
+	push_error("Not implemented!")
+	return false
+
 ## Returns the size of the VirtualClient
 func get_size() -> int:
 	return -1
 
-## Read a value at a specific address
-func read(_address: Value) -> Value:
+## Read a value
+func read() -> Value:
 	push_error("Not implemented!")
 	return null
 
-## Write a value at a specific address
-func write(_address: Value, _value: Value) -> void:
+## Write a value
+func write(_value: Value) -> void:
 	push_error("Not implemented!")
 	return
 

@@ -10,7 +10,7 @@ extends Node
 # Signals
 
 # Enums
-enum Types {UNKNOWN, RAM, ROM, DISK}
+enum Types {UNKNOWN, REGISTER, RAM, ROM, DISK}
 
 # Constants
 

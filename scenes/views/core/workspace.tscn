@@ -1,14 +1,83 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnqwys562t51w"]
+[gd_scene load_steps=19 format=3 uid="uid://bnqwys562t51w"]
 
 [ext_resource type="Script" uid="uid://cth3dtcdc3arw" path="res://scripts/views/core/Workspace.gd" id="1_0jkal"]
 [ext_resource type="StyleBox" uid="uid://y8miqubgdclm" path="res://styles/titlebar.tres" id="2_42gql"]
 [ext_resource type="Script" uid="uid://bya1yfib1nhs4" path="res://scripts/classes/simulation/Simulation.gd" id="3_nnmvl"]
+[ext_resource type="Texture2D" uid="uid://cw6ljhsjhfueg" path="res://assets/images/Edit-round-icon.png" id="4_42gql"]
+[ext_resource type="Script" uid="uid://bdbrv2j2ir0gi" path="res://scripts/classes/assembler/assembler.gd" id="4_nnmvl"]
+[ext_resource type="StyleBox" uid="uid://c383j11j0hrhp" path="res://styles/assembler/instruction_border.tres" id="5_14g3m"]
+[ext_resource type="Script" uid="uid://26lop85enb6" path="res://scripts/classes/assembler/instruction.gd" id="5_ep6lx"]
+[ext_resource type="Script" uid="uid://bxqvh6i2v7g1v" path="res://scripts/classes/assembler/isa.gd" id="5_lndcd"]
+[ext_resource type="Script" uid="uid://dpjryg6kjtqo8" path="res://scripts/classes/simulation/value.gd" id="6_08apg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pt1fe"]
 bg_color = Color(0.098, 0.09, 0.15, 1)
 border_width_left = 3
 border_width_right = 3
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Resource" id="Resource_f65r1"]
+script = ExtResource("6_08apg")
+size = 1
+data = Array[int]([1])
+metadata/_custom_type_script = "uid://dpjryg6kjtqo8"
+
+[sub_resource type="Resource" id="Resource_08apg"]
+script = ExtResource("5_ep6lx")
+keyword = "NOP"
+description = ""
+value = SubResource("Resource_f65r1")
+categorie = "Unknown Categorie"
+metadata/_custom_type_script = "uid://26lop85enb6"
+
+[sub_resource type="Resource" id="Resource_72snk"]
+script = ExtResource("6_08apg")
+size = 1
+data = Array[int]([2])
+metadata/_custom_type_script = "uid://dpjryg6kjtqo8"
+
+[sub_resource type="Resource" id="Resource_u2qew"]
+script = ExtResource("5_ep6lx")
+keyword = "ADD"
+description = ""
+value = SubResource("Resource_72snk")
+categorie = "Unknown Categorie"
+metadata/_custom_type_script = "uid://26lop85enb6"
+
+[sub_resource type="Resource" id="Resource_bajod"]
+script = ExtResource("6_08apg")
+size = 1
+data = Array[int]([3])
+metadata/_custom_type_script = "uid://dpjryg6kjtqo8"
+
+[sub_resource type="Resource" id="Resource_av58q"]
+script = ExtResource("5_ep6lx")
+keyword = "SUB"
+description = ""
+value = SubResource("Resource_bajod")
+categorie = "Unknown Categorie"
+metadata/_custom_type_script = "uid://26lop85enb6"
+
+[sub_resource type="Resource" id="Resource_2yidl"]
+script = ExtResource("5_lndcd")
+debug_instruction_queue = Array[ExtResource("5_ep6lx")]([SubResource("Resource_08apg"), SubResource("Resource_u2qew"), SubResource("Resource_av58q")])
+metadata/_custom_type_script = "uid://bxqvh6i2v7g1v"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_42gql"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.0392157, 0.0392157, 0.0509804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.137255, 0.137255, 0.294118, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="ViewRoot" type="VBoxContainer"]
 anchors_preset = 15
@@ -54,16 +123,21 @@ current_tab = 3
 use_hidden_tabs_for_min_size = true
 deselect_enabled = true
 
-[node name="Gate" type="HBoxContainer" parent="Content/TabContainer"]
+[node name="Project" type="HBoxContainer" parent="Content/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="Gate" type="HBoxContainer" parent="Content/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="Workspace" type="HBoxContainer" parent="Content/TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [node name="GatePanel" type="PanelContainer" parent="Content/TabContainer/Workspace"]
 custom_minimum_size = Vector2(200, 0)
@@ -168,40 +242,80 @@ script = ExtResource("3_nnmvl")
 allow_simulate = true
 
 [node name="Assembler" type="HBoxContainer" parent="Content/TabContainer"]
-visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+script = ExtResource("4_nnmvl")
+isa = SubResource("Resource_2yidl")
+metadata/_tab_index = 3
 
 [node name="LeftBar" type="VBoxContainer" parent="Content/TabContainer/Assembler"]
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="Content/TabContainer/Assembler/LeftBar"]
 layout_mode = 2
-text = "Files"
+text = "Instructions"
 horizontal_alignment = 1
 
-[node name="FileList" type="ItemList" parent="Content/TabContainer/Assembler/LeftBar"]
+[node name="HSeparator" type="HSeparator" parent="Content/TabContainer/Assembler/LeftBar"]
+layout_mode = 2
+
+[node name="NewInstruction" type="Button" parent="Content/TabContainer/Assembler/LeftBar"]
+layout_mode = 2
+text = "New Instruction"
+
+[node name="HSeparator-2" type="HSeparator" parent="Content/TabContainer/Assembler/LeftBar"]
+layout_mode = 2
+
+[node name="Instructions" type="PanelContainer" parent="Content/TabContainer/Assembler/LeftBar"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CodeEdit" type="CodeEdit" parent="Content/TabContainer/Assembler"]
+[node name="InstructionContainer" type="VBoxContainer" parent="Content/TabContainer/Assembler/LeftBar/Instructions"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NOP" type="PanelContainer" parent="Content/TabContainer/Assembler/LeftBar/Instructions/InstructionContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("5_14g3m")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/TabContainer/Assembler/LeftBar/Instructions/InstructionContainer/NOP"]
+layout_mode = 2
+
+[node name="Keyword" type="Label" parent="Content/TabContainer/Assembler/LeftBar/Instructions/InstructionContainer/NOP/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "This is a Test Code
-This is a Test Code
-This is a Test Code
-This is a Test Code
-This is a Test Code
-This is a Test Code
+theme_override_styles/normal = ExtResource("5_14g3m")
+text = "NOP"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-This is a Test Code
-This is a Test Code
-This is a Test Code
-This is a Test Code
-This is a Test Code
-This is a Test Code"
+[node name="Edit" type="Button" parent="Content/TabContainer/Assembler/LeftBar/Instructions/InstructionContainer/NOP/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+tooltip_text = "Delete Instruction"
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+icon = ExtResource("4_42gql")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="CodeEdit" type="CodeEdit" parent="Content/TabContainer/Assembler"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code
+This is some example Code"
 scroll_smooth = true
 scroll_past_end_of_file = true
 minimap_draw = true
@@ -215,8 +329,9 @@ auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 
 [node name="Virtual Data" type="HBoxContainer" parent="Content/TabContainer"]
+visible = false
 layout_mode = 2
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
 [node name="LeftBar" type="VBoxContainer" parent="Content/TabContainer/Virtual Data"]
 custom_minimum_size = Vector2(200, 0)
@@ -261,9 +376,72 @@ text = "Damaged Engineer Interactive @ 2025"
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="InstructionPopup" type="PopupPanel" parent="."]
+unique_name_in_owner = true
+disable_3d = true
+initial_position = 1
+size = Vector2i(300, 230)
+visible = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_42gql")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InstructionPopup"]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 295.0
+offset_bottom = 225.0
+
+[node name="Title" type="Label" parent="InstructionPopup/VBoxContainer"]
+layout_mode = 2
+text = "Edit Instruction"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Keyword" type="LineEdit" parent="InstructionPopup/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Keyword"
+
+[node name="Value" type="LineEdit" parent="InstructionPopup/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Value"
+max_length = 32
+context_menu_enabled = false
+emoji_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="Guide" type="Label" parent="InstructionPopup/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+text = "Possible Characters for Value :
+0 : set bit to low
+1 : set bit to high
+? : ignore this bit"
+
+[node name="Buttons" type="HBoxContainer" parent="InstructionPopup/VBoxContainer"]
+layout_mode = 2
+
+[node name="Confirm" type="Button" parent="InstructionPopup/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Confirm"
+
+[node name="Cancel" type="Button" parent="InstructionPopup/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cancel"
+
 [connection signal="mouse_entered" from="TopBar" to="." method="_top_bar_mouse_entered"]
 [connection signal="mouse_exited" from="TopBar" to="." method="_top_bar_mouse_exited"]
 [connection signal="pressed" from="TopBar/Buttons/HomeButton" to="." method="_home_button_pressed"]
 [connection signal="connection_request" from="Content/TabContainer/Workspace/Workspace" to="." method="_workspace_connection_request"]
 [connection signal="delete_nodes_request" from="Content/TabContainer/Workspace/Workspace" to="." method="_workspace_delete_nodes_request"]
 [connection signal="disconnection_request" from="Content/TabContainer/Workspace/Workspace" to="." method="_workspace_disconnection_request"]
+[connection signal="pressed" from="Content/TabContainer/Assembler/LeftBar/NewInstruction" to="Content/TabContainer/Assembler" method="_edit_instruction_button"]
+[connection signal="pressed" from="InstructionPopup/VBoxContainer/Buttons/Confirm" to="Content/TabContainer/Assembler" method="_confirm_instruction_pressed"]
+[connection signal="pressed" from="InstructionPopup/VBoxContainer/Buttons/Cancel" to="Content/TabContainer/Assembler" method="_cancel_instruction_pressed"]

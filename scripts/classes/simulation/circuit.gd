@@ -48,7 +48,7 @@ var connections: Array[Connection] = []
 
 var can_simulate: bool = false
 
-var GATES: Dictionary[GATE_TYPES, Variant] = {
+static var GATES: Dictionary[GATE_TYPES, Variant] = {
 	GATE_TYPES.AND: AndGate,
 	GATE_TYPES.NAND: NandGate,
 	GATE_TYPES.OR: OrGate,

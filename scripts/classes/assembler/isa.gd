@@ -1,7 +1,7 @@
 # The name of the Class
 class_name ISA
 # The class this class extends
-extends Object
+extends Resource
 # Docstring
 ## short description goes here 
 ## 
@@ -16,17 +16,14 @@ extends Object
 # @export variables
 
 # public variables
-var address_size: Value.Sizes = Value.Sizes.BIT_1
+@export_group("Debug", "debug_")
+@export var debug_instruction_queue: Array[Instruction] = []
+
+var bit_size: Value.Sizes = Value.Sizes.BIT_1
 
 var instructions: Dictionary[String, Instruction] = {}
 
 var keyword_to_value: Dictionary[String, Value] = {}
-
-#region General Information
-var architecture: String = ""
-var cores: String = ""
-var memory: String = ""
-#endregion
 
 # private variables
 
@@ -37,6 +34,9 @@ var memory: String = ""
 # optional built-in _enter_tree() function
 
 # optional built-in _ready() function
+func _ready() -> void:
+	for instruction: Instruction in debug_instruction_queue:
+		add_instruction(instruction)
 
 # remaining built-in functions
 
@@ -60,12 +60,17 @@ func remove_instruction(keyword: String) -> Instruction:
 		return instruction
 	return null
 
+
+
 func save(path: String) -> void:
 	var config := ConfigFile.new()
 	
 	
 	
 	config.save(path)
+
+func load(path: String) -> void:
+	pass
 
 # private functions
 

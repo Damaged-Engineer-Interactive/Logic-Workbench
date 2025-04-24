@@ -1,7 +1,7 @@
 # The name of the Class
 class_name Instruction
 # The class this class extends
-extends Object
+extends Resource
 # Docstring
 ## short description goes here 
 ## 
@@ -17,23 +17,23 @@ extends Object
 
 # public variables
 ## The Keyword that will be replaced by the value
-var keyword: String = ""
+@export var keyword: String = ""
 
 ## The Description of the Instruction
-var description: String = ""
+@export var description: String = ""
 
 ## The Value of the Instruction
-var value: Value = null
+@export var value: Value = null
 
 ## The Categorie of the Instruction
-var categorie: String = "Unknown Categorie"
+@export var categorie: String = "Unknown Categorie"
 
 # private variables
 
 # @onready variables
 
 # optional built-in _init() function
-func _init(kwd: String, val: Value, desc: String = "", cat: String = "") -> void:
+func _init(kwd: String = "unknown", val := Value.new(), desc: String = "", cat: String = "") -> void:
 	keyword = kwd
 	description = desc
 	value = val

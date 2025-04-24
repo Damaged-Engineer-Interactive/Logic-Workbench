@@ -23,7 +23,8 @@ enum States {
 	ERROR = 0,
 	LOW = 1,
 	HIGH = 2,
-	UNKNOWN = 3
+	UNKNOWN = 3,
+	IGNORED = 4 # Used only by the Assembler
 }
 
 # Constants
@@ -31,7 +32,16 @@ const STATE_TO_STRING: Dictionary[States, String] = {
 	States.ERROR: "!",
 	States.LOW: "L",
 	States.HIGH: "H",
-	States.UNKNOWN: "?"
+	States.UNKNOWN: "?",
+	States.IGNORED: "-"
+}
+
+const STRING_TO_STATE: Dictionary[String, States] = {
+	"!": States.ERROR,
+	"L": States.LOW,
+	"H": States.HIGH,
+	"?": States.UNKNOWN,
+	"-": States.IGNORED
 }
 
 const SAVE_STRING: String = "{size}_{data}"
@@ -40,16 +50,16 @@ const DATA_STRING: String = "{value}:"
 # @export variables
 
 # public variables
-var size: Sizes = Sizes.BIT_1
+@export var size: Sizes = Sizes.BIT_1
 
-var data: Array[States] = []
+@export var data: Array[States] = []
 
 # private variables
 
 # @onready variables
 
 # optional built-in _init() function
-func _init(_size: Sizes, default: States = States.UNKNOWN) -> void:
+func _init(_size: Sizes = Sizes.BIT_1, default: States = States.UNKNOWN) -> void:
 	size = _size
 	data.resize(int(_size))
 	data.fill(default)
@@ -68,6 +78,14 @@ func _to_string() -> String:
 	return result
 
 # public functions
+## Alternate constructor
+static func from_string(_size: Sizes, string: String) -> Value:
+	var value := Value.new(_size)
+	for i: int in range(0, int(_size)):
+		var state: States = STRING_TO_STATE.get(string[i])
+		value.set_bit(i, state)
+	return value
+
 ## Alternate constructor
 static func from_int(_size: Sizes, base: int) -> Value:
 	var value := Value.new(_size)

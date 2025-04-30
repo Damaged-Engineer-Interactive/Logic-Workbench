@@ -77,6 +77,12 @@ const FILE_SIM: String = "C81049B1"
 ## The currently opened Project
 var current_project: Project = null
 
+## The current ViewController
+static var controller: ViewController = null:
+	set(value):
+		if controller != null:
+			controller = value
+
 # private variables
 var _checked_save_dir: bool = false
 
@@ -96,6 +102,8 @@ var _waiting_to_finish: int = 0:
 
 # optional built-in _ready() function
 func _ready() -> void:
+	ViewController.controller = self
+	
 	check_save_dir(true)
 
 	load_packs()

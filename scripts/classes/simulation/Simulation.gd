@@ -10,67 +10,8 @@ extends Node
 # Signals
 
 # Enums
-enum Sizes {
-	BIT_1 = 1,
-	BIT_2 = 2,
-	BIT_4 = 4,
-	BIT_8 = 8,
-	BIT_16 = 16,
-	BIT_32 = 32
-}
-
-enum States {
-	ERROR = 0,
-	LOW = 1,
-	HIGH = 2,
-	UNKNOWN = 3
-}
-
-enum IO_TYPES {
-	UNKNOWN = 0,
-	INPUT = 1,
-	OUTPUT = 2,
-	BUS = 3
-}
-
-enum GATE_TYPES {
-	UNKNOWN =   0,
-	AND,
-	NAND,
-	OR,
-	NOR,
-	NOT,
-	XOR,
-	XNOR,
-	STATE,
-	
-	ON,
-	OFF,
-	TRI,
-	ERROR,
-	
-	SELECTOR,
-
-	CUSTOM  = 255
-}
 
 # Constants
-const STATE_TO_LETTER: Dictionary[States, String] = {
-	States.ERROR: "!",
-	States.LOW: "L",
-	States.HIGH: "H",
-	States.UNKNOWN: "?",
-}
-
-const STATE_TO_COLOR: Dictionary[States, Color] = {
-	States.ERROR: Color.RED,
-	States.LOW: Color.DARK_GREEN,
-	States.HIGH: Color.GREEN,
-	States.UNKNOWN: Color.BLUE,
-}
-
-const MAX_IO_COUNT: int = 128
-
 const THEME_PANEL: StyleBoxFlat = preload("res://styles/simulation/panel.stylebox")
 const THEME_TITLE: StyleBoxFlat = preload("res://styles/simulation/titlebar.stylebox")
 const THEME_TITLE_SELECTED: StyleBoxFlat = preload("res://styles/simulation/titlebar_selected.stylebox")
@@ -79,45 +20,19 @@ const THEME_TITLE_SELECTED: StyleBoxFlat = preload("res://styles/simulation/titl
 @export var allow_simulate: bool = false
 
 # public variables
-var gates: Array[Gate] = []
-var connections: Array[Connection] = []
-
 var can_simulate: bool = false
 
-var GATES: Dictionary[Simulation.GATE_TYPES, Variant] = {
-	GATE_TYPES.AND: AndGate,
-	GATE_TYPES.NAND: NandGate,
-	GATE_TYPES.OR: OrGate,
-	GATE_TYPES.NOR: NorGate,
-	GATE_TYPES.NOT: NotGate,
-	GATE_TYPES.XOR: XorGate,
-	GATE_TYPES.XNOR: XnorGate,
-	GATE_TYPES.STATE: TriStateGate,
-	
-	GATE_TYPES.ON: OnGate,
-	GATE_TYPES.OFF: OffGate,
-	GATE_TYPES.TRI: TriGate,
-	GATE_TYPES.ERROR: ErrorGate,
-	
-	GATE_TYPES.SELECTOR: SelectorGate
-}
+## The stages of a circuit, will be simulated from size() to 0[br]
+## Array[Array[Circuit]]
+var circuit_stages: Array[Array] = []
 
 # private variables
-var _next_gate_id: Array[int] = [0]
-var _amount_of_gates: int = 0
-
-var _next_connection_id: Array[int] = [0]
-
-
 var _sim_counter: int = -1 # Frames until next simulate() call
 var _is_simulating: bool = false # False : Dispatch new instance | True : Get Results
 var _invalid_run: bool = false # Invalid if gates / connections changed
 
-var mutex: Mutex
-var semaphore: Semaphore
-
-var thread_count: int
-var threads: Array[Thread]
+var _thread_count: int
+var _threads: Array[Thread]
 
 # @onready variables
 

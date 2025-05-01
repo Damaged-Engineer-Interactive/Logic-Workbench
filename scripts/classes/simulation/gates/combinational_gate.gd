@@ -1,7 +1,7 @@
 # The name of the Class
-class_name NotGate
+class_name CombinationalGate
 # The class this class extends
-extends Gate
+extends GateDescription
 # Docstring
 ## short description goes here 
 ## 
@@ -16,19 +16,15 @@ extends Gate
 # @export variables
 
 # public variables
+## The Truth Table of the Gate[br]
+## IMPORTANT : Not used for now, will be implemented later on
+var truth_table: TruthTable
 
 # private variables
 
 # @onready variables
 
 # optional built-in _init() function
-func _init() -> void:
-	gate_name = "NOT"
-	gate_type = 5
-
-	add_io(Simulation.IO_TYPES.INPUT, Simulation.Sizes.BIT_1, "IN")
-
-	add_io(Simulation.IO_TYPES.OUTPUT, Simulation.Sizes.BIT_1, "OUT")
 
 # optional built-in _enter_tree() function
 

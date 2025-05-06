@@ -1,7 +1,7 @@
 # The name of the Class
-class_name Circuit
+class_name CachedCircuit
 # The class this class extends
-extends GateDescription
+extends Object
 # Docstring
 ## short description goes here 
 ## 
@@ -17,19 +17,16 @@ extends GateDescription
 
 # public variables
 ## The Gates of the Circuit
-var gates: Dictionary[int, Gate]
+var gates: Array[CachedGate]
 
 ## The Connections of the Circuit
-var connections: Dictionary[int, Connection]
+var connections: Array[CachedConnection]
 
 # private variables
 
 # @onready variables
 
 # optional built-in _init() function
-func _init():
-		gates = {}
-		connections = {}
 
 # optional built-in _enter_tree() function
 
@@ -40,9 +37,6 @@ func _init():
 # virtual functions to override
 
 # public functions
-## Flatten the Circuit
-func flatten_circuit() -> CachedCircuit:
-	return null
 
 # private functions
 

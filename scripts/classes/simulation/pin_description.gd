@@ -41,11 +41,11 @@ extends Object
 
 # public functions
 ## Constructor
-static func create(_name: String, _slot: int, size: int) -> PinDescription:
+static func create(_name: String, _slot: int, bit_size: int) -> PinDescription:
 	var pin := PinDescription.new()
 	pin.name = _name
 	pin.slot = _slot
-	pin.state = Value.from_default(size)
+	pin.state = Value.from_default(bit_size)
 	return pin
 
 # private functions

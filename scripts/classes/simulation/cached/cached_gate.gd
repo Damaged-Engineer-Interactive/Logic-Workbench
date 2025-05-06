@@ -1,9 +1,11 @@
 # The name of the Class
-class_name GateDescription
+class_name CachedGate
 # The class this class extends
 extends Object
 # Docstring
-## Basically the "blueprint" for a gate
+## short description goes here 
+## 
+## Long desciption goes here
 
 # Signals
 
@@ -14,31 +16,16 @@ extends Object
 # @export variables
 
 # public variables
-## The Name of the Gate
-var name: String
-
-## The group, that this gate is part of
-var group: String
-
-## The Size of the Gate
-var size: Vector2i
-
-## The Color of the Gate
-var color: Color
-
-#region AT RUNTIME
 ## The ID of the Gate
 var id: int
 
-## The Position of the Gate[br]
-## x, y, layer
-var position: Vector3i
+## The Group of the Gate (simulation order, low to high)
+var group: int
 
-#endregion
-
-var inputs: Array[PinDescription]
-var outputs: Array[PinDescription]
-var buttons: Array[ButtonDescription]
+## The Input States of the Gate
+var inputs: Array[Value]
+## The Output States of the Gate
+var outputs: Array[Value]
 
 # private variables
 

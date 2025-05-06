@@ -100,6 +100,13 @@ static func from_string(string: String) -> Value:
 #endregion
 
 #region Utility
+static func make_multi_string(values: Array[Value]) -> String:
+	var res: String = ""
+	for value: Value in values:
+		res += str(value) + "_"
+	res.rstrip("_")
+	return res
+
 func copy() -> Value:
 	var value := Value.new()
 	value.size = size

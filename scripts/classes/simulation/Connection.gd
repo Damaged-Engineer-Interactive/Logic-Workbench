@@ -17,13 +17,11 @@ extends Node
 
 # public variables
 ## The ID of the Connection
-var id: String:
-	get:
-		return "%s:%s|%s:%s" % [str(gate_in), str(port_in), str(gate_out), str(port_out)]
+var id: String
 
 #region Output
 ## The ID of the first Gate
-var gate_in: int = -1
+var gate_in: String = ""
 
 ## The Port of the first gate
 var port_in: int = -1
@@ -31,7 +29,7 @@ var port_in: int = -1
 
 #region Input
 ## The ID of the second Gate
-var gate_out: int = -1
+var gate_out: String = ""
 
 ## The Port of the second gate
 var port_out: int = -1

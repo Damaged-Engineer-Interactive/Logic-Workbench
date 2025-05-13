@@ -17,7 +17,7 @@ extends GateDescription
 
 # public variables
 ## The Gates of the Circuit
-var gates: Dictionary[int, Gate]
+var gates: Dictionary[int, GateDescription]
 
 ## The Connections of the Circuit
 var connections: Dictionary[int, Connection]
@@ -40,9 +40,22 @@ func _init():
 # virtual functions to override
 
 # public functions
-## Flatten the Circuit
-func flatten_circuit() -> CachedCircuit:
-	return null
+func flatten_recursive() -> Array[Dictionary]: # [Gates, Connections]
+	var _gates: Dictionary[String, GateDescription]
+	var _connections: Dictionary[String, Connection]
+	
+	for gate in gates.values():
+		if gate.type == "CIRCUIT":
+			var res: Array[Dictionary] = gate._flatten_recursive()
+			_gates.assign(res[0])
+			_connections.assign(res[1])
+		else:
+			_gates[gate.id] = gate
+	
+	for connection in connections.values():
+		connection[connection.id] = connection
+	
+	return [_gates, _connections]
 
 # private functions
 

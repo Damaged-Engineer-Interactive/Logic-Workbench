@@ -16,20 +16,23 @@ extends Object
 # @export variables
 
 # public variables
+## The ID of the connection
+var id: int
+
 #region Output
 ## The ID of the first Gate
-var gate_in: int = -1
+var from_gate: int = -1
 
 ## The Port of the first gate
-var port_in: int = -1
+var from_port: int = -1
 #endregion
 
 #region Input
 ## The ID of the second Gate
-var gate_out: int = -1
+var to_gate: int = -1
 
 ## The Port of the second gate
-var port_out: int = -1
+var to_port: int = -1
 #endregion
 
 # private variables

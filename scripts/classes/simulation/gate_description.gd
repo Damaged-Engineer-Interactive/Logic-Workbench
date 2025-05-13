@@ -17,6 +17,9 @@ extends Object
 ## The Name of the Gate
 var name: String
 
+## The Type of the Gate
+var type: String
+
 ## The group, that this gate is part of
 var group: String
 
@@ -28,7 +31,7 @@ var color: Color
 
 #region AT RUNTIME
 ## The ID of the Gate
-var id: int
+var id: String
 
 ## The Position of the Gate[br]
 ## x, y, layer

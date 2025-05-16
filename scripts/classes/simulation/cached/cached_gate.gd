@@ -17,7 +17,7 @@ extends Object
 
 # public variables
 ## The ID of the Gate
-var id: String
+var id: int
 
 ## The type of the Gate
 var type: String

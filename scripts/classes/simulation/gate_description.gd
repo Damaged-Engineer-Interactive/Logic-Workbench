@@ -30,7 +30,8 @@ var size: Vector2i
 var color: Color
 
 #region AT RUNTIME
-## The ID of the Gate
+## The ID of the Gate[br]
+## Example : [code]"0:0" | <circuit level (chip in chip>:<gate id>[/code]
 var id: String
 
 ## The Position of the Gate[br]
@@ -58,6 +59,21 @@ var buttons: Array[ButtonDescription]
 # virtual functions to override
 
 # public functions
+## Returns a copy of this GateDescription, with the new id
+func copy(_id: String = "") -> GateDescription:
+	var res: GateDescription = GateDescription.new()
+	res.name = name
+	res.type = type
+	res.group = group
+	res.size = size
+	res.color = color
+	
+	res.id = _id
+	
+	res.inputs = inputs
+	res.outputs = outputs
+	res.buttons = buttons
+	return res
 
 # private functions
 

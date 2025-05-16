@@ -17,10 +17,10 @@ extends GateDescription
 
 # public variables
 ## The Gates of the Circuit
-var gates: Dictionary[int, GateDescription]
+var gates: Dictionary[String, GateDescription]
 
 ## The Connections of the Circuit
-var connections: Dictionary[int, Connection]
+var connections: Dictionary[String, Connection]
 
 # private variables
 
@@ -46,14 +46,14 @@ func flatten_recursive() -> Array[Dictionary]: # [Gates, Connections]
 	
 	for gate in gates.values():
 		if gate.type == "CIRCUIT":
-			var res: Array[Dictionary] = gate._flatten_recursive()
+			var res: Array[Dictionary] = gate.flatten_recursive()
 			_gates.assign(res[0])
 			_connections.assign(res[1])
 		else:
 			_gates[gate.id] = gate
 	
 	for connection in connections.values():
-		connection[connection.id] = connection
+		_connections[connection.id] = connection
 	
 	return [_gates, _connections]
 

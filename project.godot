@@ -13,10 +13,9 @@ config_version=5
 config/name="Logic Workbench"
 config/version="3.0.0.0"
 config/tags=PackedStringArray("damaged_engineer_interactive")
-run/main_scene="uid://cj1j02884v4l2"
+run/main_scene="uid://ic307qpi3icy"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Logic Workbench"
-config/auto_accept_quit=false
 config/quit_on_go_back=false
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://assets/images/icon.png"
@@ -30,6 +29,7 @@ driver/driver=""
 
 DC="*res://scripts/autoloads/discord_rpc.gd"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
+Global="*res://scripts/autoloads/Global.gd"
 
 [debug]
 
@@ -37,7 +37,9 @@ gdscript/warnings/native_method_override=1
 
 [display]
 
-window/size/borderless=true
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/size/mode=2
 window/handheld/orientation=4
 window/vsync/vsync_mode=0
 
@@ -63,13 +65,8 @@ folder_colors={
 "res://addons/": "red",
 "res://assets/": "green",
 "res://scenes/": "blue",
-"res://script_templates/": "orange",
 "res://scripts/": "purple"
 }
-
-[gui]
-
-theme/custom="uid://d3dm8tqfg7pxq"
 
 [rendering]
 

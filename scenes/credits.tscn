@@ -1,0 +1,388 @@
+[gd_scene load_steps=12 format=3 uid="uid://dy12mfndvqq0k"]
+
+[ext_resource type="Script" uid="uid://yrekxnbxeceo" path="res://scripts/credits.gd" id="1_0bpdh"]
+[ext_resource type="Texture2D" uid="uid://cm5kbk3mlo466" path="res://assets/images/Mindful.jpg" id="2_2ckv8"]
+[ext_resource type="Texture2D" uid="uid://c12lq8janpadr" path="res://assets/images/placeholder.png" id="3_0ctdu"]
+[ext_resource type="Texture2D" uid="uid://cw1plgcfhkmx2" path="res://assets/images/Ajax.jpg" id="4_2fbfq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sgp6g"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.273285, 0.541066, 0.777344, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5qli"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.63446, 0.776773, 0.902344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ckv8"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sgp6g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wfyh"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.454902, 0.658824, 0.839216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jyhfs"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.63446, 0.776773, 0.902344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sugp2"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.273285, 0.541066, 0.777344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Root" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sgp6g")
+script = ExtResource("1_0bpdh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Logic Workbench"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(1250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+
+[node name="Info" type="PanelContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5qli")
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Info"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "What is Logic Workbench ?
+Logic Workbench is a fast and modern Digital Logic Simulator, powerful enough to simulate massive Circuits while also being easy to use."
+horizontal_alignment = 1
+
+[node name="DevList" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Mindful" type="PanelContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5qli")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/Mindful"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/Mindful/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("2_2ckv8")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/Mindful/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Name" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/Mindful/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Logic Mindful"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/Mindful/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 4
+theme_override_styles/separator = SubResource("StyleBoxFlat_2ckv8")
+
+[node name="Description" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/Mindful/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Creator"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BobisBilly" type="PanelContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5qli")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/BobisBilly"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/BobisBilly/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("3_0ctdu")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/BobisBilly/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Name" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/BobisBilly/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "BobisBilly"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/BobisBilly/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 4
+theme_override_styles/separator = SubResource("StyleBoxFlat_2ckv8")
+
+[node name="Description" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/DevList/BobisBilly/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Senior Developer"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpecialList" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Ajax" type="PanelContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5qli")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("4_2fbfq")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Name" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Ajax"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 4
+theme_override_styles/separator = SubResource("StyleBoxFlat_2ckv8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Youtube" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jyhfs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_sugp2")
+text = "Youtube"
+
+[node name="Description" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Knowledge Source"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Discord" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jyhfs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_sugp2")
+text = "Discord"
+
+[node name="RascalFoxfire" type="PanelContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5qli")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/RascalFoxfire"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/RascalFoxfire/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("3_0ctdu")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/RascalFoxfire/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Name" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/RascalFoxfire/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "RascalFoxfire"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/RascalFoxfire/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 4
+theme_override_styles/separator = SubResource("StyleBoxFlat_2ckv8")
+
+[node name="Description" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/RascalFoxfire/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Knowledge Source"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Version" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_o5qli")
+text = "3.1.0 (19.05.2025)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer-1" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MainMenu" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+text = "Main Menu"
+
+[node name="Spacer-2" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Copyright" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_o5qli")
+text = "Damaged Engineer Interactive"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer/HBoxContainer/Youtube" to="." method="_ajax_youtube_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer/HBoxContainer/Discord" to="." method="_ajax_discord_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/MainMenu" to="." method="_main_menu_pressed"]

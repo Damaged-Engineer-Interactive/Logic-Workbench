@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://byc4c6d5tpomq"]
 
-[ext_resource type="Texture2D" uid="uid://yj3wt3mtvsx6" path="res://addons/discord-rpc-gd/Logo_V2_No_Bg.png" id="1_0svbg"]
+[ext_resource type="Texture2D" uid="uid://bdp1uw6c2upme" path="res://addons/discord-rpc-gd/Logo_V2_No_Bg.png" id="1_0svbg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1t7mm"]
 

@@ -1,0 +1,52 @@
+-- Loading Gates & Connections
+
+Path: user://saved/Projects/<ProjectName>/workspace.lwc
+
+GateOPort,ID:
+ GateIPort,ID
+
+Example:
+AND0,0:
+ OR0,1
+
+GateOPortID:
+ GateIPortOPort,ID:
+	GateIPort,ID
+
+Example:
+AND0,0:
+ OR00,1:
+  NAND1,2
+
+How it works (quick explanation):
+	Gate defines the GateType
+	ID is the Gates ID
+	OPort is the output port
+	IPort is where the OPort from the parent Gate connects to on the child Gate
+
+How it works (better explanation):
+	Port ranges from 0 to however many input nodes there are on a gate
+	The parent Gate is decided by whatever gate is one space back and one line before/above the child gate
+	The parent Gate is also decided by the ID used
+
+-- Loading Extra Gate Data
+
+-- Positions
+
+Path: user://saved/Projects/<ProjectName>/extra.lw
+
+ID: Vector2i
+
+Example:
+0: (50,50)
+
+How it works (quick explanation):
+	ID is the Gates ID
+	Vector2i is the position data
+
+How it works (better explanation):
+	The ID is used to select the gate that's getting moved
+	The Vector2i positioning is used based off the center of the GraphEdit/Workspace node
+
+What to add:
+	Custom Gate metadata

@@ -23,7 +23,6 @@ const EXT_DATA: String = ".lw"
 #endregion
 
 # @export variables
-
 # public variables
 
 # private variables
@@ -33,7 +32,7 @@ var _drag_active: bool = false
 var _drag_start := Vector2(0,0)
 #endregion
 
-var selectedProject = null
+var selectedProject: String = FileAccess.open("user://data/selected.lw", FileAccess.READ).get_as_text().trim_suffix("\n")
 
 # @onready variables
 @onready var projectList: ItemList = $Content/Columns/ProjectSubCategorie/LoadProject/Left/List
@@ -53,7 +52,7 @@ func _ready() -> void:
 	if DirAccess.dir_exists_absolute(SAVE_DIR + "Projects"):
 		for project in DirAccess.get_directories_at(SAVE_DIR + "Projects"):
 			projectList.add_item(project.get_basename())
-	print(projectList.get_item_count())
+	
 	$Content/Columns/SubCategories.hide()
 	$Content/Columns/SubCategories/Projects.hide()
 	$Content/Columns/SubCategories/Settings.hide()
@@ -163,16 +162,19 @@ func _projects_load_toggled(state: bool) -> void:
 func _projects_sub_load_button_down() -> void:
 	var view: View = get_parent()
 	var controller: ViewController = view.controller
+	print(selectedProject)
+	FileAccess.open("user://data/selected.lw", FileAccess.WRITE).store_string(selectedProject)
 	controller.switch_view("workspace")
 
 func _list_item_clicked(index: int, _at_position: Vector2, _mouse_button_index: int) -> void:
 	var projects = DirAccess.get_directories_at(SAVE_DIR + "Projects")
 	for project in range(projects.size()):
-		var projectData = FileAccess.open(SAVE_DIR + "Projects/" + projects[project] + "/info" + EXT_DATA, FileAccess.READ_WRITE)
+		var projectData = FileAccess.open(SAVE_DIR + "Projects/" + projects[project] + "/info" + EXT_DATA, FileAccess.READ)
 		if projectList.get_item_text(index) == projectData.get_line():
 			projectName.text = "Name : " + projectList.get_item_text(index)
 			projectTags.text = "Tags : " + projectData.get_line()
 			projectDescription.text = "Description : " + projectData.get_line()
+	selectedProject = projectList.get_item_text(index)
 
 func _cancel_toggled(state: bool) -> void:
 	if state:

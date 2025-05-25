@@ -27,6 +27,8 @@ var circuit: Circuit
 
 # private variables
 var _sim_counter: int = -1 # Frames until next simulate() call
+
+@warning_ignore("unused_private_class_variable")
 var _is_simulating: bool = false # False : Dispatch new instance | True : Get Results
 
 # @onready variables

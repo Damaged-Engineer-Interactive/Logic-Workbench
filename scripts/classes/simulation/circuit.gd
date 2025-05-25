@@ -48,7 +48,7 @@ var connections: Array[Connection] = []
 
 var can_simulate: bool = false
 
-var GATES: Dictionary[GATE_TYPES, Variant] = {
+static var GATES: Dictionary[GATE_TYPES, Variant] = {
 	GATE_TYPES.AND: AndGate,
 	GATE_TYPES.NAND: NandGate,
 	GATE_TYPES.OR: OrGate,
@@ -177,152 +177,155 @@ func _simulate_single_thread() -> void:
 	for i: int in  range(0, _amount_of_gates):
 		var gate: Gate = gates[i]
 		
-		match gate.gate_type:
-			GATE_TYPES.AND:
-				var result: Value.States = Value.States.HIGH
-				for j in range(0, gate.input_amount):
-					var state: Value.States = gate.input_values[j].get_bit(0)
-					if state == Value.States.LOW:
-						result = state
-					elif state == Value.States.ERROR:
-						result = state
-						break
-					elif state == Value.States.UNKNOWN:
-						result = state
-						break
-				gate.output_values[0].set_bit(0, result)
+		if gate != null:
+			match gate.gate_type:
+				GATE_TYPES.AND:
+					var result: Value.States = Value.States.HIGH
+					for j in range(0, gate.input_amount):
+						var state: Value.States = gate.input_values[j].get_bit(0)
+						if state == Value.States.LOW:
+							result = state
+						elif state == Value.States.ERROR:
+							result = state
+							break
+						elif state == Value.States.UNKNOWN:
+							result = state
+							break
+					gate.output_values[0].set_bit(0, result)
 			
-			GATE_TYPES.NAND:
-				var result: Value.States = Value.States.HIGH
-				for j in range(0, gate.input_amount):
-					var state: Value.States = gate.input_values[j].get_bit(0)
-					if state == Value.States.LOW:
-						result = state
-					elif state == Value.States.ERROR:
-						result = state
-						break
-					elif state == Value.States.UNKNOWN:
-						result = state
-						break
-				if result == Value.States.HIGH:
-					result = Value.States.LOW
-				elif result == Value.States.LOW:
-					result = Value.States.HIGH
-				gate.output_values[0].set_bit(0, result)
+				GATE_TYPES.NAND:
+					var result: Value.States = Value.States.HIGH
+					for j in range(0, gate.input_amount):
+						var state: Value.States = gate.input_values[j].get_bit(0)
+						if state == Value.States.LOW:
+							result = state
+						elif state == Value.States.ERROR:
+							result = state
+							break
+						elif state == Value.States.UNKNOWN:
+							result = state
+							break
+					if result == Value.States.HIGH:
+						result = Value.States.LOW
+					elif result == Value.States.LOW:
+						result = Value.States.HIGH
+					gate.output_values[0].set_bit(0, result)
 			
-			GATE_TYPES.OR:
-				var result: Value.States = Value.States.LOW
-				for j in range(0, gate.input_amount):
-					var state: Value.States = gate.input_values[j].get_bit(0)
-					if state == Value.States.HIGH:
-						result = state
-					elif state == Value.States.ERROR:
-						result = state
-						break
-					elif state == Value.States.UNKNOWN:
-						result = state
-						break
-				gate.output_values[0].set_bit(0, result)
+				GATE_TYPES.OR:
+					var result: Value.States = Value.States.LOW
+					for j in range(0, gate.input_amount):
+						var state: Value.States = gate.input_values[j].get_bit(0)
+						if state == Value.States.HIGH:
+							result = state
+						elif state == Value.States.ERROR:
+							result = state
+							break
+						elif state == Value.States.UNKNOWN:
+							result = state
+							break
+					gate.output_values[0].set_bit(0, result)
 			
-			GATE_TYPES.NOR:
-				var result: Value.States = Value.States.LOW
-				for j in range(0, gate.input_amount):
-					var state: Value.States = gate.input_values[j].get_bit(0)
-					if state == Value.States.HIGH:
-						result = state
-					elif state == Value.States.ERROR:
-						result = state
-						break
-					elif state == Value.States.UNKNOWN:
-						result = state
-						break
-				if result == Value.States.HIGH:
-					result = Value.States.LOW
-				elif result == Value.States.LOW:
-					result = Value.States.HIGH
-				gate.output_values[0].set_bit(0, result)
+				GATE_TYPES.NOR:
+					var result: Value.States = Value.States.LOW
+					for j in range(0, gate.input_amount):
+						var state: Value.States = gate.input_values[j].get_bit(0)
+						if state == Value.States.HIGH:
+							result = state
+						elif state == Value.States.ERROR:
+							result = state
+							break
+						elif state == Value.States.UNKNOWN:
+							result = state
+							break
+					if result == Value.States.HIGH:
+						result = Value.States.LOW
+					elif result == Value.States.LOW:
+						result = Value.States.HIGH
+					gate.output_values[0].set_bit(0, result)
 			
-			GATE_TYPES.NOT:
-				var result: Value.States = Value.States.UNKNOWN
-				var value: Value.States = gate.input_values[0].get_bit(0)
-				if value == Value.States.HIGH:
-					result = Value.States.LOW
-				elif value == Value.States.LOW:
-					result = Value.States.HIGH
-				else:
-					result = value
-				gate.output_values[0].set_bit(0, result)
+				GATE_TYPES.NOT:
+					var result: Value.States = Value.States.UNKNOWN
+					var value: Value.States = gate.input_values[0].get_bit(0)
+					if value == Value.States.HIGH:
+						result = Value.States.LOW
+					elif value == Value.States.LOW:
+						result = Value.States.HIGH
+					else:
+						result = value
+					gate.output_values[0].set_bit(0, result)
 			
-			GATE_TYPES.XOR:
-				var result: Value.States = Value.States.HIGH
-				var value1: Value.States = gate.input_values[0].get_bit(0)
-				var value2: Value.States = gate.input_values[1].get_bit(0)
-				if value1 == Value.States.ERROR or value2 == Value.States.ERROR:
-					result = Value.States.ERROR
-				elif value1 == Value.States.UNKNOWN or value2 == Value.States.UNKNOWN:
-					result = Value.States.UNKNOWN
-				elif value1 == value2:
-					result = Value.States.LOW
-				else:
-					result = Value.States.HIGH
-				gate.output_values[0].set_bit(0, result)
-			
-			GATE_TYPES.XNOR:
-				var result: Value.States = Value.States.HIGH
-				var value1: Value.States = gate.input_values[0].get_bit(0)
-				var value2: Value.States = gate.input_values[1].get_bit(0)
-				if value1 == Value.States.ERROR or value2 == Value.States.ERROR:
-					result = Value.States.ERROR
-				elif value1 == Value.States.UNKNOWN or value2 == Value.States.UNKNOWN:
-					result = Value.States.UNKNOWN
-				elif value1 == value2:
-					result = Value.States.LOW
-				else:
-					result = Value.States.HIGH
-				if result == Value.States.HIGH:
-					result = Value.States.LOW
-				elif result == Value.States.LOW:
-					result = Value.States.HIGH
-				gate.output_values[0].set_bit(0, result)
-			
-			GATE_TYPES.STATE:
-				var result: Value.States = Value.States.UNKNOWN
-				var value: Value.States = gate.input_values[0].get_bit(0)
-				var enable: Value.States = gate.input_values[1].get_bit(0)
-				if value == Value.States.ERROR or enable == Value.States.ERROR:
-					result = Value.States.ERROR
-				elif value == Value.States.UNKNOWN or enable == Value.States.UNKNOWN:
-					result = Value.States.UNKNOWN
-				elif enable == Value.States.LOW:
-					result = Value.States.UNKNOWN
-				else:
-					result = value
-				gate.output_values[0].set_bit(0, result)
-			
-			GATE_TYPES.ON:
-				gate.output_values[0].set_bit(0, Value.States.HIGH)
-			
-			GATE_TYPES.OFF:
-				gate.output_values[0].set_bit(0, Value.States.LOW)
-			
-			GATE_TYPES.TRI:
-				gate.output_values[0].set_bit(0, Value.States.UNKNOWN)
-			
-			GATE_TYPES.ERROR:
-				gate.output_values[0].set_bit(0, Value.States.ERROR)
-			
-			GATE_TYPES.SELECTOR:
-				gate.output_values[0].set_bit(0, gate.state)
+				GATE_TYPES.XOR:
+					var result: Value.States = Value.States.HIGH
+					var value1: Value.States = gate.input_values[0].get_bit(0)
+					var value2: Value.States = gate.input_values[1].get_bit(0)
+					if value1 == Value.States.ERROR or value2 == Value.States.ERROR:
+						result = Value.States.ERROR
+					elif value1 == Value.States.UNKNOWN or value2 == Value.States.UNKNOWN:
+						result = Value.States.UNKNOWN
+					elif value1 == value2:
+						result = Value.States.LOW
+					else:
+						result = Value.States.HIGH
+					gate.output_values[0].set_bit(0, result)
+				
+				GATE_TYPES.XNOR:
+					var result: Value.States = Value.States.HIGH
+					var value1: Value.States = gate.input_values[0].get_bit(0)
+					var value2: Value.States = gate.input_values[1].get_bit(0)
+					if value1 == Value.States.ERROR or value2 == Value.States.ERROR:
+						result = Value.States.ERROR
+					elif value1 == Value.States.UNKNOWN or value2 == Value.States.UNKNOWN:
+						result = Value.States.UNKNOWN
+					elif value1 == value2:
+						result = Value.States.LOW
+					else:
+						result = Value.States.HIGH
+					if result == Value.States.HIGH:
+						result = Value.States.LOW
+					elif result == Value.States.LOW:
+						result = Value.States.HIGH
+					gate.output_values[0].set_bit(0, result)
+				
+				GATE_TYPES.STATE:
+					var result: Value.States = Value.States.UNKNOWN
+					var value: Value.States = gate.input_values[0].get_bit(0)
+					var enable: Value.States = gate.input_values[1].get_bit(0)
+					if value == Value.States.ERROR or enable == Value.States.ERROR:
+						result = Value.States.ERROR
+					elif value == Value.States.UNKNOWN or enable == Value.States.UNKNOWN:
+						result = Value.States.UNKNOWN
+					elif enable == Value.States.LOW:
+						result = Value.States.UNKNOWN
+					else:
+						result = value
+					gate.output_values[0].set_bit(0, result)
+				
+				GATE_TYPES.ON:
+					gate.output_values[0].set_bit(0, Value.States.HIGH)
+				
+				GATE_TYPES.OFF:
+					gate.output_values[0].set_bit(0, Value.States.LOW)
+				
+				GATE_TYPES.TRI:
+					gate.output_values[0].set_bit(0, Value.States.UNKNOWN)
+				
+				GATE_TYPES.ERROR:
+					gate.output_values[0].set_bit(0, Value.States.ERROR)
+				
+				GATE_TYPES.SELECTOR:
+					gate.output_values[0].set_bit(0, gate.state)
 		
-		gate.redraw()
+		if gate != null:
+			gate.redraw()
 	
 	# Connection Simulation
 	for i in range(_amount_of_connections):
 		var connection: Connection = connections[i]
-		var output_gate: Gate = gates[connection.gate_in]
-		var output_value: Value = output_gate.output_values[connection.port_in].copy()
-		var input_gate: Gate = gates[connection.gate_out]
-		input_gate.input_values[connection.port_out] = output_value
+		if connection != null:
+			var output_gate: Gate = gates[connection.gate_in]
+			var output_value: Value = output_gate.output_values[connection.port_in].copy()
+			var input_gate: Gate = gates[connection.gate_out]
+			input_gate.input_values[connection.port_out] = output_value
 
 # subclasses
  

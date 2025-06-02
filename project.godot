@@ -30,6 +30,7 @@ driver/driver=""
 DC="*res://scripts/autoloads/discord_rpc.gd"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
 Global="*res://scripts/autoloads/Global.gd"
+GateRegistry="*res://scripts/classes/simulation/GateRegistry.gd"
 
 [debug]
 

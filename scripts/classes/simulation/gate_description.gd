@@ -20,19 +20,21 @@ var name: String
 ## The Type of the Gate
 var type: String
 
-## The group, that this gate is part of
-var group: String
-
 ## The Size of the Gate
 var size: Vector2i
 
 ## The Color of the Gate
 var color: Color
 
+## If this Gate is maintained by the GateRegistry
+var registry: bool = false
+
+## How many ticks this Gate need, to fully simulate
+var ticks: int = 1
+
 #region AT RUNTIME
-## The ID of the Gate[br]
-## Example : [code]"0:0" | <circuit level (chip in chip>:<gate id>[/code]
-var id: String
+## The ID of the Gate
+var id: String = GateRegistry.make_uuid()
 
 ## The Position of the Gate[br]
 ## x, y, layer
@@ -60,15 +62,12 @@ var buttons: Array[ButtonDescription]
 
 # public functions
 ## Returns a copy of this GateDescription, with the new id
-func copy(_id: String = "") -> GateDescription:
+func copy() -> GateDescription:
 	var res: GateDescription = GateDescription.new()
 	res.name = name
 	res.type = type
-	res.group = group
 	res.size = size
 	res.color = color
-	
-	res.id = _id
 	
 	res.inputs = inputs
 	res.outputs = outputs

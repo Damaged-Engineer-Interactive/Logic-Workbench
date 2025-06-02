@@ -16,9 +16,8 @@ extends Node
 # @export variables
 
 # public variables
-## The ID of the Connection[br]
-## Example : [code]"0:0" | <circuit level (chip in chip>:<gate id>[/code]
-var id: String
+## The ID of the Connection
+var id: String = GateRegistry.make_uuid()
 
 #region Output
 ## The ID of the first Gate
@@ -52,14 +51,16 @@ var port_out: int = -1
 
 # public functions
 ## Constructor
-static func create(_id: String, from_gate: String, from_port: int, to_gate: String, to_port: int) -> Connection:
+static func create(from_gate: String, from_port: int, to_gate: String, to_port: int) -> Connection:
 	var connection: Connection = Connection.new()
-	connection.id = _id
 	connection.gate_in = from_gate
 	connection.port_in = from_port
 	connection.gate_out = to_gate
 	connection.port_out = to_port
 	return connection
+
+func copy() -> Connection:
+	return create(gate_in, port_in, gate_out, port_out)
 
 # private functions
 

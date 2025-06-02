@@ -21,7 +21,7 @@ var id: int
 
 #region Output
 ## The ID of the first Gate
-var from_gate: int = -1
+var from_gate: CachedGate
 
 ## The Port of the first gate
 var from_port: int = -1
@@ -29,7 +29,7 @@ var from_port: int = -1
 
 #region Input
 ## The ID of the second Gate
-var to_gate: int = -1
+var to_gate: CachedGate
 
 ## The Port of the second gate
 var to_port: int = -1

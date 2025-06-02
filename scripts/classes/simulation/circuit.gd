@@ -40,6 +40,20 @@ func _init():
 # virtual functions to override
 
 # public functions
+func copy() -> Circuit:
+	var res: Circuit = super() as Circuit
+	var old_new_map: Dictionary[String, String] = {}
+	for gate: GateDescription in gates.values():
+		var new_gate: GateDescription = gate.copy()
+		res.gates[new_gate.id] = new_gate
+		old_new_map[gate.id] = new_gate.id
+	for connection: Connection in connections.values():
+		var new_connection: Connection = connection.copy()
+		new_connection.gate_in = old_new_map[connection.gate_in]
+		new_connection.gate_out = old_new_map[connection.gate_out]
+		res.connections[new_connection.id] = new_connection
+	return res
+
 func flatten_recursive() -> Array[Dictionary]: # [Gates, Connections]
 	var _gates: Dictionary[String, GateDescription]
 	var _connections: Dictionary[String, Connection]

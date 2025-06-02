@@ -34,6 +34,13 @@ var static_gates: Array[int]
 ## The Complexity of the Circuit
 var complexity: float
 
+## How many ticks are needed to fully simulate it
+var ticks: int
+
+## If the circuit is valid[br]
+## Invalid examples : 2 gates writing to the same port without using a gate inbetween
+var valid: bool
+
 ## All of the Circuits possible Data
 var data: Dictionary[String, Variant]
 
@@ -52,7 +59,8 @@ func _init(from: Circuit) -> void:
 	var old_gate_map: Dictionary[int, String] = {} #		New ID to Old ID Map		| Gate ID (int) 		-> Gate ID (String)
 	var old_conn_map: Dictionary[int, String] = {} #		New ID to Old ID Map		| Conn ID (int) 		-> Conn ID (String)
 	var conn_id_map: Dictionary[String, int] = {} #			Old ID to New ID Map		| Conn ID (String) 		-> Conn ID (int)
-	#var orig_merged_map: Dictionary[String, int] = {} #		Old Gate to New Gate Map	| Gate ID (int) 		-> Gate ID (int)
+	var port_write_map: Dictionary[String, int] = {} #		Times a port is written to	| Gate + Port (String)	-> Tiems (int)
+	#var orig_merged_map: Dictionary[String, int] = {} #	Old Gate to New Gate Map	| Gate ID (int) 		-> Gate ID (int)
 	var dependency: Dictionary[int, Array] = {} #			Dependendencies of a Gates	| Gate ID (int) 		-> Gate IDs (Array(int))
 	var reverse_dependency: Dictionary[int, Array] = {} #	Dependants of a Gate		| Gate ID (int) 		-> Gate IDs (Array(int))
 	var removed_list: Array[String] = [] #					Removed Gates				| Gate IDs (Array(String))
@@ -67,9 +75,11 @@ func _init(from: Circuit) -> void:
 	
 	# Step  3 : Convert to cached class and build dependency graph
 	# Step  4.1 : Prune disconnected Gates (no input, no output) | Check handled inside connection loop
+	# Step  5.1 : Conflict input detection | Check handled inside connection loop
 	var id_count: int = 0
 	var in_connected_gates: Array[int] = []
 	var out_connected_gates: Array[int] = []
+	ticks = 1
 	for gate: GateDescription in f_gates.values():
 		var cached = CachedGate.from_description(gate)
 		cached.id = id_count
@@ -78,6 +88,7 @@ func _init(from: Circuit) -> void:
 		reverse_dependency[id_count] = []
 		gate_id_map[gate.id] = id_count
 		old_gate_map[id_count] = gate.id
+		ticks = max(ticks, gate.ticks)
 		if gate.type == "IN":
 			rank_map[id_count] = 0
 			in_connected_gates.append(id_count)
@@ -90,9 +101,9 @@ func _init(from: Circuit) -> void:
 	for connection: Connection in f_conns.values():
 		var cached = CachedConnection.new()
 		cached.id = id_count
-		cached.from_gate = gate_id_map[connection.gate_in]
+		cached.from_gate = gate_map[gate_id_map[connection.gate_in]]
 		cached.from_port = connection.port_in
-		cached.to_gate = gate_id_map[connection.gate_out]
+		cached.to_gate = gate_map[gate_id_map[connection.gate_out]]
 		cached.to_port = connection.port_out
 		conn_map[id_count] = cached
 		old_conn_map[id_count] = connection.id
@@ -100,11 +111,17 @@ func _init(from: Circuit) -> void:
 		reverse_dependency[cached.from_gate].append(cached.to_gate)
 		conn_id_map[connection.id] = id_count
 		id_count += 1
-		# Step 4 here
+		# Step 4.1 here
 		if not cached.from_gate in out_connected_gates:
 			out_connected_gates.append(cached.from_gate)
 		if not cached.to_gate in in_connected_gates:
 			in_connected_gates.append(cached.to_gate)
+		# Step 5.1 here
+		var string: String = str(cached.to_gate.id) + "|" + str(cached.to_port)
+		if port_write_map.has(string):
+			port_write_map[string] += 1
+		else:
+			port_write_map[string] = 0
 	
 	# Step  4.2 : Prune disconnected Gates (no input, no output) | Removal
 	var changed: bool = true
@@ -130,55 +147,60 @@ func _init(from: Circuit) -> void:
 	while changed == true:
 		changed = false
 		for connection: CachedConnection in conn_map.values():
-			if not(connection.from_gate in removed_new_list) and not(connection.to_gate in removed_new_list):
+			if not(connection.from_gate.id in removed_new_list) and not(connection.to_gate.id in removed_new_list):
 				continue
 			var id: int = connection.id
 			conn_map.erase(id)
 			conn_id_map.erase(old_conn_map[id])
 			old_conn_map.erase(id)
 			if dependency.has(connection.to_gate):
-				dependency[connection.to_gate].erase(connection.from_gate)
+				dependency[connection.to_gate.id].erase(connection.from_gate.id)
 			if reverse_dependency.has(connection.from_gate):
-				reverse_dependency[connection.from_gate].erase(connection.to_gate)
+				reverse_dependency[connection.from_gate.id].erase(connection.to_gate.id)
 			changed = true
 	
-	# Step  5 : Merging duplicated gates (identical io)
+	# Step 5.2 : Check if any port has multiple writes
+	if port_write_map.values().max() > 1:
+		valid = false
+		printerr("Invalid Circuit! Conflicting port writes")
+	
+	# Step  6 : Merging identical gate sequences (same result)
 	# <skipped for now>
 	# uses : orig_merged_map
 	
-	# Step  6 : Constant Propagation and Collapsing
+	# Step  7 : Constant Propagation and Collapsing
 	# <skipped for now>
 	# uses : stat_list
 	
-	# Step  7 : Combinational Loops (DFS cycle detection)
+	# Step  8 : Combinational Loops (DFS cycle detection)
 	# <skipped for now>
 	# uses : loop_list
 	
-	# Step  8 : Rank calculation (forward dependency depth), the lower, the sooner it will be simulated
+	# Step  9 : Rank calculation (forward dependency depth), the lower, the sooner it will be simulated
 	for id: int in gate_map.keys():
 		gate_map[id].rank = _compute_rank(id, [], rank_map, dependency)
 	
-	# Step  9 : LUT optimization
+	# Step 10 : LUT optimization
 	# <skipped for now>
 	
-	# Step 10 : Sort gates by rank:
+	# Step 11 : Sort gates by rank:
 	var sorted_gates: Array[CachedGate] = gate_map.values().duplicate()
 	sorted_gates.sort_custom(func(a, b): return a.rank < b.rank)
 	
-	# Step 11 : Group gats by rank for parallel execution (thread partitioning
+	# Step 12 : Group gats by rank for parallel execution (thread partitioning
 	for gate: CachedGate in sorted_gates:
 		if not ranked_map.has(gate.rank):
 			ranked_map[gate.rank] = [gate]
 			continue
 		ranked_map[gate.rank].append(gate)
 	 
-	# Step 12 : Calculate Complexity
+	# Step 13 : Calculate Complexity
 	for rank: int in ranked_map.keys():
 		complex += log(1.0 + len(ranked_map[rank]))
 	complex = float(complex) / float(ranked_map.size() - 1) # complexity = complexity / number of ranks
 	complex = max(complex * 0.75, 1.0) # down scaled by 75%
 	
-	# Step 13 : Make final cached circuit
+	# Step 14 : Make final cached circuit
 	gates = gate_map
 	connections = conn_map
 	parallel_schedule = ranked_map
@@ -195,7 +217,9 @@ func _init(from: Circuit) -> void:
 		"dependency": dependency,
 		"reverse_dependency": reverse_dependency,
 		"removed_list": removed_list,
-		"complexity": complex
+		"complexity": complex,
+		"ticks": ticks,
+		"valid": valid
 	}
 
 # optional built-in _enter_tree() function

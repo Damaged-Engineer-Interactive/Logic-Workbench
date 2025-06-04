@@ -1,7 +1,7 @@
 # The name of the Class
 class_name Connection
 # The class this class extends
-extends Node
+extends Object
 # Docstring
 ## short description goes here 
 ## 
@@ -12,6 +12,12 @@ extends Node
 # Enums
 
 # Constants
+const IO_TYPES: Array[String] = [
+	"IO.INPUT",
+	"IO.OUTPUT",
+	"ROUTING.TUNNEL_IN",
+	"ROUTING.TUNNEL_OUT"
+]
 
 # @export variables
 
@@ -21,18 +27,18 @@ var id: String = GateRegistry.make_uuid()
 
 #region Output
 ## The ID of the first Gate
-var gate_in: String = ""
+var from_gate: String = ""
 
 ## The Port of the first gate
-var port_in: int = -1
+var from_port: int = -1
 #endregion
 
 #region Input
 ## The ID of the second Gate
-var gate_out: String = ""
+var to_gate: String = ""
 
 ## The Port of the second gate
-var port_out: int = -1
+var to_port: int = -1
 #endregion
 
 # private variables
@@ -51,16 +57,31 @@ var port_out: int = -1
 
 # public functions
 ## Constructor
-static func create(from_gate: String, from_port: int, to_gate: String, to_port: int) -> Connection:
+static func create(_from_gate: String, _from_port: int, _to_gate: String, _to_port: int) -> Connection:
 	var connection: Connection = Connection.new()
-	connection.gate_in = from_gate
-	connection.port_in = from_port
-	connection.gate_out = to_gate
-	connection.port_out = to_port
+	connection.from_gate = _from_gate
+	connection.from_port = _from_port
+	connection.to_gate = _to_gate
+	connection.to_port = _to_port
 	return connection
 
 func copy() -> Connection:
-	return create(gate_in, port_in, gate_out, port_out)
+	return create(from_gate, from_port, to_gate, to_port)
+
+func uses_from_io() -> bool: # outputs
+	var res: bool = false
+	for type: String in IO_TYPES:
+		res = res or from_gate.begins_with(type)
+	return res
+
+func uses_to_io() -> bool: # inputs
+	var res: bool = false
+	for type: String in IO_TYPES:
+		res = res or to_gate.begins_with(type)
+	return res
+
+func uses_io() -> bool:
+	return uses_from_io() or uses_to_io()
 
 # private functions
 

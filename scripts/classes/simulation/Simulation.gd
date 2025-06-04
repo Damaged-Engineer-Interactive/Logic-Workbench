@@ -109,6 +109,11 @@ func _simulate_connections() -> void:
 	WorkerThreadPool.wait_for_group_task_completion(task_id)
 	task_id = -1
 
+# Called by the threads on every Connection
+func _simulate_connection(id: int):
+	var connection: CachedConnection = circuit.connections[id]
+	connection.to_gate.inputs[connection.to_port] = connection.from_gate.outputs[connection.from_port].copy()
+
 # Called by the threads on every Gate
 # same for connections, but without ranks
 func _simulate_gate(id: int):
@@ -117,8 +122,3 @@ func _simulate_gate(id: int):
 	print("simulating gate : %s [%s]" % [gate.id, gate.type])
 	
 	gate.mutex.unlock()
-
-# Called by the threads on every Connection
-func _simulate_connection(id: int):
-	var connection: CachedConnection = circuit.connections[id]
-	connection.to_gate.inputs[connection.to_port] = connection.from_gate.outputs[connection.from_port].copy()

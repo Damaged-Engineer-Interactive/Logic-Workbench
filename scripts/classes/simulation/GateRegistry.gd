@@ -48,7 +48,7 @@ func _ready() -> void:
 #region Chip Making
 func make_collections() -> void:
 	make_io()
-	#make_bus()
+	make_routing()
 	make_combinational()
 
 func make_io() -> void:
@@ -68,7 +68,8 @@ func make_io() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ROYAL_BLUE
 	version.inputs = []
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
+	version.data = { "slot": -1 }
 	gate.versions["IO.INPUT.1"] = version
 	
 	version = GateDescription.new()
@@ -77,7 +78,8 @@ func make_io() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ROYAL_BLUE
 	version.inputs = []
-	version.outputs = [ PinDescription.create("OUT", 0, 8) ]
+	version.outputs = [ PinDescription.create("OUT", 8) ]
+	version.data = { "slot": -1 }
 	gate.versions["IO.INPUT.8"] = version
 	
 	group.gates["IO.INPUT"] = gate
@@ -91,8 +93,9 @@ func make_io() -> void:
 	version.type = "IO.OUTPUT.1"
 	version.size = Vector2i(8, 4)
 	version.color = Color.ROYAL_BLUE
-	version.inputs = [ PinDescription.create("IN", 0, 1) ]
+	version.inputs = [ PinDescription.create("IN", 1) ]
 	version.outputs = []
+	version.data = { "slot": -1 }
 	gate.versions["IO.OUTPUT.1"] = version
 	
 	version = GateDescription.new()
@@ -100,17 +103,18 @@ func make_io() -> void:
 	version.type = "IO.OUTPUT.8"
 	version.size = Vector2i(8, 4)
 	version.color = Color.ROYAL_BLUE
-	version.inputs = [ PinDescription.create("IN", 0, 8) ]
+	version.inputs = [ PinDescription.create("IN", 8) ]
 	version.outputs = []
+	version.data = { "slot": -1 }
 	gate.versions["IO.OUTPUT.8"] = version
 	
 	group.gates["IO.OUTPUT"] = gate
 	
 	_map["IO"] = group
 
-func make_bus() -> void:
+func make_routing() -> void:
 	var group: GroupEntry = GroupEntry.new()
-	group.name = "BUS"
+	group.name = "ROUTING"
 	
 	var gate: GateEntry
 	var version: GateDescription
@@ -125,16 +129,16 @@ func make_bus() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("Select", 0, 1),
-		PinDescription.create("A", 1, 8),
-		PinDescription.create("B", 2, 8)
+		PinDescription.create("Select", 1),
+		PinDescription.create("A", 8),
+		PinDescription.create("B", 8)
 	]
 	version.outputs = [
-		PinDescription.create("OUT", 0, 8)
+		PinDescription.create("OUT", 8)
 	]
-	gate.versions["BUS.MUX.8"] = version
+	gate.versions["ROUTING.MUX.8"] = version
 	
-	group.gates["BUS.MUX"] = gate
+	group.gates["ROUTING.MUX"] = gate
 	
 	# ### ### ### ###
 	gate = GateEntry.new()
@@ -142,21 +146,20 @@ func make_bus() -> void:
 	
 	version = GateDescription.new()
 	version.name = "DEMUX"
-	version.type = "BUS.DEMUX.8"
-	gate.group = "BUS"
+	version.type = "ROUTING.DEMUX.8"
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("Select", 0, 1),
-		PinDescription.create("IN", 1, 8)
+		PinDescription.create("Select", 1),
+		PinDescription.create("IN", 8)
 	]
 	version.outputs = [
-		PinDescription.create("A", 0, 8),
-		PinDescription.create("B", 1, 8)
+		PinDescription.create("A", 8),
+		PinDescription.create("B", 8)
 	]
-	gate.versions["BUS.DEMUX.8"] = version
+	gate.versions["ROUTING.DEMUX.8"] = version
 	
-	group.gates["BUS.DEMUX"] = gate
+	group.gates["ROUTING.DEMUX"] = gate
 	
 	# ### ### ### ###
 	gate = GateEntry.new()
@@ -164,21 +167,79 @@ func make_bus() -> void:
 	
 	version = GateDescription.new()
 	version.name = "DECODER"
-	version.type = "BUS.DECODER.4"
-	gate.group = "BUS"
+	version.type = "ROUTING.DECODER.4"
+	version.size = Vector2i(8, 4)
+	version.color = Color.ORANGE
+	version.inputs = [ PinDescription.create("Select", 4) ]
+	version.outputs = []
+	for i in range(0, 16): # 16 Outputs, "0" to "15"
+		version.outputs.append(PinDescription.create(str(i), 1))
+	gate.versions["ROUTING.DECODER.4"] = version
+	
+	group.gates["ROUTING.DECODER"] = gate
+	
+	# ### ### ### ###
+	gate = GateEntry.new()
+	gate.name = "CONVERTER"
+	
+	version = GateDescription.new()
+	version.name = "CONVERTER"
+	version.type = "ROUTING.CONVERTER.1_4"
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("Select", 0, 4)
+		PinDescription.create("0", 1),
+		PinDescription.create("1", 1),
+		PinDescription.create("2", 1),
+		PinDescription.create("3", 1)
 	]
-	version.outputs = []
-	for i in range(0, 16): # 16 Outputs, "0" to "15"
-		version.outputs.append(PinDescription.create(str(i), i, 1))
-	gate.versions["BUS.DECODER.4"] = version
+	version.outputs = [ PinDescription.create("OUT", 4) ]
+	gate.versions["ROUTING.CONVERTER.1_4"] = version
 	
-	group.gates["BUS.DECODER"] = gate
+	# ###
+	version = GateDescription.new()
+	version.name = "CONVERTER"
+	version.type = "ROUTING.CONVERTER.4_1"
+	version.size = Vector2i(8, 4)
+	version.color = Color.ORANGE
+	version.inputs = [ PinDescription.create("IN", 4) ]
+	version.outputs = [
+		PinDescription.create("0", 1),
+		PinDescription.create("1", 1),
+		PinDescription.create("2", 1),
+		PinDescription.create("3", 1)
+	]
+	gate.versions["ROUTING.CONVERTER.4_1"] = version
 	
-	_map["BUS"] = group
+	# ###
+	version = GateDescription.new()
+	version.name = "CONVERTER"
+	version.type = "ROUTING.CONVERTER.4_8"
+	version.size = Vector2i(8, 4)
+	version.color = Color.ORANGE
+	version.inputs = [
+		PinDescription.create("4-7", 4),
+		PinDescription.create("0-3", 4)
+	]
+	version.outputs = [ PinDescription.create("OUT", 8) ]
+	gate.versions["ROUTING.CONVERTER.4_8"] = version
+	
+	# ###
+	version = GateDescription.new()
+	version.name = "CONVERTER"
+	version.type = "ROUTING.CONVERTER.8_4"
+	version.size = Vector2i(8, 4)
+	version.color = Color.ORANGE
+	version.inputs = [ PinDescription.create("IN", 8) ]
+	version.outputs = [
+		PinDescription.create("4-7", 4),
+		PinDescription.create("0-3", 4)
+	]
+	gate.versions["ROUTING.CONVERTER.8_4"] = version
+	
+	group.gates["ROUTING.CONVERTER"] = gate
+	
+	_map["ROUTING"] = group
 
 func make_combinational() -> void:
 	var group: GroupEntry = GroupEntry.new()
@@ -197,10 +258,10 @@ func make_combinational() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("A", 0, 1),
-		PinDescription.create("B", 1, 1)
+		PinDescription.create("A", 1),
+		PinDescription.create("B", 1)
 	]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["COMBINATIONAL.AND.1"] = version
 	
 	group.gates["COMBINATIONAL.AND"] = gate
@@ -215,10 +276,10 @@ func make_combinational() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("A", 0, 1),
-		PinDescription.create("B", 1, 1)
+		PinDescription.create("A", 1),
+		PinDescription.create("B", 1)
 	]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["COMBINATIONAL.NAND.1"] = version
 	
 	group.gates["COMBINATIONAL.NAND"] = gate
@@ -233,10 +294,10 @@ func make_combinational() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("A", 0, 1),
-		PinDescription.create("B", 1, 1)
+		PinDescription.create("A", 1),
+		PinDescription.create("B", 1)
 	]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["COMBINATIONAL.OR.1"] = version
 	
 	group.gates["COMBINATIONAL.OR"] = gate
@@ -251,10 +312,10 @@ func make_combinational() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("A", 0, 1),
-		PinDescription.create("B", 1, 1)
+		PinDescription.create("A", 1),
+		PinDescription.create("B", 1)
 	]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["COMBINATIONAL.NOR.1"] = version
 	
 	group.gates["COMBINATIONAL.NOR"] = gate
@@ -269,10 +330,10 @@ func make_combinational() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("IN", 0, 1)
+		PinDescription.create("IN", 1)
 	]
 	version.outputs = [
-		PinDescription.create("OUT", 0, 1)
+		PinDescription.create("OUT", 1)
 	]
 	gate.versions["COMBINATIONAL.NOT.1"] = version
 	
@@ -288,10 +349,10 @@ func make_combinational() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("A", 0, 1),
-		PinDescription.create("B", 1, 1)
+		PinDescription.create("A", 1),
+		PinDescription.create("B", 1)
 	]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["COMBINATIONAL.XOR.1"] = version
 	
 	group.gates["COMBINATIONAL.XOR"] = gate
@@ -306,10 +367,10 @@ func make_combinational() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.ORANGE
 	version.inputs = [
-		PinDescription.create("A", 0, 1),
-		PinDescription.create("B", 1, 1)
+		PinDescription.create("A", 1),
+		PinDescription.create("B", 1)
 	]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["COMBINATIONAL.XNOR.1"] = version
 	
 	group.gates["COMBINATIONAL.XNOR"] = gate
@@ -333,7 +394,7 @@ func make_time() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.REBECCA_PURPLE
 	version.inputs = []
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["TIME.CLOCK.*"] = version
 	
 	group.gates["TIME.CLOCK"] = gate
@@ -348,10 +409,10 @@ func make_time() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.REBECCA_PURPLE
 	version.inputs = [
-		PinDescription.create("TIME", 0, 8),
-		PinDescription.create("SIGNAL", 1, 1)
+		PinDescription.create("TIME", 8),
+		PinDescription.create("SIGNAL", 1)
 	]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["TIME.CAPACITOR.1"] = version
 	
 	group.gates["TIME.CAPACITOR"] = gate
@@ -365,8 +426,8 @@ func make_time() -> void:
 	version.type = "TIME.PULSE.1"
 	version.size = Vector2i(8, 4)
 	version.color = Color.REBECCA_PURPLE
-	version.inputs = [ PinDescription.create("SIGNAL", 0, 1), ]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.inputs = [ PinDescription.create("SIGNAL", 1), ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["TIME.PULSE.1"] = version
 	
 	group.gates["TIME.PULSE"] = gate
@@ -381,10 +442,10 @@ func make_time() -> void:
 	version.size = Vector2i(8, 4)
 	version.color = Color.REBECCA_PURPLE
 	version.inputs = [
-		PinDescription.create("AMOUNT", 0, 8),
-		PinDescription.create("SIGNAL", 1, 1)
+		PinDescription.create("AMOUNT", 8),
+		PinDescription.create("SIGNAL", 1)
 	]
-	version.outputs = [ PinDescription.create("OUT", 0, 1) ]
+	version.outputs = [ PinDescription.create("OUT", 1) ]
 	gate.versions["TIME.DELAY.1"] = version
 	
 	group.gates["TIME.DELAY"] = gate

@@ -17,9 +17,6 @@ extends Object
 ## The Name of the Pin
 @export var name: String
 
-## The slot of the Pin
-@export var slot: int
-
 ## The State of the Pin
 @export var state: Value
 
@@ -41,10 +38,9 @@ extends Object
 
 # public functions
 ## Constructor
-static func create(_name: String, _slot: int, bit_size: int) -> PinDescription:
+static func create(_name: String, bit_size: int) -> PinDescription:
 	var pin := PinDescription.new()
 	pin.name = _name
-	pin.slot = _slot
 	pin.state = Value.from_default(bit_size)
 	return pin
 

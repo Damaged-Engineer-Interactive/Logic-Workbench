@@ -46,6 +46,8 @@ var inputs: Array[PinDescription]
 var outputs: Array[PinDescription]
 var buttons: Array[ButtonDescription]
 
+var data: Dictionary[String, Variant]
+
 # private variables
 
 # @onready variables

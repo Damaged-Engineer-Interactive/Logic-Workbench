@@ -73,7 +73,7 @@ func _init(from: Circuit) -> void:
 	var f_gates: Dictionary[String, GateDescription] = f_res[0]
 	var f_conns: Dictionary[String, Connection] = f_res[1]
 	
-	# Step  3 : Convert to cached class and build dependency graph
+	# Step  3   : Convert to cached class and build dependency graph
 	# Step  4.1 : Prune disconnected Gates (no input, no output) | Check handled inside connection loop
 	# Step  5.1 : Conflict input detection | Check handled inside connection loop
 	var id_count: int = 0
@@ -142,7 +142,7 @@ func _init(from: Circuit) -> void:
 			old_gate_map.erase(id)
 			changed = true
 	
-	# Step 4.3 : Check connection validity
+	# Step  4.3 : Check connection validity
 	changed = true
 	while changed == true:
 		changed = false
@@ -159,7 +159,7 @@ func _init(from: Circuit) -> void:
 				reverse_dependency[connection.from_gate.id].erase(connection.to_gate.id)
 			changed = true
 	
-	# Step 5.2 : Check if any port has multiple writes
+	# Step  5.2 : Check if any port has multiple writes
 	if port_write_map.values().max() > 1:
 		valid = false
 		printerr("Invalid Circuit! Conflicting port writes")

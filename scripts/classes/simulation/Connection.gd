@@ -1,7 +1,7 @@
 # The name of the Class
 class_name Connection
 # The class this class extends
-extends Node
+extends Object
 # Docstring
 ## short description goes here 
 ## 
@@ -12,39 +12,33 @@ extends Node
 # Enums
 
 # Constants
+const IO_TYPES: Array[String] = [
+	"IO.INPUT",
+	"IO.OUTPUT",
+	"ROUTING.TUNNEL_IN",
+	"ROUTING.TUNNEL_OUT"
+]
 
 # @export variables
 
 # public variables
 ## The ID of the Connection
-var id: int = 0
+var id: String = GateRegistry.make_uuid()
 
 #region Output
 ## The ID of the first Gate
-var gate_in: int = -1
+var from_gate: String = ""
 
 ## The Port of the first gate
-var port_in: int = -1
-
-## The Type of the first gate
-var type_in: Gate.IOTypes = Gate.IOTypes.UNKNOWN
-
-## The Size of the first gate
-var size_in: Value.Sizes = Value.Sizes.BIT_1
+var from_port: int = -1
 #endregion
 
 #region Input
 ## The ID of the second Gate
-var gate_out: int = -1
+var to_gate: String = ""
 
 ## The Port of the second gate
-var port_out: int = -1
-
-## The Type of the second gate
-var type_out: Gate.IOTypes = Gate.IOTypes.UNKNOWN
-
-## The Size of the first gate
-var size_out: Value.Sizes = Value.Sizes.BIT_1
+var to_port: int = -1
 #endregion
 
 # private variables
@@ -59,15 +53,35 @@ var size_out: Value.Sizes = Value.Sizes.BIT_1
 
 # remaining built-in functions
 
-func get_con_id() -> String:
-	return "%s:%s|%s:%s" % [str(gate_in), str(port_in), str(gate_out), str(port_out)]
-
-static func make_con_id(from_gate: String, from_port: int, to_gate: String, to_port: int) -> String:
-	return "%s:%s|%s:%s" % [str(from_gate.split("_")[-1]), str(from_port), str(to_gate.split("_")[-1]), str(to_port)]
-
 # virtual functions to override
 
 # public functions
+## Constructor
+static func create(_from_gate: String, _from_port: int, _to_gate: String, _to_port: int) -> Connection:
+	var connection: Connection = Connection.new()
+	connection.from_gate = _from_gate
+	connection.from_port = _from_port
+	connection.to_gate = _to_gate
+	connection.to_port = _to_port
+	return connection
+
+func copy() -> Connection:
+	return create(from_gate, from_port, to_gate, to_port)
+
+func uses_from_io() -> bool: # outputs
+	var res: bool = false
+	for type: String in IO_TYPES:
+		res = res or from_gate.begins_with(type)
+	return res
+
+func uses_to_io() -> bool: # inputs
+	var res: bool = false
+	for type: String in IO_TYPES:
+		res = res or to_gate.begins_with(type)
+	return res
+
+func uses_io() -> bool:
+	return uses_from_io() or uses_to_io()
 
 # private functions
 

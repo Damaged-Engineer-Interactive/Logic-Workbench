@@ -1,95 +1,124 @@
-# The name of the Class
 class_name Simulation
-# The class this class extends
 extends Node
-# Docstring
-## short description goes here 
-## 
-## Long desciption goes here
 
-# Signals
+@warning_ignore_start("unused_signal")
+signal sim_started(mode: SimMode, steps: int)	# beginning of the sim			| mode			| (optional) steps
+signal sim_stopped(ticks: int)					# end of the sim				| tick number
+signal tick_started(tick: int)					# beginning of a new tick 		| tick number
+signal tick_ended(tick: int)					# end of the last tick			| tick number
+signal tps(event: TPSEvent)						# low / normal / high TPS
+signal error(tick: int, gates: Array[int])		# error (sim stop)				| tick number	| gate ids
+@warning_ignore_restore("unused_signal")
 
-# Enums
+enum TPSEvent { LOW, NORMAL, HIGH }
 
-# Constants
-const THEME_PANEL: StyleBoxFlat = preload("res://styles/simulation/panel.stylebox")
-const THEME_TITLE: StyleBoxFlat = preload("res://styles/simulation/titlebar.stylebox")
-const THEME_TITLE_SELECTED: StyleBoxFlat = preload("res://styles/simulation/titlebar_selected.stylebox")
+enum SimMode {
+	STOP,				# Do Nothing
+	ACTIVE,				# Run
+	STEP				# Run for a number of steps
+}
 
-# @export variables
-@export var allow_simulate: bool = false
+var circuit: CachedCircuit
 
-# public variables
-var can_simulate: bool = false
-static var thread_count: int = -1
+var needed_threads: int
+var task_id: int
 
-var circuit: Circuit
+var mode: SimMode
 
-# private variables
-var _sim_counter: int = -1 # Frames until next simulate() call
+## How many sub-ticks are needed per tick to fully simulate the circuit
+var sub_ticks: int
 
-@warning_ignore("unused_private_class_variable")
-var _is_simulating: bool = false # False : Dispatch new instance | True : Get Results
+## Used by SimMode.STEP
+var steps: int
 
-# @onready variables
+## Current Tick
+var tick: int
 
-# optional built-in _init() function
-
-# optional built-in _enter_tree() function
-
-# optional built-in _ready() function
-func _ready() -> void:
-	_prepare_simulation()
-
-# remaining built-in functions
-func _process(_d: float) -> void:
-	if can_simulate:
-		_sim_counter -= 1
-		if _sim_counter == 0:
-			simulate()
-			_sim_counter += 20
-
-# virtual functions to override
-
-# public functions
-static func get_thread_count() -> int:
-	return thread_count
-
-func get_gate(id: int) -> Gate:
-	return circuit.get_gate(id)
-
-func add_gate(gate: Gate) -> void:
-	circuit.add_gate(gate)
-
-func remove_gate(id: int) -> Gate:
-	return circuit.remove_gate(id) # Returns the gate as reference, so it isn't immediately gone
-
-func get_connection(con_id: String) -> Connection:
-	return circuit.get_connection(con_id)
-
-func add_connection(connection: Connection) -> void:
-	circuit.add_connection(connection)
-
-func remove_connection(id: int) -> Connection:
-	return circuit.remove_connection(id) # Returns the gate as reference, so it isn't immediately gone
-
-func simulate() -> void:
-	if not allow_simulate:
-		return
-	circuit.simulate()
-	_sim_counter = 1
-
-# private functions
-func _prepare_simulation() -> void:
-	print("prepare_simulation")
-	thread_count = floori(OS.get_processor_count() / 4.0)
-	print("Logical Processors Available : %2s" % OS.get_processor_count())
-	print("Logical Processors Usable    : %2s" % thread_count)
+## The Simulation can only be initialised from a valid CachedCircuit
+func _init(from: CachedCircuit) -> void:
+	circuit = from
 	
-	circuit = Circuit.new()
+	needed_threads = roundi(circuit.complexity)
+	task_id = -1
 	
-	can_simulate = true
-	_sim_counter = 60 # 60 Frames until first simulate() call
+	mode = SimMode.STOP
+	sub_ticks = circuit.ticks * circuit.parallel_schedule.keys().size() # amount of ticks needed per step * amount of ranks
+	steps = 0
+	tick = 0
 
-# subclasses
- 
+func _process(_delta: float) -> void:
+	match mode:
+		SimMode.ACTIVE:
+			simulate_tick()
+		SimMode.STEP:
+			if steps > 0:
+				simulate_tick()
+			else:
+				mode = SimMode.STOP
+
+## Update the Simulation with a new Circuit
+func update(new: CachedCircuit) -> void:
+	_init(new)
+
+## Run the Simulation (mode: TPS)
+func run() -> void:
+	if circuit.valid and mode == SimMode.STOP:
+		mode = SimMode.ACTIVE
+		sim_started.emit(mode, -1)
+
+## Run the Simulation (mode: STEP)
+func step(amount: int) -> void:
+	if circuit.valid and mode == SimMode.STOP:
+		steps = amount
+		mode = SimMode.STEP
+		sim_started.emit(mode, amount)
+
+## Stop the Simulation
+func stop() -> void:
+	if mode != SimMode.STOP:
+		mode = SimMode.STOP
+		sim_stopped.emit(tick)
+
+func simulate_tick():
+	for rank: int in circuit.parallel_schedule.keys():
+		await _simulate_rank(rank)
+		await _simulate_connections()
+	tick += 1
+	if mode == SimMode.STEP:
+		steps -= 1
+
+func _simulate_rank(rank: int) -> void:
+	var gates: Array[CachedGate] = circuit.parallel_schedule[rank]
+	task_id = WorkerThreadPool.add_group_task(_simulate_gate, gates.size(), -1, true, "Simulate Rank [%s]" % str(rank))
+	# small delay, makes it a coroutine | 50 msec realtime
+	while not WorkerThreadPool.is_group_task_completed(task_id):
+		print("Count : [%s]" % str(WorkerThreadPool.get_group_processed_element_count(task_id)))
+		await get_tree().create_timer(0.05, true, true, true).timeout
+	# cleanup
+	WorkerThreadPool.wait_for_group_task_completion(task_id)
+	task_id = -1
+
+func _simulate_connections() -> void:
+	var connections: Array[CachedConnection] = circuit.connections.values()
+	task_id = WorkerThreadPool.add_group_task(_simulate_connection, connections.size(), -1, true, "Simulate Connections")
+	# small delay, makes it a coroutine | 50 msec realtime
+	while not WorkerThreadPool.is_group_task_completed(task_id):
+		print("Count : [%s]" % str(WorkerThreadPool.get_group_processed_element_count(task_id)))
+		await get_tree().create_timer(0.05, true, true, true).timeout
+	# cleanup
+	WorkerThreadPool.wait_for_group_task_completion(task_id)
+	task_id = -1
+
+# Called by the threads on every Connection
+func _simulate_connection(id: int):
+	var connection: CachedConnection = circuit.connections[id]
+	connection.to_gate.inputs[connection.to_port] = connection.from_gate.outputs[connection.from_port].copy()
+
+# Called by the threads on every Gate
+# same for connections, but without ranks
+func _simulate_gate(id: int):
+	var gate: CachedGate = circuit.gates[id]
+	gate.mutex.lock()
+	print("simulating gate : %s [%s]" % [gate.id, gate.type])
+	
+	gate.mutex.unlock()

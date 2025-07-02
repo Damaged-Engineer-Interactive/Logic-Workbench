@@ -57,6 +57,14 @@ static func from_description(from: GateDescription) -> CachedGate:
 	
 	gate.inputs.resize(from.inputs.size())
 	gate.outputs.resize(from.outputs.size())
+	
+	# TODO : Add for i in ... -> gate.<io>[i] = Value.from_description(input.state)
+	for i: int in range(from.inputs.size()):
+		gate.inputs[i] = Value.from_description(from.inputs[i].state)
+	
+	for i: int in range(from.outputs.size()):
+		gate.outputs[i] = Value.from_description(from.outputs[i].state)
+	
 	return gate
 
 # optional built-in _enter_tree() function

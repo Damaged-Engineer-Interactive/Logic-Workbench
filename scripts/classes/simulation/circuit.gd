@@ -32,6 +32,10 @@ var output_config: Dictionary[String, PinDescription]
 
 # private variables
 
+var _gate_conn_map: Dictionary[String, Array] = {}
+
+var _conn_id_map: Dictionary[String, String] = {}
+
 # @onready variables
 
 # optional built-in _init() function
@@ -53,24 +57,83 @@ func _init():
 # public functions
 func add_gate(gate: GateDescription) -> String:
 	gates[gate.id] = gate
+	_gate_conn_map[gate.id] = []
+	match gate.type:
+		"IO.INPUT.*":
+			input_config[gate.id] = PinDescription.create(gate.data["name"], gate.outputs[0].state.size)
+		"IO.OUTPUT.*":
+			output_config[gate.id] = PinDescription.create(gate.data["name"], gate.inputs[0].state.size)
+		# TODO : Add Tunnels
+		"ROUTING.TUNNEL_IN.*":
+			push_error("TUNNELS NOT IMPLEMENTED")
+			printerr("TUNNELS NOT IMPLEMENTED")
+		"ROUTING.TUNNEL_OUT.*":
+			push_error("TUNNELS NOT IMPLEMENTED")
+			printerr("TUNNELS NOT IMPLEMENTED")
 	return gate.id
 
-func remove_gate(gate_id: String) -> GateDescription:
+func remove_gate(gate_id: String) -> Array:
 	var gate: GateDescription = gates.get(gate_id)
-	gates.erase(id)
-	return gate
+	match gate.type:
+		"IO.INPUT.*":
+			input_config.erase(gate_id)
+		"IO.OUTPUT.*":
+			output_config.erase(gate_id)
+		# TODO : Add Tunnels
+		"ROUTING.TUNNEL_IN.*":
+			push_error("TUNNELS NOT IMPLEMENTED")
+			printerr("TUNNELS NOT IMPLEMENTED")
+		"ROUTING.TUNNEL_OUT.*":
+			push_error("TUNNELS NOT IMPLEMENTED")
+			printerr("TUNNELS NOT IMPLEMENTED")
+	gates.erase(gate_id)
+	var removed: Array = _gate_conn_map.get(gate_id).duplicate()
+	for connection: Connection in removed:
+		remove_connection(connection)
+	_gate_conn_map.erase(gate_id)
+	return [gate, removed]
 
 func add_connection(connection: Connection) -> String:
+	if _conn_id_map.has(str(connection)):
+		return _conn_id_map[str(connection)]
+	_conn_id_map[str(connection)] = connection.id
 	connections[connection.id] = connection
+	_gate_conn_map[connection.from_gate].append(connection)
+	_gate_conn_map[connection.to_gate].append(connection)
 	return connection.id
 
-func remove_connection(connection_id: String) -> Connection:
+func remove_connection(connection_template: Connection) -> Connection:
+	var connection_id: String = _conn_id_map.get(str(connection_template))
 	var connection: Connection = connections.get(connection_id)
+	
 	connections.erase(connection_id)
+	_gate_conn_map[connection.from_gate].erase(connection)
+	_gate_conn_map[connection.to_gate].erase(connection)
+	_conn_id_map.erase(str(connection))
 	return connection
 
+func is_empty() -> bool:
+	return gates.is_empty() and connections.is_empty()
+
 func copy() -> Circuit:
-	var res: Circuit = super() as Circuit
+	var res: Circuit = Circuit.new()
+	res.name = name
+	res.type = type
+	res.size = size
+	res.color = color
+	res.ticks = ticks
+	res.priority = priority
+	
+	res.inputs = []
+	res.outputs = []
+	
+	for pin: PinDescription in inputs:
+		res.inputs.append(pin.copy())
+	for pin: PinDescription in outputs:
+		res.outputs.append(pin.copy())
+	
+	res.data = data.duplicate()
+	
 	var old_new_map: Dictionary[String, String] = {}
 	for gate: GateDescription in gates.values():
 		var new_gate: GateDescription = gate.copy()
@@ -78,9 +141,13 @@ func copy() -> Circuit:
 		old_new_map[gate.id] = new_gate.id
 	for connection: Connection in connections.values():
 		var new_connection: Connection = connection.copy()
-		new_connection.gate_in = old_new_map[connection.gate_in]
-		new_connection.gate_out = old_new_map[connection.gate_out]
+		new_connection.from_gate = old_new_map[connection.from_gate]
+		new_connection.to_gate = old_new_map[connection.to_gate]
 		res.connections[new_connection.id] = new_connection
+	for _id: String in input_config.keys():
+		res.input_config[old_new_map[_id]] = input_config[_id].copy()
+	for _id: String in output_config.keys():
+		res.output_config[old_new_map[_id]] = output_config[_id].copy()
 	return res
 
 func flatten_recursive() -> Array[Dictionary]: # [Gates, Connections]
@@ -143,6 +210,58 @@ func flatten_recursive() -> Array[Dictionary]: # [Gates, Connections]
 	
 	return [_gates, _connections]
 
+func to_description() -> Circuit:
+	var res: Circuit = copy() # make a copy...
+	res.inputs = res.input_config.values()
+	res.outputs = res.output_config.values()
+	return res # done? ...
+
+func save() -> Dictionary:
+	var res: Dictionary =  {
+		"name": name,
+		"type": type,
+		"color": var_to_str(color),
+		"priority": priority,
+		"gates": "", # generated
+		"connections": "", # generated
+		"input_config": {}, # generated
+		"output_config": {}, # generated
+	}
+	
+	for _id: String in gates.keys():
+		res["gates"][_id] = gates[_id].save()
+	
+	for _id: String in connections.keys():
+		res["connections"][_id] = connections[_id].save()
+	
+	for _id: String in input_config.keys():
+		res["input_conig"][_id] = input_config[_id].save()
+	
+	for _id: String in output_config.keys():
+		res["output_config"][_id] = output_config[_id].save()
+	
+	return res
+
+static func load(from: Dictionary) -> Circuit:
+	var chip := Circuit.new()
+	chip.name = from["name"]
+	chip.type = from["type"]
+	chip.color = str_to_var(from["color"])
+	chip.priority = from["priority"]
+	
+	for _id: String in from["gates"].keys():
+		chip.gates[_id] = GateDescription.load(from["gates"][_id])
+	
+	for _id: String in from["connections"].keys():
+		chip.connections[_id] = Connection.load(from["connections"][_id])
+	
+	for _id: String in from["input_conig"].keys():
+		chip.input_config[_id] = PinDescription.load(from["input_conig"][_id])
+	
+	for _id: String in from["output_config"].keys():
+		chip.output_config[_id] = PinDescription.load(from["output_config"][_id])
+	
+	return chip
 # private functions
 
 # subclasses

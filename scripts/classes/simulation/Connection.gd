@@ -13,10 +13,10 @@ extends Object
 
 # Constants
 const IO_TYPES: Array[String] = [
-	"IO.INPUT",
-	"IO.OUTPUT",
-	"ROUTING.TUNNEL_IN",
-	"ROUTING.TUNNEL_OUT"
+	"IO.INPUT.*",
+	"IO.OUTPUT.*",
+	"ROUTING.TUNNEL_IN.*",
+	"ROUTING.TUNNEL_OUT.*"
 ]
 
 # @export variables
@@ -82,6 +82,27 @@ func uses_to_io() -> bool: # inputs
 
 func uses_io() -> bool:
 	return uses_from_io() or uses_to_io()
+
+func _to_string() -> String:
+	return from_gate + "#" + str(from_port) + ":" + to_gate + "#" + str(to_port)
+
+func save() -> Dictionary:
+	return {
+		"id": id,
+		"from_gate": from_gate,
+		"from_port": from_port,
+		"to_gate": to_gate,
+		"to_port": to_port
+	}
+
+static func load(from: Dictionary) -> Connection:
+	var res := Connection.new()
+	res.id = from["id"]
+	res.from_gate = from["from_gate"]
+	res.from_port = from["from_port"]
+	res.to_gate = from["to_gate"]
+	res.to_port = from["to_port"]
+	return res
 
 # private functions
 

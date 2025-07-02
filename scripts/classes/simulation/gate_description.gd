@@ -32,19 +32,21 @@ var registry: bool = false
 ## How many ticks this Gate need, to fully simulate
 var ticks: int = 1
 
+## The priority when loading the gate | 0 = builtin, 1+ = custom
+var priority: int = 0
+
 #region AT RUNTIME
 ## The ID of the Gate
 var id: String = GateRegistry.make_uuid()
 
 ## The Position of the Gate[br]
-## x, y, layer
-var position: Vector3i
+## x, y, (layer)
+var position: Vector2 = Vector2.ZERO
 
 #endregion
 
 var inputs: Array[PinDescription]
 var outputs: Array[PinDescription]
-var buttons: Array[ButtonDescription]
 
 var data: Dictionary[String, Variant]
 
@@ -70,10 +72,34 @@ func copy() -> GateDescription:
 	res.type = type
 	res.size = size
 	res.color = color
+	res.ticks = ticks
+	res.priority = priority
+	res.position = Vector2(position)
 	
-	res.inputs = inputs
-	res.outputs = outputs
-	res.buttons = buttons
+	res.inputs = []
+	res.outputs = []
+	
+	for pin: PinDescription in inputs:
+		res.inputs.append(pin.copy())
+	for pin: PinDescription in outputs:
+		res.outputs.append(pin.copy())
+	
+	res.data = data.duplicate()
+	return res
+
+## Saving of Builtin gates!
+func save() -> Dictionary:
+	return {
+		"id": id,
+		"type": type,
+		"position": position
+	}
+
+## Loading of Builtin gates!
+static func load(from: Dictionary) -> GateDescription:
+	var res: GateDescription = GateRegistry.get_gate(from["type"])
+	res.id = from["id"]
+	res.position = from["position"]
 	return res
 
 # private functions

@@ -1,0 +1,214 @@
+[gd_scene load_steps=11 format=3 uid="uid://bqhy3cmmsh71b"]
+
+[ext_resource type="StyleBox" uid="uid://17qnxd3anfsd" path="res://styles/panel.tres" id="1_djxby"]
+[ext_resource type="StyleBox" uid="uid://cahhgkthp5l7n" path="res://styles/slot_left.tres" id="1_ff6sc"]
+[ext_resource type="StyleBox" uid="uid://celggswmjeyw1" path="res://styles/title_normal.tres" id="2_co4mm"]
+[ext_resource type="StyleBox" uid="uid://56yy6b18a5ri" path="res://styles/slot_right.tres" id="2_eknqa"]
+[ext_resource type="StyleBox" uid="uid://ujxuwsh8186u" path="res://styles/title_selected.tres" id="3_dknh3"]
+[ext_resource type="StyleBox" uid="uid://c0kgc5nhm6b7v" path="res://styles/slot.tres" id="4_co4mm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vkbra"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eknqa"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.454902, 0.658824, 0.839216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vih16"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.273285, 0.541066, 0.777344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_djxby"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.63446, 0.776773, 0.902344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="GraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(275, 150)
+offset_right = 9.0
+offset_bottom = 55.0
+theme_override_constants/separation = 10
+theme_override_constants/port_h_offset = 12
+theme_override_styles/panel = ExtResource("1_djxby")
+theme_override_styles/panel_selected = ExtResource("1_djxby")
+theme_override_styles/titlebar = ExtResource("2_co4mm")
+theme_override_styles/titlebar_selected = ExtResource("3_dknh3")
+theme_override_styles/slot = ExtResource("4_co4mm")
+title = "TEST @ 0123:4567:89AB:CDEF"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.273285, 0.541066, 0.777344, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(0.27451, 0.541176, 0.776471, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = false
+slot/1/left_enabled = true
+slot/1/left_type = 0
+slot/1/left_color = Color(0.27451, 0.541176, 0.776471, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = false
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+
+[node name="Slot_0" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Left" type="Label" parent="Slot_0"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = ExtResource("1_ff6sc")
+text = "IN A"
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="Slot_0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Right" type="Label" parent="Slot_0"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = ExtResource("2_eknqa")
+text = "OUT"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Slot_1" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Left" type="Label" parent="Slot_1"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = ExtResource("1_ff6sc")
+text = "IN B"
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="Slot_1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Right" type="Control" parent="Slot_1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Slot_2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Text" type="Label" parent="Slot_2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Some Text Support
+Even Multiline capable :)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot_3" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Slot_3"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vkbra")
+theme_override_styles/hover = SubResource("StyleBoxFlat_eknqa")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vih16")
+theme_override_styles/normal = SubResource("StyleBoxFlat_djxby")
+text = "And maybe even Buttons ;)"
+
+[node name="Slot_4" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button" type="OptionButton" parent="Slot_4"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vkbra")
+theme_override_styles/hover = SubResource("StyleBoxFlat_eknqa")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vih16")
+theme_override_styles/normal = SubResource("StyleBoxFlat_djxby")
+selected = 0
+item_count = 3
+popup/item_0/text = "Option 1"
+popup/item_0/id = 0
+popup/item_1/text = "Option 2"
+popup/item_1/id = 1
+popup/item_2/text = "Option 3"
+popup/item_2/id = 2

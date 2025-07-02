@@ -34,6 +34,9 @@ var steps: int
 ## Current Tick
 var tick: int
 
+## Current gates to simulate
+var gates: Array[CachedGate]
+
 ## The Simulation can only be initialised from a valid CachedCircuit
 func _init(from: CachedCircuit) -> void:
 	circuit = from
@@ -45,6 +48,17 @@ func _init(from: CachedCircuit) -> void:
 	sub_ticks = circuit.ticks * circuit.parallel_schedule.keys().size() # amount of ticks needed per step * amount of ranks
 	steps = 0
 	tick = 0
+	
+	# Set all values to their default
+	gates = circuit.gates.values()
+	task_id = WorkerThreadPool.add_group_task(_simulate_gate, gates.size(), -1, true, "Set Defaults")
+	# small delay, makes it a coroutine | 50 msec realtime
+	while not WorkerThreadPool.is_group_task_completed(task_id):
+		print("Count : [%s]" % str(WorkerThreadPool.get_group_processed_element_count(task_id)))
+		await get_tree().create_timer(0.05, true, true, true).timeout
+	# cleanup
+	WorkerThreadPool.wait_for_group_task_completion(task_id)
+	task_id = -1
 
 func _process(_delta: float) -> void:
 	match mode:
@@ -88,7 +102,7 @@ func simulate_tick():
 		steps -= 1
 
 func _simulate_rank(rank: int) -> void:
-	var gates: Array[CachedGate] = circuit.parallel_schedule[rank]
+	gates = circuit.parallel_schedule[rank]
 	task_id = WorkerThreadPool.add_group_task(_simulate_gate, gates.size(), -1, true, "Simulate Rank [%s]" % str(rank))
 	# small delay, makes it a coroutine | 50 msec realtime
 	while not WorkerThreadPool.is_group_task_completed(task_id):
@@ -117,7 +131,7 @@ func _simulate_connection(id: int):
 # Called by the threads on every Gate
 # same for connections, but without ranks
 func _simulate_gate(id: int):
-	var gate: CachedGate = circuit.gates[id]
+	var gate: CachedGate = gates[id]
 	gate.mutex.lock()
 	print("simulating gate : %s [%s]" % [gate.id, gate.type])
 	

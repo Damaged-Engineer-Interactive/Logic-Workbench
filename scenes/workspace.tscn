@@ -1,0 +1,1089 @@
+[gd_scene load_steps=23 format=3 uid="uid://do74jybl4u754"]
+
+[ext_resource type="Script" uid="uid://qsmxyfyvadxw" path="res://scripts/workspace.gd" id="1_7cefc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sgp6g"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.273285, 0.541066, 0.777344, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o5qli"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbgi4"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.839216, 0.454902, 0.454902, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tefeu"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.777344, 0.273285, 0.273285, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o6xl0"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.902344, 0.63446, 0.63446, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sgp6g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wfyh"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.454902, 0.658824, 0.839216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sugp2"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.273285, 0.541066, 0.777344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jyhfs"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.63446, 0.776773, 0.902344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7cefc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vo7lu"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.12549, 0.168627, 0.207843, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vo7lu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wjago"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.12549, 0.168627, 0.207843, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cnvne"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_thvsl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wjago"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kq4ke"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.63446, 0.776773, 0.902344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cnvne"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.454902, 0.658824, 0.839216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thvsl"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.273285, 0.541066, 0.777344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c1nar"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.63446, 0.776773, 0.902344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7cefc"]
+bg_color = Color(0.12549, 0.168627, 0.207843, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Root" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sgp6g")
+script = ExtResource("1_7cefc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TopBar" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="VBoxContainer/TopBar"]
+layout_mode = 2
+
+[node name="MainMenu" type="Button" parent="VBoxContainer/TopBar/Buttons"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_o5qli")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tbgi4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_tefeu")
+theme_override_styles/normal = SubResource("StyleBoxFlat_o6xl0")
+text = "Main Menu"
+
+[node name="Spacer-1" type="Control" parent="VBoxContainer/TopBar/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Gate" type="Button" parent="VBoxContainer/TopBar/Buttons"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+text = "Gate"
+
+[node name="Visualiser" type="Button" parent="VBoxContainer/TopBar/Buttons"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+text = "Visualiser"
+
+[node name="Simulator" type="Button" parent="VBoxContainer/TopBar/Buttons"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+text = "Simulator"
+
+[node name="Spacer-2" type="Control" parent="VBoxContainer/TopBar/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Spacer-3" type="Control" parent="VBoxContainer/TopBar/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_7cefc")
+theme_override_styles/tab_disabled = SubResource("StyleBoxEmpty_7cefc")
+theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_7cefc")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_7cefc")
+theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_7cefc")
+theme_override_styles/tab_hovered = SubResource("StyleBoxEmpty_7cefc")
+theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_7cefc")
+current_tab = 2
+tabs_visible = false
+
+[node name="Gate" type="PanelContainer" parent="VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate"]
+layout_mode = 2
+
+[node name="RegistryTree" type="Tree" parent="VBoxContainer/TabContainer/Gate/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hovered_dimmed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hovered_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vo7lu")
+hide_root = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RegistryData" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="GateInfo" type="PanelContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate Data"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer"]
+layout_mode = 2
+
+[node name="CategoryName" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/CategoryName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Category Name"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="RegistryCategoryName" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/CategoryName"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "ARITHMETIC"
+max_length = 20
+context_menu_enabled = false
+emoji_menu_enabled = false
+
+[node name="GateName" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/GateName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate Name"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="RegistryGateName" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/GateName"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "ALU"
+max_length = 20
+context_menu_enabled = false
+emoji_menu_enabled = false
+
+[node name="HBoxContainer-2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer"]
+layout_mode = 2
+
+[node name="GateVersion" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2/GateVersion"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate Version"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="RegistryGateVersion" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2/GateVersion"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "Use * if there will only be one version"
+max_length = 20
+context_menu_enabled = false
+emoji_menu_enabled = false
+
+[node name="GateColor" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2/GateColor"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate Color"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="RegistryGateColor" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2/GateColor"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_thvsl")
+color = Color(0.95, 0.323, 0.323, 1)
+edit_alpha = false
+
+[node name="InputInfo" type="PanelContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="RegistryInputContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Inputs"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Labels" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer/Labels"]
+custom_minimum_size = Vector2(70, 35)
+layout_mode = 2
+text = "Slot"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label-1" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer/Labels"]
+custom_minimum_size = Vector2(180, 35)
+layout_mode = 2
+text = "Gate ID"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label-2" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer/Labels"]
+custom_minimum_size = Vector2(120, 35)
+layout_mode = 2
+text = "Bit Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label-3" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer/Labels"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pin Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="INPUT_x" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer"]
+layout_mode = 2
+
+[node name="Slot" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer/INPUT_x"]
+custom_minimum_size = Vector2(70, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "0"
+alignment = 1
+max_length = 20
+editable = false
+emoji_menu_enabled = false
+
+[node name="GateID" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer/INPUT_x"]
+custom_minimum_size = Vector2(180, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "0123:4567:89AB:CDEF"
+alignment = 1
+max_length = 20
+editable = false
+emoji_menu_enabled = false
+
+[node name="BitSize" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer/INPUT_x"]
+custom_minimum_size = Vector2(120, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "1 Bit(s)"
+alignment = 1
+max_length = 20
+editable = false
+emoji_menu_enabled = false
+
+[node name="PinName" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/InputInfo/RegistryInputContainer/INPUT_x"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "ALU"
+alignment = 1
+max_length = 20
+editable = false
+emoji_menu_enabled = false
+
+[node name="OutputInfo" type="PanelContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="RegistryOutputContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Outputs"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Labels" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer/Labels"]
+custom_minimum_size = Vector2(70, 35)
+layout_mode = 2
+text = "Slot"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label-1" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer/Labels"]
+custom_minimum_size = Vector2(180, 35)
+layout_mode = 2
+text = "Gate ID"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label-2" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer/Labels"]
+custom_minimum_size = Vector2(120, 35)
+layout_mode = 2
+text = "Bit Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label-3" type="Label" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer/Labels"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pin Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OUTPUT_x" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer"]
+layout_mode = 2
+
+[node name="Slot" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer/OUTPUT_x"]
+custom_minimum_size = Vector2(70, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "0"
+alignment = 1
+max_length = 20
+editable = false
+emoji_menu_enabled = false
+
+[node name="GateID" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer/OUTPUT_x"]
+custom_minimum_size = Vector2(180, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "0123:4567:89AB:CDEF"
+alignment = 1
+max_length = 20
+editable = false
+emoji_menu_enabled = false
+
+[node name="BitSize" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer/OUTPUT_x"]
+custom_minimum_size = Vector2(120, 35)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "1 Bit(s)"
+alignment = 1
+max_length = 20
+editable = false
+emoji_menu_enabled = false
+
+[node name="PinName" type="LineEdit" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/OutputInfo/RegistryOutputContainer/OUTPUT_x"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
+placeholder_text = "ALU"
+alignment = 1
+max_length = 20
+editable = false
+emoji_menu_enabled = false
+
+[node name="Buttons" type="PanelContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons"]
+layout_mode = 2
+
+[node name="SaveGate" type="Button" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kq4ke")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+text = "Save / Update Gate"
+
+[node name="HBoxContainer-2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer"]
+layout_mode = 2
+
+[node name="LoadGate" type="Button" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+disabled = true
+text = "Load Gate"
+
+[node name="NewGate" type="Button" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kq4ke")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+text = "New Gate"
+
+[node name="Visualiser" type="VSplitContainer" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_constants/autohide = 0
+theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_7cefc")
+dragger_visibility = 1
+metadata/_tab_index = 1
+
+[node name="Workspace" type="GraphEdit" parent="VBoxContainer/TabContainer/Visualiser"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
+snapping_distance = 25
+right_disconnects = true
+show_zoom_label = true
+show_grid_buttons = false
+show_arrange_button = false
+
+[node name="BottomBar" type="PanelContainer" parent="VBoxContainer/TabContainer/Visualiser"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar"]
+layout_mode = 2
+
+[node name="GateTree" type="Tree" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hovered_dimmed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hovered_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vo7lu")
+hide_root = true
+
+[node name="GateInfo" type="PanelContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo"]
+layout_mode = 2
+
+[node name="Sections" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GateInfo" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate Name"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="GateName" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+editable = false
+
+[node name="Label-2" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate Type"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="GateType" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+editable = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GateData" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BitSize" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/BitSize"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Bit Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/BitSize"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 512.0
+value = 1.0
+alignment = 1
+suffix = "Bit(s)"
+
+[node name="InputName" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Example : IN A"
+alignment = 1
+max_length = 20
+
+[node name="InputCount" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputCount"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input Count"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputCount"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 512.0
+value = 2.0
+alignment = 1
+suffix = "Input(s)"
+
+[node name="OutputName" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Output Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Example : OUT"
+alignment = 1
+max_length = 20
+
+[node name="OutputCount" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputCount"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Output Count"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputCount"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 512.0
+value = 2.0
+alignment = 1
+suffix = "Output(s)"
+
+[node name="AddGate" type="Button" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kq4ke")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+text = "Add Gate to Circuit"
+
+[node name="Simulator" type="HSplitContainer" parent="VBoxContainer/TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_constants/autohide = 0
+theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_7cefc")
+dragger_visibility = 1
+metadata/_tab_index = 2
+
+[node name="Simulator" type="GraphEdit" parent="VBoxContainer/TabContainer/Simulator"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
+snapping_enabled = false
+snapping_distance = 25
+show_zoom_label = true
+show_grid_buttons = false
+show_arrange_button = false
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Simulator/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 88
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopButtons" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Generate" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+text = "Generate Simulation"
+
+[node name="Clear" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+disabled = true
+text = "Clear Simulation"
+
+[node name="SimControls" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls"]
+layout_mode = 2
+
+[node name="SimControlsLabel" type="Label" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Simulation Mode"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SimModeStop" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+toggle_mode = true
+button_pressed = true
+text = "Disabled"
+
+[node name="SimModeStep" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+toggle_mode = true
+text = "Steps"
+
+[node name="SimModeTPS" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+toggle_mode = true
+text = "Ticks per Second"
+
+[connection signal="pressed" from="VBoxContainer/TopBar/Buttons/MainMenu" to="." method="_main_menu_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Gate" to="." method="_gate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Visualiser" to="." method="_visualiser_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Simulator" to="." method="_simulator_pressed"]
+[connection signal="item_selected" from="VBoxContainer/TabContainer/Gate/HBoxContainer/RegistryTree" to="." method="_registry_tree_item_selected"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/CategoryName/RegistryCategoryName" to="." method="_check_if_loadable" unbinds=1]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/GateName/RegistryGateName" to="." method="_check_if_loadable" unbinds=1]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2/GateVersion/RegistryGateVersion" to="." method="_check_if_loadable" unbinds=1]
+[connection signal="color_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2/GateColor/RegistryGateColor" to="." method="_registry_gate_color_color_changed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/SaveGate" to="." method="_save_gate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2/LoadGate" to="." method="_load_gate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2/NewGate" to="." method="_new_gate_pressed"]
+[connection signal="connection_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_connection_request"]
+[connection signal="delete_nodes_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_delete_nodes_request"]
+[connection signal="disconnection_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_disconnection_request"]
+[connection signal="item_selected" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateTree" to="." method="_gate_tree_item_selected"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/AddGate" to="." method="_add_gate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Generate" to="." method="_generate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Clear" to="." method="_clear_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeStop" to="." method="_sim_mode_stop_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeStep" to="." method="_sim_mode_step_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeTPS" to="." method="_sim_mode_tps_pressed"]

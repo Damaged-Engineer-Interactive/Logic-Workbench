@@ -18,7 +18,7 @@ extends Object
 @export var name: String
 
 ## The State of the Pin
-@export var state: Value
+@export var state: ValueDescription
 
 # public variables
 
@@ -41,7 +41,22 @@ extends Object
 static func create(_name: String, bit_size: int) -> PinDescription:
 	var pin := PinDescription.new()
 	pin.name = _name
-	pin.state = Value.from_default(bit_size)
+	pin.state = ValueDescription.new(bit_size)
+	return pin
+
+func copy() -> PinDescription:
+	var pin := PinDescription.new()
+	pin.name = name
+	pin.state = state.copy()
+	return pin
+
+func save() -> Dictionary:
+	return { "name": name, "state": state.save() }
+
+static func load(from: Dictionary) -> PinDescription:
+	var pin := PinDescription.new()
+	pin.name = from["name"]
+	pin.state = ValueDescription.load(from["state"])
 	return pin
 
 # private functions

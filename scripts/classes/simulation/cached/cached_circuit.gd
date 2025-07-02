@@ -101,14 +101,14 @@ func _init(from: Circuit) -> void:
 	for connection: Connection in f_conns.values():
 		var cached = CachedConnection.new()
 		cached.id = id_count
-		cached.from_gate = gate_map[gate_id_map[connection.gate_in]]
-		cached.from_port = connection.port_in
-		cached.to_gate = gate_map[gate_id_map[connection.gate_out]]
-		cached.to_port = connection.port_out
+		cached.from_gate = gate_map[gate_id_map[connection.from_gate]]
+		cached.from_port = connection.from_port
+		cached.to_gate = gate_map[gate_id_map[connection.to_gate]]
+		cached.to_port = connection.to_port
 		conn_map[id_count] = cached
 		old_conn_map[id_count] = connection.id
-		dependency[cached.to_gate].append(cached.from_gate)
-		reverse_dependency[cached.from_gate].append(cached.to_gate)
+		dependency[cached.to_gate.id].append(cached.from_gate.id)
+		reverse_dependency[cached.from_gate.id].append(cached.to_gate.id)
 		conn_id_map[connection.id] = id_count
 		id_count += 1
 		# Step 4.1 here

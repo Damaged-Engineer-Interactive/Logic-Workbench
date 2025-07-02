@@ -1,7 +1,7 @@
 # The name of the Class
 class_name Value
 # The class this class extends
-extends Resource
+extends ValueDescription
 # Docstring
 ## Wrapper for every value used by the simulation
 ## 
@@ -35,10 +35,6 @@ const CHAR_STATE_MAP: Dictionary[String, States] = {
 # @export variables
 
 # public variables
-## The Size of the Value[br]
-## [code]-1[/code] signals an unknown size
-var size: int = -1
-
 ## The Data of the Value[br]
 ## Not meant to be manually used, only through methods of this class
 var data: Array[States] = []
@@ -48,6 +44,9 @@ var data: Array[States] = []
 # @onready variables
 
 # optional built-in _init() function
+## Empty initialiser, use from_*
+func _init() -> void:
+	return
 
 # optional built-in _enter_tree() function
 
@@ -73,6 +72,13 @@ static func from_default(_size: int, default := States.UNKNOWN) -> Value:
 	value.data.fill(default)
 	return value
 
+static func from_description(from: ValueDescription) -> Value:
+	var value := Value.new()
+	value.size = from.size
+	value.data.resize(value.size)
+	value.data.fill(States.LOW)
+	return 
+
 static func from_int(_size: int, base: int) -> Value:
 	if _size <= 0:
 		return null
@@ -84,29 +90,9 @@ static func from_int(_size: int, base: int) -> Value:
 		value.data[i] = state
 	return value
 
-## Use to load strings, created by Value.save()
-static func from_string(string: String) -> Value:
-	var _size: int = int(string.split("_")[0])
-	var value := Value.new()
-	value.size = _size
-	value.data.resize(_size)
-	value.data.fill(States.UNKNOWN)
-	var _value_string: String = string.split("_")[1]
-	for i in range(0, int(_size)):
-		var _state: String = _value_string[i]
-		value.set_bit(i, CHAR_STATE_MAP.get(_state, States.ERROR))
-	return value
-
 #endregion
 
 #region Utility
-static func make_multi_string(values: Array[Value]) -> String:
-	var res: String = ""
-	for value: Value in values:
-		res += str(value) + "_"
-	res.rstrip("_")
-	return res
-
 func copy() -> Value:
 	var value := Value.new()
 	value.size = size
@@ -139,12 +125,6 @@ func set_raw(values: Array[States]) -> void:
 
 func get_raw() -> Array[States]:
 	return data.duplicate()
-
-#endregion
-
-#region Saving
-func save() -> String:
-	return str(size) + "_" + to_string() # {bit_size}_{values}
 
 #endregion
 

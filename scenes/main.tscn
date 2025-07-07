@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://ic307qpi3icy"]
+[gd_scene load_steps=5 format=3 uid="uid://ic307qpi3icy"]
 
 [ext_resource type="Script" uid="uid://bxl3034kje47e" path="res://scripts/main.gd" id="1_o5qli"]
+[ext_resource type="Theme" uid="uid://dx5vo52uog5ln" path="res://styles/ui/theme.tres" id="2_0wfyh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sgp6g"]
 content_margin_left = 8.0
@@ -8,100 +9,6 @@ content_margin_top = 8.0
 content_margin_right = 8.0
 content_margin_bottom = 8.0
 bg_color = Color(0.273285, 0.541066, 0.777344, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sgp6g"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wfyh"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.454902, 0.658824, 0.839216, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sugp2"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.273285, 0.541066, 0.777344, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jyhfs"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.63446, 0.776773, 0.902344, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o5qli"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbgi4"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.839216, 0.454902, 0.454902, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tefeu"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.777344, 0.273285, 0.273285, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o6xl0"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.902344, 0.63446, 0.63446, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5qli"]
 content_margin_left = 8.0
@@ -149,76 +56,32 @@ theme_override_constants/separation = 10
 [node name="NewProject" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+theme = ExtResource("2_0wfyh")
 text = "New Project"
 
 [node name="LoadProject" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+theme = ExtResource("2_0wfyh")
 text = "Load Project"
 
 [node name="Settings" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+theme = ExtResource("2_0wfyh")
 text = "Settings"
 
 [node name="CreditsOther" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+theme = ExtResource("2_0wfyh")
 text = "Credits & Other"
 
 [node name="Quit" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_o5qli")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tbgi4")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_tefeu")
-theme_override_styles/normal = SubResource("StyleBoxFlat_o6xl0")
+theme = ExtResource("2_0wfyh")
+theme_type_variation = &"RedButton"
 text = "Quit"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]

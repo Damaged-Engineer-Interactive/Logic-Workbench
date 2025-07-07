@@ -666,15 +666,30 @@ func _clear_pressed() -> void:
 		simulation = null
 
 
+func _delete_gate_pressed() -> void:
+	GateRegistry.remove_gate(registry_selected)
+	_check_if_loadable()
+
+
 func _sim_mode_stop_pressed() -> void:
 	%SimModeStop.button_pressed = true
 	%SimModeStep.button_pressed = false
 	%SimModeStep.disabled = false
 	%SimModeTPS.button_pressed = false
 	%SimModeTPS.disabled = false
+	
+	simulation.stop()
 
 
 func _sim_mode_step_pressed() -> void:
+	%StepPanel.show()
+
+
+func _sim_mode_tps_pressed() -> void:
+	%TPSPanel.show()
+
+
+func _simulate_step_pressed() -> void:
 	%SimModeStop.button_pressed = false
 	%SimModeStep.button_pressed = true
 	%SimModeStep.disabled = false
@@ -682,7 +697,7 @@ func _sim_mode_step_pressed() -> void:
 	%SimModeTPS.disabled = true
 
 
-func _sim_mode_tps_pressed() -> void:
+func _simulate_tps_pressed() -> void:
 	%SimModeStop.button_pressed = false
 	%SimModeStep.button_pressed = false
 	%SimModeStep.disabled = true
@@ -690,5 +705,6 @@ func _sim_mode_tps_pressed() -> void:
 	%SimModeTPS.disabled = false
 
 
-func _delete_gate_pressed() -> void:
-	GateRegistry.remove_gate(registry_selected)
+func _cancel_pressed() -> void:
+	%StepPanel.hide()
+	%TPSPanel.hide()

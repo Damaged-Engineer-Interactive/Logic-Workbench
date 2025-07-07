@@ -1,0 +1,43 @@
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://dx5vo52uog5ln"]
+
+[ext_resource type="StyleBox" uid="uid://cqsgfaiaeyxyj" path="res://styles/ui/bordered_panel.tres" id="1_bupoi"]
+[ext_resource type="StyleBox" uid="uid://dxeg1fmixtili" path="res://styles/ui/button_green/disabled.tres" id="1_lsuel"]
+[ext_resource type="StyleBox" uid="uid://lhpmguhxf2hq" path="res://styles/ui/button_green/focus.tres" id="2_q2al3"]
+[ext_resource type="StyleBox" uid="uid://byy401bslkm0b" path="res://styles/ui/button_green/hover.tres" id="3_wihfl"]
+[ext_resource type="StyleBox" uid="uid://bnctwn4gac77n" path="res://styles/ui/button_green/normal.tres" id="4_4qlax"]
+[ext_resource type="StyleBox" uid="uid://4jhk7cin680w" path="res://styles/ui/button_green/pressed.tres" id="5_aa2n1"]
+[ext_resource type="StyleBox" uid="uid://vqxfwibyssen" path="res://styles/ui/panel.tres" id="6_6im81"]
+[ext_resource type="StyleBox" uid="uid://1jxc7uaqhimy" path="res://styles/ui/button_red/disabled.tres" id="6_aa2n1"]
+[ext_resource type="StyleBox" uid="uid://dwof4bulvepjl" path="res://styles/ui/seperator.tres" id="6_h0020"]
+[ext_resource type="StyleBox" uid="uid://chcaj2j55g12t" path="res://styles/ui/button_red/hover.tres" id="7_6im81"]
+[ext_resource type="StyleBox" uid="uid://bb3k1ex5pqrky" path="res://styles/ui/button_red/normal.tres" id="8_h0020"]
+[ext_resource type="StyleBox" uid="uid://d0ts5thqy3of0" path="res://styles/ui/button_red/pressed.tres" id="9_bupoi"]
+
+[resource]
+BorderedPanel/base_type = &"PanelContainer"
+BorderedPanel/styles/panel = ExtResource("1_bupoi")
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_disabled_color = Color(0.3375, 0.75, 0.54375, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(0.405, 0.9, 0.6525, 1)
+Button/colors/font_pressed_color = Color(0.405, 0.9, 0.6525, 1)
+Button/styles/disabled = ExtResource("1_lsuel")
+Button/styles/focus = ExtResource("2_q2al3")
+Button/styles/hover = ExtResource("3_wihfl")
+Button/styles/normal = ExtResource("4_4qlax")
+Button/styles/pressed = ExtResource("5_aa2n1")
+HSeparator/constants/separation = 4
+HSeparator/styles/separator = ExtResource("6_h0020")
+Panel/styles/panel = ExtResource("6_6im81")
+PanelContainer/styles/panel = ExtResource("6_6im81")
+RedButton/base_type = &"Button"
+RedButton/colors/font_disabled_color = Color(0.9, 0.405, 0.405, 1)
+RedButton/colors/font_hover_pressed_color = Color(0.9, 0.405, 0.405, 1)
+RedButton/colors/font_pressed_color = Color(0.9, 0.405, 0.405, 1)
+RedButton/styles/disabled = ExtResource("6_aa2n1")
+RedButton/styles/hover = ExtResource("7_6im81")
+RedButton/styles/normal = ExtResource("8_h0020")
+RedButton/styles/pressed = ExtResource("9_bupoi")
+VSeparator/constants/separation = 4
+VSeparator/styles/separator = ExtResource("6_h0020")

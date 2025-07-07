@@ -1,0 +1,126 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1dh7jtti027q"]
+
+[ext_resource type="Script" uid="uid://c14seie2r7ded" path="res://scripts/project_load.gd" id="1_c5cxx"]
+[ext_resource type="Theme" uid="uid://dx5vo52uog5ln" path="res://styles/ui/theme.tres" id="2_4ylp7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sgp6g"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.273285, 0.541066, 0.777344, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5qli"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.63446, 0.776773, 0.902344, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Root" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sgp6g")
+script = ExtResource("1_c5cxx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Logic Workbench"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(1250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+
+[node name="Info" type="PanelContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5qli")
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Info"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Here you can select your available projects. 
+Please note, that if you have modified any of your project's files, there is a big chance that it won't be loaded due to some errors happening during loading."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Projects" type="ScrollContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Projects"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Version" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_o5qli")
+text = "3.1.0 (19.05.2025)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer-1" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MainMenu" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_4ylp7")
+text = "Main Menu"
+
+[node name="Spacer-2" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Copyright" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_o5qli")
+text = "Damaged Engineer Interactive"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/MainMenu" to="." method="_main_menu_pressed"]

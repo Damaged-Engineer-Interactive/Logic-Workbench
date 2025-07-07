@@ -53,6 +53,7 @@ func setup(from: CachedCircuit) -> void:
 	gates = circuit.gates.values()
 	task_id = WorkerThreadPool.add_group_task(_simulate_gate, gates.size(), -1, true, "Set Defaults")
 	# small delay, makes it a coroutine | 50 msec realtime
+	print("Set Defaults :")
 	while not WorkerThreadPool.is_group_task_completed(task_id):
 		print("Count : [%s]" % str(WorkerThreadPool.get_group_processed_element_count(task_id)))
 		await get_tree().create_timer(0.05, true, true, true).timeout
@@ -105,8 +106,9 @@ func _simulate_rank(rank: int) -> void:
 	gates = circuit.parallel_schedule[rank]
 	task_id = WorkerThreadPool.add_group_task(_simulate_gate, gates.size(), -1, true, "Simulate Rank [%s]" % str(rank))
 	# small delay, makes it a coroutine | 50 msec realtime
+	print("Simulate Rank : [%s] <%s>" % [str(rank), str(gates.size())])
 	while not WorkerThreadPool.is_group_task_completed(task_id):
-		print("Count : [%s]" % str(WorkerThreadPool.get_group_processed_element_count(task_id)))
+		#print("Count : [%s]" % str(WorkerThreadPool.get_group_processed_element_count(task_id)))
 		await get_tree().create_timer(0.05, true, true, true).timeout
 	# cleanup
 	WorkerThreadPool.wait_for_group_task_completion(task_id)
@@ -116,6 +118,7 @@ func _simulate_connections() -> void:
 	var connections: Array[CachedConnection] = circuit.connections.values()
 	task_id = WorkerThreadPool.add_group_task(_simulate_connection, connections.size(), -1, true, "Simulate Connections")
 	# small delay, makes it a coroutine | 50 msec realtime
+	print("Simulate Connections :")
 	while not WorkerThreadPool.is_group_task_completed(task_id):
 		print("Count : [%s]" % str(WorkerThreadPool.get_group_processed_element_count(task_id)))
 		await get_tree().create_timer(0.05, true, true, true).timeout

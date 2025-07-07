@@ -1,11 +1,11 @@
 extends PanelContainer
 
 func _new_project_pressed() -> void:
-	pass # Replace with function body.
+	get_tree().change_scene_to_file("res://scenes/project_new.tscn")
 
 
 func _load_project_pressed() -> void:
-	pass # Replace with function body.
+	get_tree().change_scene_to_file("res://scenes/project_load.tscn")
 
 
 func _settings_pressed() -> void:

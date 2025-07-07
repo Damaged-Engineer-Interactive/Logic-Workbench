@@ -20,10 +20,9 @@ func _init() -> void:
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
-	
-	load_project("DEV_EMPTY")
 
 func load_project(_name: String) -> void:
+	get_tree().change_scene_to_file("res://scenes/workspace.tscn")
 	active_project = available_projects[_name]
 	GateRegistry.reset()
 	for gate: Circuit in active_project.gates.values():

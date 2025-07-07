@@ -1,6 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://do74jybl4u754"]
+[gd_scene load_steps=18 format=3 uid="uid://do74jybl4u754"]
 
 [ext_resource type="Script" uid="uid://qsmxyfyvadxw" path="res://scripts/workspace.gd" id="1_7cefc"]
+[ext_resource type="Theme" uid="uid://dx5vo52uog5ln" path="res://styles/ui/theme.tres" id="2_vo7lu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sgp6g"]
 content_margin_left = 8.0
@@ -9,76 +10,12 @@ content_margin_right = 8.0
 content_margin_bottom = 8.0
 bg_color = Color(0.273285, 0.541066, 0.777344, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o5qli"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbgi4"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.839216, 0.454902, 0.454902, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tefeu"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.777344, 0.273285, 0.273285, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o6xl0"]
 content_margin_left = 8.0
 content_margin_top = 4.0
 content_margin_right = 8.0
 content_margin_bottom = 4.0
 bg_color = Color(0.902344, 0.63446, 0.63446, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sgp6g"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wfyh"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.454902, 0.658824, 0.839216, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sugp2"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.273285, 0.541066, 0.777344, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -227,15 +164,7 @@ layout_mode = 2
 [node name="MainMenu" type="Button" parent="VBoxContainer/TopBar/Buttons"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_o5qli")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tbgi4")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_tefeu")
+theme = ExtResource("2_vo7lu")
 theme_override_styles/normal = SubResource("StyleBoxFlat_o6xl0")
 text = "Main Menu"
 
@@ -246,61 +175,26 @@ size_flags_horizontal = 3
 [node name="Gate" type="Button" parent="VBoxContainer/TopBar/Buttons"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+theme = ExtResource("2_vo7lu")
 text = "Gate"
 
 [node name="Visualiser" type="Button" parent="VBoxContainer/TopBar/Buttons"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+theme = ExtResource("2_vo7lu")
 text = "Visualiser"
 
 [node name="Simulator" type="Button" parent="VBoxContainer/TopBar/Buttons"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+theme = ExtResource("2_vo7lu")
 text = "Simulator"
 
 [node name="Checker" type="Button" parent="VBoxContainer/TopBar/Buttons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
+theme = ExtResource("2_vo7lu")
 theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
 disabled = true
 text = "Circuit Checker"
@@ -323,10 +217,11 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_7cefc")
 theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_7cefc")
 theme_override_styles/tab_hovered = SubResource("StyleBoxEmpty_7cefc")
 theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_7cefc")
-current_tab = 0
+current_tab = 2
 tabs_visible = false
 
 [node name="Gate" type="PanelContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 metadata/_tab_index = 0
@@ -990,7 +885,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 text = "Add Gate to Circuit"
 
 [node name="Simulator" type="PanelContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1126,6 +1020,115 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 toggle_mode = true
 text = "Ticks per Second"
 
+[node name="StepPanel" type="Popup" parent="."]
+unique_name_in_owner = true
+initial_position = 2
+size = Vector2i(300, 150)
+always_on_top = true
+
+[node name="PanelContainer" type="PanelContainer" parent="StepPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_vo7lu")
+theme_type_variation = &"BorderedPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StepPanel/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StepPanel/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 6
+text = "Amount of Steps to Simulate"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="StepPanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+min_value = 1.0
+value = 1.0
+alignment = 1
+suffix = "Step(s)"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StepPanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SimulateStep" type="Button" parent="StepPanel/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Simulate"
+
+[node name="Cancel" type="Button" parent="StepPanel/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"RedButton"
+text = "Cancel"
+
+[node name="TPSPanel" type="Popup" parent="."]
+unique_name_in_owner = true
+auto_translate_mode = 1
+initial_position = 2
+size = Vector2i(300, 150)
+always_on_top = true
+
+[node name="PanelContainer" type="PanelContainer" parent="TPSPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_vo7lu")
+theme_type_variation = &"BorderedPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TPSPanel/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TPSPanel/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 6
+text = "Target Ticks per Second"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="TPSPanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "0 = Unlimited"
+max_value = 0.0
+alignment = 1
+suffix = "TPS"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TPSPanel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SimulateTPS" type="Button" parent="TPSPanel/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Simulate"
+
+[node name="Cancel" type="Button" parent="TPSPanel/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"RedButton"
+text = "Cancel"
+
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/MainMenu" to="." method="_main_menu_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Gate" to="." method="_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Visualiser" to="." method="_visualiser_pressed"]
@@ -1149,3 +1152,7 @@ text = "Ticks per Second"
 [connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeStop" to="." method="_sim_mode_stop_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeStep" to="." method="_sim_mode_step_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeTPS" to="." method="_sim_mode_tps_pressed"]
+[connection signal="pressed" from="StepPanel/PanelContainer/VBoxContainer/HBoxContainer/SimulateStep" to="." method="_simulate_step_pressed"]
+[connection signal="pressed" from="StepPanel/PanelContainer/VBoxContainer/HBoxContainer/Cancel" to="." method="_cancel_pressed"]
+[connection signal="pressed" from="TPSPanel/PanelContainer/VBoxContainer/HBoxContainer/SimulateTPS" to="." method="_simulate_tps_pressed"]
+[connection signal="pressed" from="TPSPanel/PanelContainer/VBoxContainer/HBoxContainer/Cancel" to="." method="_cancel_pressed"]

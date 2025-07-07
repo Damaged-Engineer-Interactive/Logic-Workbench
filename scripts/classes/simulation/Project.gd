@@ -57,7 +57,7 @@ func save() -> void:
 	file = FileAccess.open(path + "/manifest.lwp", FileAccess.WRITE)
 	file.store_string("version_1\n")
 	file.store_string("[DATA]\n")
-	file.store_string('name: {name}\ndescription: {desc}\n'.format({"name": name, "desc": description}))
+	file.store_string('name: {name}\ndescription: {desc}\n'.format({"name": name, "desc": description.replace("\n", " ")}))
 	file.store_string("[TAGS]\n")
 	for tag: String in tags:
 		file.store_line(tag)
@@ -107,13 +107,14 @@ static func load(path: String) -> Project: # only loads metadata & circuits. doe
 	# circuits
 	text = file.get_line()
 	Global.active_project = res
-	while true:
-		var gate: Circuit = Circuit.load(path.get_base_dir() + "/circuits/%s.lwc" % text).to_description()
-		res.gates[gate.type] = gate
-		GateRegistry.add_gate(gate)
-		text = file.get_line()
-		if text == "[END]":
-			break
+	if text != "[END]":
+		while true:
+			var gate: Circuit = Circuit.load(path.get_base_dir() + "/circuits/%s.lwc" % text).to_description()
+			res.gates[gate.type] = gate
+			GateRegistry.add_gate(gate)
+			text = file.get_line()
+			if text == "[END]":
+				break
 	Global.active_project = null
 	GateRegistry.reset()
 	return res

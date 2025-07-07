@@ -1,6 +1,5 @@
 extends PanelContainer
 
-
 func _ajax_youtube_pressed() -> void:
 	OS.shell_open("https://www.youtube.com/@ajax123z")
 

@@ -559,8 +559,8 @@ func _workspace_disconnection_request(from_node: StringName, from_port: int, to_
 func _workspace_delete_nodes_request(nodes: Array[StringName]) -> void:
 	for node: StringName in nodes:
 		var v_gate: VisualGate = %Workspace.get_node(NodePath(node))
-		visual_gate_map.erase(v_gate)
-		gate_visual_map.erase(v_gate.from)
+		visual_gate_map.erase(v_gate.name)
+		gate_visual_map.erase(v_gate.from.id)
 		var conns: Array = circuit.remove_gate(v_gate.from.id)[1]
 		for connection: Connection in conns:
 			%Workspace.disconnect_node(connection.from_gate, connection.from_port, connection.to_gate, connection.to_port)
@@ -651,6 +651,7 @@ func _generate_pressed() -> void:
 	
 	var cached: CachedCircuit = CachedCircuit.new(circuit.to_description())
 	simulation = Simulation.new()
+	simulation.sim_stopped.connect(_sim_mode_stop_pressed.unbind(1))
 	add_child(simulation)
 	await simulation.setup(cached)
 
@@ -672,13 +673,30 @@ func _delete_gate_pressed() -> void:
 
 
 func _sim_mode_stop_pressed() -> void:
-	%SimModeStop.button_pressed = true
-	%SimModeStep.button_pressed = false
 	%SimModeStep.disabled = false
-	%SimModeTPS.button_pressed = false
 	%SimModeTPS.disabled = false
+	%SimModeStop.disabled = true
 	
 	simulation.stop()
+
+
+func _simulate_step_pressed() -> void:
+	%SimModeStep.disabled = true
+	%SimModeTPS.disabled = true
+	%SimModeStop.disabled = false
+	
+	%StepPanel.hide()
+	simulation.step(%Steps.value)
+
+
+func _simulate_tps_pressed() -> void:
+	%SimModeStep.disabled = true
+	%SimModeTPS.disabled = true
+	%SimModeStop.disabled = false
+	
+	%TPSPanel.hide()
+	#simulation.tps = %TPS.value
+	simulation.run()
 
 
 func _sim_mode_step_pressed() -> void:
@@ -687,22 +705,6 @@ func _sim_mode_step_pressed() -> void:
 
 func _sim_mode_tps_pressed() -> void:
 	%TPSPanel.show()
-
-
-func _simulate_step_pressed() -> void:
-	%SimModeStop.button_pressed = false
-	%SimModeStep.button_pressed = true
-	%SimModeStep.disabled = false
-	%SimModeTPS.button_pressed = false
-	%SimModeTPS.disabled = true
-
-
-func _simulate_tps_pressed() -> void:
-	%SimModeStop.button_pressed = false
-	%SimModeStep.button_pressed = false
-	%SimModeStep.disabled = true
-	%SimModeTPS.button_pressed = true
-	%SimModeTPS.disabled = false
 
 
 func _cancel_pressed() -> void:

@@ -37,11 +37,19 @@ var tick: int
 ## Current gates to simulate
 var gates: Array[CachedGate]
 
+func _enter_tree() -> void:
+	process_priority = -1
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	process_thread_group = Node.PROCESS_THREAD_GROUP_SUB_THREAD
+	process_thread_group_order = -1
+	process_thread_messages = Node.FLAG_PROCESS_THREAD_MESSAGES
+	name = "SIMULATION"
+
 ## The Simulation can only be initialised from a valid CachedCircuit
 func setup(from: CachedCircuit) -> void:
 	circuit = from
 	
-	needed_threads = roundi(circuit.complexity)
+	needed_threads = max(1, roundi(circuit.complexity))
 	task_id = -1
 	
 	mode = SimMode.STOP
@@ -60,6 +68,7 @@ func setup(from: CachedCircuit) -> void:
 	# cleanup
 	WorkerThreadPool.wait_for_group_task_completion(task_id)
 	task_id = -1
+	print()
 
 func _process(_delta: float) -> void:
 	match mode:
@@ -95,6 +104,7 @@ func stop() -> void:
 		sim_stopped.emit(tick)
 
 func simulate_tick():
+	print("Simulate Tick : [%s]" % tick)
 	for rank: int in circuit.parallel_schedule.keys():
 		await _simulate_rank(rank)
 		await _simulate_connections()
@@ -109,10 +119,11 @@ func _simulate_rank(rank: int) -> void:
 	print("Simulate Rank : [%s] <%s>" % [str(rank), str(gates.size())])
 	while not WorkerThreadPool.is_group_task_completed(task_id):
 		#print("Count : [%s]" % str(WorkerThreadPool.get_group_processed_element_count(task_id)))
-		await get_tree().create_timer(0.05, true, true, true).timeout
+		await get_tree().create_timer(0.01, true, true, true).timeout
 	# cleanup
 	WorkerThreadPool.wait_for_group_task_completion(task_id)
 	task_id = -1
+	print()
 
 func _simulate_connections() -> void:
 	var connections: Array[CachedConnection] = circuit.connections.values()
@@ -125,6 +136,7 @@ func _simulate_connections() -> void:
 	# cleanup
 	WorkerThreadPool.wait_for_group_task_completion(task_id)
 	task_id = -1
+	print()
 
 # Called by the threads on every Connection
 func _simulate_connection(id: int):

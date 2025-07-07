@@ -6,6 +6,9 @@ var available_projects: Dictionary[String, Project] = {}
 func _init() -> void:
 	await GateRegistry.loaded
 	
+	if not DirAccess.dir_exists_absolute("user://saved"):
+		DirAccess.make_dir_recursive_absolute("user://saved")
+	
 	var dir = DirAccess.open("user://saved")
 	if dir:
 		dir.list_dir_begin()

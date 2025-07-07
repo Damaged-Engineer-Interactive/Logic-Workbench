@@ -99,11 +99,12 @@ static func load(path: String) -> Project: # only loads metadata & circuits. doe
 		return
 	# tags
 	var text: String = file.get_line()
-	while true:
-		res.tags.append(text)
-		text = file.get_line()
-		if text == "[CIRCUITS]":
-			break
+	if text != "[CIRCUITS]":
+		while true:
+			res.tags.append(text)
+			text = file.get_line()
+			if text == "[CIRCUITS]":
+				break
 	# circuits
 	text = file.get_line()
 	Global.active_project = res

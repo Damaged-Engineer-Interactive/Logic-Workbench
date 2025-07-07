@@ -112,10 +112,10 @@ func _init(from: Circuit) -> void:
 		conn_id_map[connection.id] = id_count
 		id_count += 1
 		# Step 4.1 here
-		if not cached.from_gate in out_connected_gates:
-			out_connected_gates.append(cached.from_gate)
-		if not cached.to_gate in in_connected_gates:
-			in_connected_gates.append(cached.to_gate)
+		if not cached.from_gate.id in out_connected_gates:
+			out_connected_gates.append(cached.from_gate.id)
+		if not cached.to_gate.id in in_connected_gates:
+			in_connected_gates.append(cached.to_gate.id)
 		# Step 5.1 here
 		var string: String = str(cached.to_gate.id) + "|" + str(cached.to_port)
 		if port_write_map.has(string):
@@ -153,9 +153,9 @@ func _init(from: Circuit) -> void:
 			conn_map.erase(id)
 			conn_id_map.erase(old_conn_map[id])
 			old_conn_map.erase(id)
-			if dependency.has(connection.to_gate):
+			if dependency.has(connection.to_gate.id):
 				dependency[connection.to_gate.id].erase(connection.from_gate.id)
-			if reverse_dependency.has(connection.from_gate):
+			if reverse_dependency.has(connection.from_gate.id):
 				reverse_dependency[connection.from_gate.id].erase(connection.to_gate.id)
 			changed = true
 	

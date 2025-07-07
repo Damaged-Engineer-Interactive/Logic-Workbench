@@ -59,15 +59,15 @@ func add_gate(gate: GateDescription) -> String:
 	gates[gate.id] = gate
 	_gate_conn_map[gate.id] = []
 	match gate.type:
-		"IO.INPUT.*":
+		"IO.INPUT.#":
 			input_config[gate.id] = PinDescription.create(gate.data["name"], gate.outputs[0].state.size)
-		"IO.OUTPUT.*":
+		"IO.OUTPUT.#":
 			output_config[gate.id] = PinDescription.create(gate.data["name"], gate.inputs[0].state.size)
 		# TODO : Add Tunnels
-		"ROUTING.TUNNEL_IN.*":
+		"ROUTING.TUNNEL_IN.#":
 			push_error("TUNNELS NOT IMPLEMENTED")
 			printerr("TUNNELS NOT IMPLEMENTED")
-		"ROUTING.TUNNEL_OUT.*":
+		"ROUTING.TUNNEL_OUT.#":
 			push_error("TUNNELS NOT IMPLEMENTED")
 			printerr("TUNNELS NOT IMPLEMENTED")
 	return gate.id
@@ -75,15 +75,15 @@ func add_gate(gate: GateDescription) -> String:
 func remove_gate(gate_id: String) -> Array:
 	var gate: GateDescription = gates.get(gate_id)
 	match gate.type:
-		"IO.INPUT.*":
+		"IO.INPUT.#":
 			input_config.erase(gate_id)
-		"IO.OUTPUT.*":
+		"IO.OUTPUT.#":
 			output_config.erase(gate_id)
 		# TODO : Add Tunnels
-		"ROUTING.TUNNEL_IN.*":
+		"ROUTING.TUNNEL_IN.#":
 			push_error("TUNNELS NOT IMPLEMENTED")
 			printerr("TUNNELS NOT IMPLEMENTED")
-		"ROUTING.TUNNEL_OUT.*":
+		"ROUTING.TUNNEL_OUT.#":
 			push_error("TUNNELS NOT IMPLEMENTED")
 			printerr("TUNNELS NOT IMPLEMENTED")
 	gates.erase(gate_id)
@@ -123,6 +123,7 @@ func copy() -> Circuit:
 	res.color = color
 	res.ticks = ticks
 	res.priority = priority
+	res.position = position
 	
 	res.inputs = []
 	res.outputs = []
@@ -212,56 +213,125 @@ func flatten_recursive() -> Array[Dictionary]: # [Gates, Connections]
 
 func to_description() -> Circuit:
 	var res: Circuit = copy() # make a copy...
+	push_warning("Check TODO")
+	# TODO : calculate ticks
 	res.inputs = res.input_config.values()
 	res.outputs = res.output_config.values()
 	return res # done? ...
 
-func save() -> Dictionary:
-	var res: Dictionary =  {
-		"name": name,
-		"type": type,
-		"color": var_to_str(color),
-		"priority": priority,
-		"gates": "", # generated
-		"connections": "", # generated
-		"input_config": {}, # generated
-		"output_config": {}, # generated
-	}
+func save(path: String) -> void:
+	var file: FileAccess
+	if not DirAccess.dir_exists_absolute(path):
+		DirAccess.make_dir_recursive_absolute(path)
 	
-	for _id: String in gates.keys():
-		res["gates"][_id] = gates[_id].save()
+	file = FileAccess.open(path + "/%s.lwc" % type, FileAccess.WRITE)
+	file.store_string("version_1\n")
+	file.store_string("[DATA]\n")
+	file.store_string('type: {type}\nticks: {ticks}\npriority: {priority}\ncolor: {color}\n'.format({"type": type, "ticks": ticks, "priority": priority, "color": var_to_str(color)}))
+	file.store_string("[CFG_IN]\n")
+	for i: String in input_config.keys():
+		var desc: PinDescription = input_config[i]
+		file.store_string('{i},{size},{name}\n'.format({"i": i, "size": desc.state.size, "name": desc.name}))
+	file.store_string("[CFG_OUT]\n")
+	for i: String in output_config.keys():
+		var desc: PinDescription = output_config[i]
+		file.store_string('{i},{size},{name}\n'.format({"i": i, "size": desc.state.size, "name": desc.name}))
+	file.store_string("[GATES]\n")
+	for gate: GateDescription in gates.values():
+		var str_data: String = JSON.stringify(gate.data)
+		var values: Dictionary = {
+			"id": gate.id,
+			"type": gate.type,
+			"position": var_to_str(gate.position),
+			"data": str_data
+		}
+		file.store_string("{id}|{type}|{position}|{data}\n".format(values))
+	file.store_string("[CONNECTIONS]\n")
+	for conn: Connection in connections.values():
+		var values: Dictionary = {
+			"id": conn.id,
+			"from_gate": conn.from_gate,
+			"from_port": conn.from_port,
+			"to_gate": conn.to_gate,
+			"to_port": conn.to_port
+		}
+		file.store_string("{id} {from_gate} {from_port} {to_gate} {to_port}\n".format(values))
+	file.store_string("[END]")
+	file.close()
+
+static func load(path: String) -> Circuit: # load using full path
+	if not path.get_extension() == "lwc":
+		printerr("File [%s] has an invalid extension! aborting load" % path)
+		return
+	if not FileAccess.file_exists(path):
+		printerr("File [%s] does not exist! aborting load" % path)
+		return
 	
-	for _id: String in connections.keys():
-		res["connections"][_id] = connections[_id].save()
+	var file := FileAccess.open(path, FileAccess.ModeFlags.READ)
+	var res := Circuit.new()
 	
-	for _id: String in input_config.keys():
-		res["input_conig"][_id] = input_config[_id].save()
-	
-	for _id: String in output_config.keys():
-		res["output_config"][_id] = output_config[_id].save()
-	
+	if not file.get_line() != "version_1\n":
+		printerr("File [%s] has an invalid version! aborting load" % path)
+		return
+	if not file.get_line() != "[DATA]\n":
+		printerr("File [%s] has an invalid format! aborting load" % path)
+		return
+	# data
+	res.type = file.get_line().get_slice(": ",1)
+	res.name = res.type.get_slice(".", 1)
+	res.ticks = int(file.get_line().get_slice(": ",1))
+	res.priority = int(file.get_line().get_slice(": ",1))
+	res.color = str_to_var(file.get_line().get_slice(": ",1))
+	if not file.get_line() != "[CFG_IN]\n":
+		printerr("File [%s] has an invalid format! aborting load" % path)
+		return
+	# input config
+	var text: String = file.get_line()
+	while true:
+		var segments: PackedStringArray = text.split(",", false, 3)
+		var pin := PinDescription.create(segments[2], int(segments[1]))
+		res.input_config[segments[0]] = pin
+		text = file.get_line()
+		if text == "[CFG_OUT]":
+			break
+	# output config
+	text = file.get_line()
+	while true:
+		var segments: PackedStringArray = text.split(",", false, 3)
+		var pin := PinDescription.create(segments[2], int(segments[1]))
+		res.output_config[segments[0]] = pin
+		text = file.get_line()
+		if text == "[GATES]":
+			break
+	# gates
+	text = file.get_line()
+	while true:
+		var segments: PackedStringArray = text.split("|", false, 4)
+		var d = JSON.parse_string(segments[3])
+		var gate: GateDescription = GateRegistry.get_gate(segments[1]).from_data(d)
+		gate.id = segments[0]
+		gate.position = str_to_var(segments[2])
+		res.gates[segments[0]] = gate
+		text = file.get_line()
+		if text == "[CONNECTIONS]":
+			break
+	# connections
+	text = file.get_line()
+	while true:
+		var segments: PackedStringArray = text.split(" ", false, 5)
+		var conn := Connection.new()
+		conn.id = segments[0]
+		conn.from_gate = segments[1]
+		conn.from_port = int(segments[2])
+		conn.to_gate = segments[3]
+		conn.to_port = int(segments[4])
+		res.connections[segments[0]] = conn
+		text = file.get_line()
+		if text == "[END]":
+			break
+	file.close()
 	return res
 
-static func load(from: Dictionary) -> Circuit:
-	var chip := Circuit.new()
-	chip.name = from["name"]
-	chip.type = from["type"]
-	chip.color = str_to_var(from["color"])
-	chip.priority = from["priority"]
-	
-	for _id: String in from["gates"].keys():
-		chip.gates[_id] = GateDescription.load(from["gates"][_id])
-	
-	for _id: String in from["connections"].keys():
-		chip.connections[_id] = Connection.load(from["connections"][_id])
-	
-	for _id: String in from["input_conig"].keys():
-		chip.input_config[_id] = PinDescription.load(from["input_conig"][_id])
-	
-	for _id: String in from["output_config"].keys():
-		chip.output_config[_id] = PinDescription.load(from["output_config"][_id])
-	
-	return chip
 # private functions
 
 # subclasses

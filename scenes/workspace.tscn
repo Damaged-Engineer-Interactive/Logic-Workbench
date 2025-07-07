@@ -288,6 +288,23 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
 theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
 text = "Simulator"
 
+[node name="Checker" type="Button" parent="VBoxContainer/TopBar/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sgp6g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0wfyh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sugp2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jyhfs")
+disabled = true
+text = "Circuit Checker"
+
 [node name="Spacer-2" type="Control" parent="VBoxContainer/TopBar/Buttons"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -306,11 +323,10 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_7cefc")
 theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_7cefc")
 theme_override_styles/tab_hovered = SubResource("StyleBoxEmpty_7cefc")
 theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_7cefc")
-current_tab = 2
+current_tab = 0
 tabs_visible = false
 
 [node name="Gate" type="PanelContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 metadata/_tab_index = 0
@@ -329,6 +345,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 15
 theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_vo7lu")
+allow_rmb_select = true
 hide_root = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer"]
@@ -424,7 +441,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_cnvne")
-placeholder_text = "Use * if there will only be one version"
+placeholder_text = "Use # if there will only be one version"
 max_length = 20
 context_menu_enabled = false
 emoji_menu_enabled = false
@@ -641,7 +658,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons"]
 layout_mode = 2
 
-[node name="SaveGate" type="Button" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer"]
+layout_mode = 2
+
+[node name="SaveGate" type="Button" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
 layout_mode = 2
@@ -658,6 +678,24 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
 theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 text = "Save / Update Gate"
+
+[node name="NewGate" type="Button" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kq4ke")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+text = "New Gate"
 
 [node name="HBoxContainer-2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer"]
 layout_mode = 2
@@ -680,23 +718,23 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 disabled = true
 text = "Load Gate"
 
-[node name="NewGate" type="Button" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2"]
+[node name="DeleteGate" type="Button" parent="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_kq4ke")
 theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
 theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
-text = "New Gate"
+disabled = true
+text = "Delete Gate"
 
 [node name="Visualiser" type="VSplitContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -852,6 +890,27 @@ value = 2.0
 alignment = 1
 suffix = "Input(s)"
 
+[node name="InputBits" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputBits"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input Bit Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputBits"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 512.0
+value = 1.0
+alignment = 1
+suffix = "Bit(s)"
+
 [node name="OutputName" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
 layout_mode = 2
 
@@ -892,6 +951,27 @@ value = 2.0
 alignment = 1
 suffix = "Output(s)"
 
+[node name="OutputBits" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputBits"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Output Bit Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputBits"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 512.0
+value = 1.0
+alignment = 1
+suffix = "Bit(s)"
+
 [node name="AddGate" type="Button" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
@@ -909,53 +989,34 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
 theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 text = "Add Gate to Circuit"
 
-[node name="Simulator" type="HSplitContainer" parent="VBoxContainer/TabContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-theme_override_constants/autohide = 0
-theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_7cefc")
-dragger_visibility = 1
-metadata/_tab_index = 2
-
-[node name="Simulator" type="GraphEdit" parent="VBoxContainer/TabContainer/Simulator"]
-unique_name_in_owner = true
+[node name="Simulator" type="PanelContainer" parent="VBoxContainer/TabContainer"]
 visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
-snapping_enabled = false
-snapping_distance = 25
-show_zoom_label = true
-show_grid_buttons = false
-show_arrange_button = false
-
-[node name="Panel" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator"]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 3
+metadata/_tab_index = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Simulator/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Simulator"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 88
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TopButtons" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer"]
+[node name="TopButtons" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Generate" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons/HBoxContainer"]
+[node name="Generate" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
 layout_mode = 2
@@ -972,7 +1033,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
 theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 text = "Generate Simulation"
 
-[node name="Clear" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons/HBoxContainer"]
+[node name="Clear" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
 layout_mode = 2
@@ -990,27 +1051,27 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 disabled = true
 text = "Clear Simulation"
 
-[node name="SimControls" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer"]
+[node name="SimControls" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls"]
 layout_mode = 2
 
-[node name="SimControlsLabel" type="Label" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer"]
+[node name="SimControlsLabel" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 text = "Simulation Mode"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="SimModeStop" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
+[node name="SimModeStop" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
 layout_mode = 2
@@ -1029,7 +1090,7 @@ toggle_mode = true
 button_pressed = true
 text = "Disabled"
 
-[node name="SimModeStep" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
+[node name="SimModeStep" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
 layout_mode = 2
@@ -1047,7 +1108,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 toggle_mode = true
 text = "Steps"
 
-[node name="SimModeTPS" type="Button" parent="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
+[node name="SimModeTPS" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
 layout_mode = 2
@@ -1074,16 +1135,17 @@ text = "Ticks per Second"
 [connection signal="text_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/GateName/RegistryGateName" to="." method="_check_if_loadable" unbinds=1]
 [connection signal="text_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2/GateVersion/RegistryGateVersion" to="." method="_check_if_loadable" unbinds=1]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer-2/GateColor/RegistryGateColor" to="." method="_registry_gate_color_color_changed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/SaveGate" to="." method="_save_gate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer/SaveGate" to="." method="_save_gate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer/NewGate" to="." method="_new_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2/LoadGate" to="." method="_load_gate_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2/NewGate" to="." method="_new_gate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2/DeleteGate" to="." method="_delete_gate_pressed"]
 [connection signal="connection_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_connection_request"]
 [connection signal="delete_nodes_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_delete_nodes_request"]
 [connection signal="disconnection_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_disconnection_request"]
 [connection signal="item_selected" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateTree" to="." method="_gate_tree_item_selected"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/AddGate" to="." method="_add_gate_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Generate" to="." method="_generate_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Clear" to="." method="_clear_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeStop" to="." method="_sim_mode_stop_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeStep" to="." method="_sim_mode_step_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/Panel/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeTPS" to="." method="_sim_mode_tps_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Generate" to="." method="_generate_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Clear" to="." method="_clear_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeStop" to="." method="_sim_mode_stop_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeStep" to="." method="_sim_mode_step_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/HBoxContainer/SimModeTPS" to="." method="_sim_mode_tps_pressed"]

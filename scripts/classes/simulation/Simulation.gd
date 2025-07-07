@@ -38,7 +38,7 @@ var tick: int
 var gates: Array[CachedGate]
 
 ## The Simulation can only be initialised from a valid CachedCircuit
-func _init(from: CachedCircuit) -> void:
+func setup(from: CachedCircuit) -> void:
 	circuit = from
 	
 	needed_threads = roundi(circuit.complexity)
@@ -72,7 +72,7 @@ func _process(_delta: float) -> void:
 
 ## Update the Simulation with a new Circuit
 func update(new: CachedCircuit) -> void:
-	_init(new)
+	setup(new)
 
 ## Run the Simulation (mode: TPS)
 func run() -> void:

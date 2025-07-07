@@ -13,10 +13,10 @@ extends Object
 
 # Constants
 const IO_TYPES: Array[String] = [
-	"IO.INPUT.*",
-	"IO.OUTPUT.*",
-	"ROUTING.TUNNEL_IN.*",
-	"ROUTING.TUNNEL_OUT.*"
+	"IO.INPUT.#",
+	"IO.OUTPUT.#",
+	"ROUTING.TUNNEL_IN.#",
+	"ROUTING.TUNNEL_OUT.#"
 ]
 
 # @export variables

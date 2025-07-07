@@ -13,8 +13,8 @@ var simulation: Simulation
 
 var clear_confirmation: bool = false
 
-var gate_visual_map: Dictionary[GateDescription, VisualGate] = {}
-var visual_gate_map: Dictionary[VisualGate, GateDescription] = {}
+var gate_visual_map: Dictionary[StringName, VisualGate] = {}
+var visual_gate_map: Dictionary[StringName, GateDescription] = {}
 
 func _ready() -> void:
 	%Workspace.snapping_distance = int(VisualGate.SNAP)
@@ -23,6 +23,7 @@ func _ready() -> void:
 	circuit = Circuit.new()
 	redraw_io()
 	_clear_pressed()
+	GateRegistry.updated.connect(_make_gate_tree)
 
 #region VISUALISATION
 func _make_gate_tree() -> void:
@@ -44,9 +45,9 @@ func _make_gate_tree() -> void:
 			print("- " + gate)
 			var gate_item: TreeItem = group_item.create_child()
 			gate_item.set_text(0, gate)
-			if grouped[group][gate] == ["*"]:
+			if grouped[group][gate] == ["#"]:
 				print("| *")
-				var type: String = "%s.%s.*" % [group, gate]
+				var type: String = "%s.%s.#" % [group, gate]
 				var version: GateDescription = GateRegistry.get_gate(type)
 				gate_item.set_custom_bg_color(0, version.color, true)
 				gate_item.set_custom_color(0, version.color)
@@ -88,12 +89,13 @@ func _make_gate_tree() -> void:
 			print("- " + gate)
 			var gate_item: TreeItem = group_item.create_child()
 			gate_item.set_text(0, gate)
-			if grouped[group][gate] == ["*"]:
+			if grouped[group][gate] == ["#"]:
 				print("| *")
-				var type: String = "%s.%s.*" % [group, gate]
+				var type: String = "%s.%s.#" % [group, gate]
 				var version: GateDescription = GateRegistry.get_gate(type)
 				gate_item.set_custom_bg_color(0, version.color, true)
 				gate_item.set_custom_color(0, version.color)
+				gate_item.set_selectable(0, true)
 				registry_tree_type_map[gate_item] = version.type
 				registry_type_tree_map[type] = gate_item
 			else:
@@ -106,6 +108,7 @@ func _make_gate_tree() -> void:
 					var desc: GateDescription = GateRegistry.get_gate(type)
 					version_item.set_custom_bg_color(0, desc.color, true)
 					version_item.set_custom_color(0, desc.color)
+					version_item.set_selectable(0, true)
 					registry_tree_type_map[version_item] = type
 					registry_type_tree_map[type] = version_item
 	print()
@@ -122,47 +125,58 @@ func _gate_tree_item_selected() -> void:
 	_clear_gate_data()
 	
 	match selected.type:
-		"IO.INPUT.*": # Universal Input
+		"IO.INPUT.#": # Universal Input
 			%GateData.show()
 			%GateData.get_node(^"BitSize").show()
 			%GateData.get_node(^"InputName").show()
-		"IO.OUTPUT.*": # Universal Output
+		"IO.OUTPUT.#": # Universal Output
 			%GateData.show()
 			%GateData.get_node(^"BitSize").show()
 			%GateData.get_node(^"OutputName").show()
-		"ROUTING.TUNNEL_IN.*": # Universal Input
+		"ROUTING.TUNNEL_IN.#": # Universal Input
 			%GateData.show()
 			%GateData.get_node(^"BitSize").show()
 			%GateData.get_node(^"InputName").show()
-		"ROUTING.TUNNEL_OUT.*": # Universal Output
+		"ROUTING.TUNNEL_OUT.#": # Universal Output
 			%GateData.show()
 			%GateData.get_node(^"BitSize").show()
 			%GateData.get_node(^"OutputName").show()
 		
-		"COMBINATIONAL.AND.*": # AND Gate
+		"ROUTING.ROUTING.MUX.#": # Mux
+			%GateData.show()
+			%GateData.get_node(^"BitSize").show()
+		"ROUTING.ROUTING.DEMUX.#": # DEMUX
+			%GateData.show()
+			%GateData.get_node(^"BitSize").show()
+		"ROUTING.CONVERTER.#": # Bit Converter
+			%GateData.show()
+			%GateData.get_node(^"InputBits").show()
+			%GateData.get_node(^"OutputBits").show()
+		
+		"COMBINATIONAL.AND.#": # AND Gate
 			%GateData.show()
 			%GateData.get_node(^"InputCount").show()
 			%GateData.get_node(^"BitSize").show()
-		"COMBINATIONAL.NAND.*": # NAND Gate
+		"COMBINATIONAL.NAND.#": # NAND Gate
 			%GateData.show()
 			%GateData.get_node(^"InputCount").show()
 			%GateData.get_node(^"BitSize").show()
-		"COMBINATIONAL.OR.*": # OR Gate
+		"COMBINATIONAL.OR.#": # OR Gate
 			%GateData.show()
 			%GateData.get_node(^"InputCount").show()
 			%GateData.get_node(^"BitSize").show()
-		"COMBINATIONAL.NOR.*": # NOR Gate
+		"COMBINATIONAL.NOR.#": # NOR Gate
 			%GateData.show()
 			%GateData.get_node(^"InputCount").show()
 			%GateData.get_node(^"BitSize").show()
-		"COMBINATIONAL.NOT.*": # NOT Gate
+		"COMBINATIONAL.NOT.#": # NOT Gate
 			%GateData.show()
 			%GateData.get_node(^"BitSize").show()
-		"COMBINATIONAL.XOR.*": # XOR Gate
+		"COMBINATIONAL.XOR.#": # XOR Gate
 			%GateData.show()
 			%GateData.get_node(^"InputCount").show()
 			%GateData.get_node(^"BitSize").show()
-		"COMBINATIONAL.XNOR.*": # XNOR Gate
+		"COMBINATIONAL.XNOR.#": # XNOR Gate
 			%GateData.show()
 			%GateData.get_node(^"InputCount").show()
 			%GateData.get_node(^"BitSize").show()
@@ -175,87 +189,113 @@ func _clear_gate_data() -> void:
 	%GateData.get_node(^"InputName/Value").text = ""
 	%GateData.get_node(^"InputCount").hide()
 	%GateData.get_node(^"InputCount/Value").value = 2
+	%GateData.get_node(^"InputBits").hide()
+	%GateData.get_node(^"InputBits/Value").value = 1
 	%GateData.get_node(^"OutputName").hide()
 	%GateData.get_node(^"OutputName/Value").text = ""
 	%GateData.get_node(^"OutputCount").hide()
 	%GateData.get_node(^"OutputCount/Value").value = 2
+	%GateData.get_node(^"OutputBits").hide()
+	%GateData.get_node(^"OutputBits/Value").value = 1
 
 func _is_gate_data_correct() -> bool:
+	if not selected:
+		return false
+	
 	match selected.type:
-		"IO.INPUT.*":
+		"IO.INPUT.#":
 			if %GateData.get_node(^"InputName/Value").text == "":
 				return false
-		"IO.OUTPUT.*":
+		"IO.OUTPUT.#":
 			if %GateData.get_node(^"OutputName/Value").text == "":
 				return false
-		"ROUTING.TUNNEL_IN.*":
+		"ROUTING.TUNNEL_IN.#":
 			if %GateData.get_node(^"InputName/Value").text == "":
 				return false
-		"ROUTING.TUNNEL_OUT.*":
+		"ROUTING.TUNNEL_OUT.#":
 			if %GateData.get_node(^"OutputName/Value").text == "":
 				return false
+		
+		"ROUTING.CONVERTER.#":
+			var a: int = %GateData.get_node(^"InputBits/Value").value
+			var b: int = %GateData.get_node(^"OutputBits/Value").value
+			return a % b == 0 or b % a == 0
 	
 	return true
 
-func _make_gate_data() -> GateDescription:
-	var gate: GateDescription = selected.copy()
-	
+func _make_gate_data() -> Dictionary:
 	match selected.type:
-		"IO.INPUT.*":
-			gate.outputs[0].state.size = %GateData.get_node(^"BitSize/Value").value
-			gate.data["name"] = %GateData.get_node(^"InputName/Value").text
-		"IO.OUTPUT.*":
-			gate.inputs[0].state.size = %GateData.get_node(^"BitSize/Value").value
-			gate.data["name"] = %GateData.get_node(^"OutputName/Value").text
-		"ROUTING.TUNNEL_IN.*":
-			gate.inputs[0].state.size = %GateData.get_node(^"BitSize/Value").value
-			gate.data["name"] = %GateData.get_node(^"InputName/Value").text
-		"ROUTING.TUNNEL_OUT.*":
-			gate.outputs[0].state.size = %GateData.get_node(^"BitSize/Value").value
-			gate.data["name"] = %GateData.get_node(^"OutputName/Value").text
+		"IO.INPUT.#":
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"name": %GateData.get_node(^"InputName/Value").text
+			}
+		"IO.OUTPUT.#":
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"name": %GateData.get_node(^"OutputName/Value").text
+			}
+		"ROUTING.TUNNEL_IN.#":
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"name": %GateData.get_node(^"InputName/Value").text
+			}
+		"ROUTING.TUNNEL_OUT.#":
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"name": %GateData.get_node(^"OutputName/Value").text
+			}
 		
-		"COMBINATIONAL.AND.*": # AND Gate
-			var bits: int = %GateData.get_node(^"BitSize/Value").value
-			var count: int = %GateData.get_node(^"InputCount/Value").value
-			gate.outputs[0].state.size = bits
-			for i in range(0, count):
-				gate.inputs.append(PinDescription.create("IN %s" % str(i), bits))
-		"COMBINATIONAL.NAND.*": # NAND Gate
-			var bits: int = %GateData.get_node(^"BitSize/Value").value
-			var count: int = %GateData.get_node(^"InputCount/Value").value
-			gate.outputs[0].state.size = bits
-			for i in range(0, count):
-				gate.inputs.append(PinDescription.create("IN %s" % str(i), bits))
-		"COMBINATIONAL.OR.*": # OR Gate
-			var bits: int = %GateData.get_node(^"BitSize/Value").value
-			var count: int = %GateData.get_node(^"InputCount/Value").value
-			gate.outputs[0].state.size = bits
-			for i in range(0, count):
-				gate.inputs.append(PinDescription.create("IN %s" % str(i), bits))
-		"COMBINATIONAL.NOR.*": # NOR Gate
-			var bits: int = %GateData.get_node(^"BitSize/Value").value
-			var count: int = %GateData.get_node(^"InputCount/Value").value
-			gate.outputs[0].state.size = bits
-			for i in range(0, count):
-				gate.inputs.append(PinDescription.create("IN %s" % str(i), bits))
-		"COMBINATIONAL.NOT.*": # NOT Gate
-			var bits: int = %GateData.get_node(^"BitSize/Value").value
-			gate.inputs[0].state.size = bits
-			gate.outputs[0].state.size = bits
-		"COMBINATIONAL.XOR.*": # XOR Gate
-			var bits: int = %GateData.get_node(^"BitSize/Value").value
-			var count: int = %GateData.get_node(^"InputCount/Value").value
-			gate.outputs[0].state.size = bits
-			for i in range(0, count):
-				gate.inputs.append(PinDescription.create("IN %s" % str(i), bits))
-		"COMBINATIONAL.XNOR.*": # XNOR Gate
-			var bits: int = %GateData.get_node(^"BitSize/Value").value
-			var count: int = %GateData.get_node(^"InputCount/Value").value
-			gate.outputs[0].state.size = bits
-			for i in range(0, count):
-				gate.inputs.append(PinDescription.create("IN %s" % str(i), bits))
+		"ROUTING.MUX.#": # MUX Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value
+			}
+		"ROUTING.DEMUX.#": # DEMUX Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value
+			}
+		"ROUTING.CONVERTER.#": # CONVERTER Gate
+			return {
+				"inputbits": %GateData.get_node(^"InputBits/Value").value,
+				"outputbits": %GateData.get_node(^"OutputBits/Value").value
+			}
+		
+		"COMBINATIONAL.AND.#": # AND Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"inputcount": %GateData.get_node(^"InputCount/Value").value
+			}
+		"COMBINATIONAL.NAND.#": # NAND Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"inputcount": %GateData.get_node(^"InputCount/Value").value
+			}
+		"COMBINATIONAL.OR.#": # OR Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"inputcount": %GateData.get_node(^"InputCount/Value").value
+			}
+		"COMBINATIONAL.NOR.#": # NOR Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"inputcount": %GateData.get_node(^"InputCount/Value").value
+			}
+		"COMBINATIONAL.NOT.#": # NOT Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value
+			}
+		"COMBINATIONAL.XOR.#": # XOR Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"inputcount": %GateData.get_node(^"InputCount/Value").value
+			}
+		"COMBINATIONAL.XNOR.#": # XNOR Gate
+			return {
+				"bitsize": %GateData.get_node(^"BitSize/Value").value,
+				"inputcount": %GateData.get_node(^"InputCount/Value").value
+			}
 	
-	return gate
+	return {}
 
 func _add_gate_pressed() -> void:
 	# check if the gate metadata is correct
@@ -263,7 +303,9 @@ func _add_gate_pressed() -> void:
 	
 	# continue normally
 	if correct:
-		var gate: GateDescription = _make_gate_data()
+		var data: Dictionary = _make_gate_data()
+		
+		var gate: GateDescription = selected.from_data(data)
 		circuit.add_gate(gate)
 		#call_deferred(&"update_workspace")
 		
@@ -272,8 +314,8 @@ func _add_gate_pressed() -> void:
 		%Workspace.add_child(v_gate)
 		if gate.type in Connection.IO_TYPES:
 			call_deferred(&"redraw_io")
-		gate_visual_map[gate] = v_gate
-		visual_gate_map[v_gate] = gate
+		gate_visual_map[gate.id] = v_gate
+		visual_gate_map[v_gate.name] = gate
 		#endregion
 	else:
 		var stylebox: StyleBoxFlat = %AddGate.get("theme_override_styles/disabled")
@@ -294,18 +336,15 @@ func _add_gate_pressed() -> void:
 		await tween.finished
 		%AddGate.disabled = false
 
-
 func _main_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
-
+	Global.active_project.save()
 
 func _gate_pressed() -> void:
 	$VBoxContainer/TabContainer.current_tab = 0
 
-
 func _visualiser_pressed() -> void:
 	$VBoxContainer/TabContainer.current_tab = 1
-
 
 func _simulator_pressed() -> void:
 	$VBoxContainer/TabContainer.current_tab = 2
@@ -326,15 +365,14 @@ func _registry_tree_item_selected() -> void:
 		%RegistryGateColor.color = color
 		return
 	
-	if not _check_if_loadable():
-		return
-	
 	var split: PackedStringArray = registry_selected.split(".", false, 3)
 	%RegistryCategoryName.text = split[0]
 	%RegistryGateName.text = split[1]
 	%RegistryGateVersion.text = split[2]
 	%RegistryGateColor.color = selected_item.get_custom_bg_color(0)
 	registry_type_tree_map[".."].set_custom_bg_color(0, selected_item.get_custom_bg_color(0))
+	
+	_check_if_loadable()
 
 
 func _make_random_color() -> Color:
@@ -370,8 +408,7 @@ func _save_gate_pressed() -> void:
 		circuit.type = "%s.%s.%s" % [%RegistryCategoryName.text, %RegistryGateName.text, %RegistryGateVersion.text]
 		circuit.color = %RegistryGateColor.color
 		for gate: GateDescription in circuit.gates.values():
-			circuit.ticks = max(circuit.ticks, gate.ticks)
-			gate.position = gate_visual_map[gate].position_offset
+			gate.position = gate_visual_map[gate.id].position_offset
 		GateRegistry.add_gate(circuit.to_description())
 		call_deferred(&"_make_gate_tree")
 	else: # cant save
@@ -526,7 +563,7 @@ func _workspace_delete_nodes_request(nodes: Array[StringName]) -> void:
 		gate_visual_map.erase(v_gate.from)
 		var conns: Array = circuit.remove_gate(v_gate.from.id)[1]
 		for connection: Connection in conns:
-			%Workspace.disconnect_node(connection.from_node, connection.from_port, connection.to_node, connection.to_port)
+			%Workspace.disconnect_node(connection.from_gate, connection.from_port, connection.to_gate, connection.to_port)
 		%Workspace.remove_child(v_gate)
 		if v_gate.from.type in Connection.IO_TYPES:
 			call_deferred(&"redraw_io")
@@ -547,6 +584,7 @@ func clear_workspace() -> void:
 	circuit = Circuit.new()
 	%Workspace.scroll_offset = Vector2.ZERO
 	%Workspace.zoom = 1.0
+	call_deferred(&"redraw_io")
 
 func _new_gate_pressed() -> void:
 	if clear_confirmation:
@@ -568,10 +606,12 @@ func _check_if_loadable() -> bool:
 	registry_selected = type
 	if GateRegistry.has_gate(type) and type not in GateRegistry.builtin_gates:
 		%LoadGate.disabled = false
+		%DeleteGate.disabled = false
 		%RegistryTree.set_selected(registry_type_tree_map[type], 0)
 		return true
 	else:
 		%LoadGate.disabled = true
+		%DeleteGate.disabled = true
 		return false
 
 
@@ -587,6 +627,8 @@ func _load_gate_pressed() -> void:
 		#region temporary testing
 		var v_gate := VisualGate.new(gate)
 		%Workspace.add_child(v_gate)
+		gate_visual_map[gate.id] = v_gate
+		visual_gate_map[v_gate.name] = gate
 		if gate.type in Connection.IO_TYPES:
 			call_deferred(&"redraw_io")
 		#endregion
@@ -604,18 +646,24 @@ func _generate_pressed() -> void:
 	
 	%Generate.disabled = true
 	%Clear.disabled = false
+	%Checker.disabled = false
 	%SimControls.show()
 	
 	var cached: CachedCircuit = CachedCircuit.new(circuit.to_description())
-	simulation = await Simulation.new(cached)
+	simulation = Simulation.new()
+	add_child(simulation)
+	await simulation.setup(cached)
 
 
 func _clear_pressed() -> void:
-	%Clear.disabled = true
 	%Generate.disabled = false
+	%Clear.disabled = true
+	%Checker.disabled = true
 	%SimControls.hide()
 	
-	simulation = null
+	if simulation:
+		remove_child(simulation)
+		simulation = null
 
 
 func _sim_mode_stop_pressed() -> void:
@@ -629,7 +677,7 @@ func _sim_mode_stop_pressed() -> void:
 func _sim_mode_step_pressed() -> void:
 	%SimModeStop.button_pressed = false
 	%SimModeStep.button_pressed = true
-	%SimModeStep.disabled = true
+	%SimModeStep.disabled = false
 	%SimModeTPS.button_pressed = false
 	%SimModeTPS.disabled = true
 
@@ -639,4 +687,8 @@ func _sim_mode_tps_pressed() -> void:
 	%SimModeStep.button_pressed = false
 	%SimModeStep.disabled = true
 	%SimModeTPS.button_pressed = true
-	%SimModeTPS.disabled = true
+	%SimModeTPS.disabled = false
+
+
+func _delete_gate_pressed() -> void:
+	GateRegistry.remove_gate(registry_selected)

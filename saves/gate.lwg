@@ -1,0 +1,23 @@
+version_1
+[DATA]
+id: "DEV.ADD.1"
+ticks: 1
+priority: 1
+color: Color(1,1,1,1)
+[CONFIG]
+input_config:
+	(01#23#45#00, 1,A)
+	(01#23#45#01, 1,B)
+output_config:
+	(01#23#45#02, 1,OUT)
+[GATES]
+GateID TYPE Position (ARGUMENT1, ARGUMENT2, ...)
+01#23#45#00 INPUT (0,0) # mapped by input config
+01#23#45#01 INPUT (0,-25) # mapped by input config
+01#23#45#02 OUTPUT (50,0) # mapped by output config
+01#23#45#03 AND (25,0) (2,1) # Extra arguments like input count, bitsize
+[CONNECTIONS]
+ConnectionID (FromID, Port) (ToID, Port)
+01#23#45#00 (01#23#45#00,0) (01#23#45#03,0)
+01#23#45#01 (01#23#45#01,0) (01#23#45#03,1)
+01#23#45#02 (01#23#45#03,0) (01#23#45#02,0)

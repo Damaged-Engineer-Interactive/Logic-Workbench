@@ -1,0 +1,12 @@
+version_1
+[DATA]
+name: Test Project
+description: What do I put here??
+[TAGS] # sorted by add order
+Tag1
+Tag2
+Tag3
+[CIRCUITS] # Sorted by priority, low to high. gates not in here but in the project folder will be loaded last and get their priority adjusted
+DEV.ADD.1
+DEV.ADD.4
+DEV.ADD.8

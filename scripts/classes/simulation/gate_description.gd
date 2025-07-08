@@ -88,10 +88,9 @@ func from_data(from: Dictionary) -> GateDescription:
 			gate.outputs[0].state.size = bits
 		"ROUTING.DEMUX.#": # DEMUX Gate
 			var bits: int = from["bitsize"]
-			gate.inputs[0].state.size = bits
+			gate.inputs[1].state.size = bits
 			gate.outputs[0].state.size = bits
 			gate.outputs[1].state.size = bits
-			gate.outputs[2].state.size = bits
 		"ROUTING.CONVERTER.#": # CONVERTER Gate
 			var size_a: int = from["inputbits"]
 			var size_b: int = from["outputbits"]

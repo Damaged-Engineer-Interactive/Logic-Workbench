@@ -77,7 +77,3 @@ folder_colors={
 
 textures/vram_compression/import_etc2_astc=true
 viewport/transparent_background=true
-
-[threading]
-
-worker_pool/max_threads=1

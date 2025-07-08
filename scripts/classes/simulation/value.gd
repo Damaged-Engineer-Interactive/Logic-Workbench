@@ -75,9 +75,9 @@ static func from_default(_size: int, default := States.UNKNOWN) -> Value:
 static func from_description(from: ValueDescription) -> Value:
 	var value := Value.new()
 	value.size = from.size
-	value.data.resize(value.size)
+	value.data.resize(from.size)
 	value.data.fill(States.LOW)
-	return 
+	return value
 
 static func from_int(_size: int, base: int) -> Value:
 	if _size <= 0:

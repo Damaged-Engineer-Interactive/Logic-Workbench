@@ -457,3 +457,4 @@ vertical_alignment = 1
 [connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/Ajax/HBoxContainer/VBoxContainer/HBoxContainer/Discord" to="." method="_ajax_discord_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/RascalFoxfire/HBoxContainer/VBoxContainer/HBoxContainer/Bluesky" to="." method="_rascal_bluesky_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/SpecialList/RascalFoxfire/HBoxContainer/VBoxContainer/HBoxContainer/GitHub" to="." method="_rascal_github_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/MainMenu" to="." method="_main_menu_pressed"]

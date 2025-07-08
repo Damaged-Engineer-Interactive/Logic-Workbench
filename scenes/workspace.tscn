@@ -1129,6 +1129,116 @@ size_flags_vertical = 3
 theme_type_variation = &"RedButton"
 text = "Cancel"
 
+[node name="StepPanel-2" type="Popup" parent="."]
+unique_name_in_owner = true
+auto_translate_mode = 1
+initial_position = 2
+size = Vector2i(300, 150)
+always_on_top = true
+
+[node name="PanelContainer" type="PanelContainer" parent="StepPanel-2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_vo7lu")
+theme_type_variation = &"BorderedPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StepPanel-2/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StepPanel-2/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 6
+text = "Amount of Steps to Simulate"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="StepPanel-2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+min_value = 1.0
+value = 1.0
+alignment = 1
+suffix = "Step(s)"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StepPanel-2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SimulateStep" type="Button" parent="StepPanel-2/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Simulate"
+
+[node name="Cancel" type="Button" parent="StepPanel-2/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"RedButton"
+text = "Cancel"
+
+[node name="TPSPanel-2" type="Popup" parent="."]
+unique_name_in_owner = true
+auto_translate_mode = 1
+initial_position = 2
+size = Vector2i(300, 150)
+always_on_top = true
+
+[node name="PanelContainer" type="PanelContainer" parent="TPSPanel-2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_vo7lu")
+theme_type_variation = &"BorderedPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TPSPanel-2/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TPSPanel-2/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 6
+text = "Target Ticks per Second"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="TPSPanel-2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "0 = Unlimited"
+max_value = 0.0
+alignment = 1
+suffix = "TPS"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TPSPanel-2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SimulateTPS" type="Button" parent="TPSPanel-2/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Simulate"
+
+[node name="Cancel" type="Button" parent="TPSPanel-2/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"RedButton"
+text = "Cancel"
+
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/MainMenu" to="." method="_main_menu_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Gate" to="." method="_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Visualiser" to="." method="_visualiser_pressed"]
@@ -1156,3 +1266,7 @@ text = "Cancel"
 [connection signal="pressed" from="StepPanel/PanelContainer/VBoxContainer/HBoxContainer/Cancel" to="." method="_cancel_pressed"]
 [connection signal="pressed" from="TPSPanel/PanelContainer/VBoxContainer/HBoxContainer/SimulateTPS" to="." method="_simulate_tps_pressed"]
 [connection signal="pressed" from="TPSPanel/PanelContainer/VBoxContainer/HBoxContainer/Cancel" to="." method="_cancel_pressed"]
+[connection signal="pressed" from="StepPanel-2/PanelContainer/VBoxContainer/HBoxContainer/SimulateStep" to="." method="_simulate_step_pressed"]
+[connection signal="pressed" from="StepPanel-2/PanelContainer/VBoxContainer/HBoxContainer/Cancel" to="." method="_cancel_pressed"]
+[connection signal="pressed" from="TPSPanel-2/PanelContainer/VBoxContainer/HBoxContainer/SimulateTPS" to="." method="_simulate_tps_pressed"]
+[connection signal="pressed" from="TPSPanel-2/PanelContainer/VBoxContainer/HBoxContainer/Cancel" to="." method="_cancel_pressed"]

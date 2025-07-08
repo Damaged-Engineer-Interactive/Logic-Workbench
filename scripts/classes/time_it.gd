@@ -10,9 +10,10 @@ func register_start(identifier: String) -> void:
 func register_stop(identifier: String) -> void:
 	_timestamps[identifier].append(Time.get_ticks_usec())
 
-func result() -> void:
+func result(clear: bool = true) -> void:
 	print("TimeIt Results:")
 	for id in _timestamps.keys():
 		var time: Array = _timestamps[id]
-		print("%s | %s - %s | %s" % [time[1] - time[0], time[0], time[1], id])
-	_timestamps.clear()
+		print("%s | %s - %s | %s" % [time[-1] - time[0], time[0], time[-1], id])
+	if clear:
+		_timestamps.clear()

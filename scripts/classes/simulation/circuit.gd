@@ -296,25 +296,27 @@ static func load(path: String) -> Circuit: # load using full path
 			break
 	# output config
 	text = file.get_line()
-	while true:
-		var segments: PackedStringArray = text.split(",", false, 3)
-		var pin := PinDescription.create(segments[2], int(segments[1]))
-		res.output_config[segments[0]] = pin
-		text = file.get_line()
-		if text == "[GATES]":
-			break
+	if text != "[GATES]":
+		while true:
+			var segments: PackedStringArray = text.split(",", false, 3)
+			var pin := PinDescription.create(segments[2], int(segments[1]))
+			res.output_config[segments[0]] = pin
+			text = file.get_line()
+			if text == "[GATES]":
+				break
 	# gates
 	text = file.get_line()
-	while true:
-		var segments: PackedStringArray = text.split("|", false, 4)
-		var d = JSON.parse_string(segments[3])
-		var gate: GateDescription = GateRegistry.get_gate(segments[1]).from_data(d)
-		gate.id = segments[0]
-		gate.position = str_to_var(segments[2])
-		res.gates[segments[0]] = gate
-		text = file.get_line()
-		if text == "[CONNECTIONS]":
-			break
+	if text != "[CONNECTIONS]":
+		while true:
+			var segments: PackedStringArray = text.split("|", false, 4)
+			var d = JSON.parse_string(segments[3])
+			var gate: GateDescription = GateRegistry.get_gate(segments[1]).from_data(d)
+			gate.id = segments[0]
+			gate.position = str_to_var(segments[2])
+			res.gates[segments[0]] = gate
+			text = file.get_line()
+			if text == "[CONNECTIONS]":
+				break
 	# connections
 	text = file.get_line()
 	while true:

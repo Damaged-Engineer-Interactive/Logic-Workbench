@@ -46,7 +46,7 @@ func _make_gate_tree() -> void:
 			var gate_item: TreeItem = group_item.create_child()
 			gate_item.set_text(0, gate)
 			if grouped[group][gate] == ["#"]:
-				print("| *")
+				print("| #")
 				var type: String = "%s.%s.#" % [group, gate]
 				var version: GateDescription = GateRegistry.get_gate(type)
 				gate_item.set_custom_bg_color(0, version.color, true)
@@ -65,7 +65,6 @@ func _make_gate_tree() -> void:
 					visualiser_tree_type_map[version_item] = type
 	print()
 	
-	print("Make Registry Tree")
 	tree = %RegistryTree
 	tree.clear()
 	registry_tree_type_map.clear()
@@ -81,16 +80,13 @@ func _make_gate_tree() -> void:
 	item.set_custom_bg_color(0, color, false)
 	
 	for group: String in grouped.keys():
-		print(group)
 		var group_item: TreeItem = root.create_child()
 		group_item.set_text(0, group)
 		group_item.set_selectable(0, false)
 		for gate: String in grouped[group].keys():
-			print("- " + gate)
 			var gate_item: TreeItem = group_item.create_child()
 			gate_item.set_text(0, gate)
 			if grouped[group][gate] == ["#"]:
-				print("| *")
 				var type: String = "%s.%s.#" % [group, gate]
 				var version: GateDescription = GateRegistry.get_gate(type)
 				gate_item.set_custom_bg_color(0, version.color, true)
@@ -101,7 +97,6 @@ func _make_gate_tree() -> void:
 			else:
 				for version: String in grouped[group][gate]:
 					gate_item.set_selectable(0, false)
-					print("| - " + version)
 					var version_item: TreeItem = gate_item.create_child()
 					version_item.set_text(0, version)
 					var type: String = "%s.%s.%s" % [group, gate, version]
@@ -111,7 +106,6 @@ func _make_gate_tree() -> void:
 					version_item.set_selectable(0, true)
 					registry_tree_type_map[version_item] = type
 					registry_type_tree_map[type] = version_item
-	print()
 
 func _gate_tree_item_selected() -> void:
 	var selected_item: TreeItem = %GateTree.get_next_selected(null)
@@ -651,9 +645,9 @@ func _generate_pressed() -> void:
 	
 	var cached: CachedCircuit = CachedCircuit.new(circuit.to_description())
 	simulation = Simulation.new()
-	simulation.sim_stopped.connect(_sim_mode_stop_pressed.unbind(1))
+	simulation.sim_stopped.connect(_sim_stopped)
 	add_child(simulation)
-	await simulation.setup(cached)
+	simulation.setup(cached)
 
 
 func _clear_pressed() -> void:
@@ -710,3 +704,8 @@ func _sim_mode_tps_pressed() -> void:
 func _cancel_pressed() -> void:
 	%StepPanel.hide()
 	%TPSPanel.hide()
+
+func _sim_stopped(_ticks: int) -> void:
+	%SimModeStep.disabled = false
+	%SimModeTPS.disabled = false
+	%SimModeStop.disabled = true

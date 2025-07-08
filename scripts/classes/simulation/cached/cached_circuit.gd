@@ -39,7 +39,7 @@ var ticks: int
 
 ## If the circuit is valid[br]
 ## Invalid examples : 2 gates writing to the same port without using a gate inbetween
-var valid: bool
+var valid: bool = true
 
 ## All of the Circuits possible Data
 var data: Dictionary[String, Variant]
@@ -89,10 +89,10 @@ func _init(from: Circuit) -> void:
 		gate_id_map[gate.id] = id_count
 		old_gate_map[id_count] = gate.id
 		ticks = max(ticks, gate.ticks)
-		if gate.type == "IN":
+		if gate.type == "IO.INPUT.#":
 			rank_map[id_count] = 0
 			in_connected_gates.append(id_count)
-		elif gate.type == "OUT":
+		elif gate.type == "IO.OUTPUT.#":
 			rank_map[id_count] = 255
 			out_connected_gates.append(id_count)
 		id_count += 1
@@ -112,9 +112,9 @@ func _init(from: Circuit) -> void:
 		conn_id_map[connection.id] = id_count
 		id_count += 1
 		# Step 4.1 here
-		if not cached.from_gate.id in out_connected_gates:
+		if (not cached.from_gate.id in out_connected_gates):
 			out_connected_gates.append(cached.from_gate.id)
-		if not cached.to_gate.id in in_connected_gates:
+		if (not cached.to_gate.id in in_connected_gates):
 			in_connected_gates.append(cached.to_gate.id)
 		# Step 5.1 here
 		var string: String = str(cached.to_gate.id) + "|" + str(cached.to_port)
@@ -193,6 +193,8 @@ func _init(from: Circuit) -> void:
 			ranked_map[gate.rank] = [gate]
 			continue
 		ranked_map[gate.rank].append(gate)
+	ranked_map.erase(0) # Inputs
+	ranked_map.erase(255) # Outputs
 	 
 	# Step 13 : Calculate Complexity
 	for rank: int in ranked_map.keys():

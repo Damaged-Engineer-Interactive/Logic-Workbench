@@ -37,3 +37,16 @@ func dir_remove_recursive(directory: String) -> void:
 	for file_name in DirAccess.get_files_at(directory):
 		DirAccess.remove_absolute(directory.path_join(file_name))
 	DirAccess.remove_absolute(directory)
+
+func format_int(value: int) -> String:
+	var string = str(value)
+	var result = ""
+	var count = 0
+
+	for i in range(string.length() - 1, -1, -1):
+		result = string[i] + result
+		count += 1
+		if count % 3 == 0 and i != 0:
+			result = " " + result
+
+	return result

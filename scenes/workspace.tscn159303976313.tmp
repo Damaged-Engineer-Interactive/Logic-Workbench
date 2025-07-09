@@ -975,18 +975,13 @@ text = "Simulation Stopped"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SimSteps" type="SpinBox" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Actions"]
-unique_name_in_owner = true
+[node name="Steps" type="SpinBox" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Actions"]
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = 1.0
-value = 1.0
-allow_greater = true
 alignment = 1
-suffix = "Step(s)"
+suffix = "Steps"
 
 [node name="SimulateButton" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Actions"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1007,7 +1002,6 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="TotalTicks" type="LineEdit" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Information"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1016,7 +1010,6 @@ alignment = 1
 editable = false
 
 [node name="DeltaTicks" type="LineEdit" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Information"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1025,7 +1018,6 @@ alignment = 1
 editable = false
 
 [node name="TimePerTick" type="LineEdit" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Information"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1034,7 +1026,6 @@ alignment = 1
 editable = false
 
 [node name="TimeTaken" type="LineEdit" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Information"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1062,4 +1053,3 @@ editable = false
 [connection signal="pressed" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/AddGate" to="." method="_add_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Generate" to="." method="_generate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Clear" to="." method="_clear_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Actions/SimulateButton" to="." method="_simulate_button_pressed"]

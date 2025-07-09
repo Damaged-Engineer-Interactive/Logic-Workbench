@@ -644,10 +644,9 @@ func _generate_pressed() -> void:
 	%SimControls.show()
 	
 	var cached: CachedCircuit = CachedCircuit.new(circuit.to_description())
-	simulation = Simulation.new()
+	simulation = Simulation.new(cached)
 	simulation.sim_stopped.connect(_sim_stopped)
 	add_child(simulation)
-	simulation.setup(cached)
 
 
 func _clear_pressed() -> void:
@@ -657,6 +656,7 @@ func _clear_pressed() -> void:
 	%SimControls.hide()
 	
 	if simulation:
+		simulation.clean()
 		remove_child(simulation)
 		simulation = null
 
@@ -664,33 +664,6 @@ func _clear_pressed() -> void:
 func _delete_gate_pressed() -> void:
 	GateRegistry.remove_gate(registry_selected)
 	_check_if_loadable()
-
-
-func _sim_mode_stop_pressed() -> void:
-	%SimModeStep.disabled = false
-	%SimModeTPS.disabled = false
-	%SimModeStop.disabled = true
-	
-	simulation.stop()
-
-
-func _simulate_step_pressed() -> void:
-	%SimModeStep.disabled = true
-	%SimModeTPS.disabled = true
-	%SimModeStop.disabled = false
-	
-	%StepPanel.hide()
-	simulation.step(%Steps.value)
-
-
-func _simulate_tps_pressed() -> void:
-	%SimModeStep.disabled = true
-	%SimModeTPS.disabled = true
-	%SimModeStop.disabled = false
-	
-	%TPSPanel.hide()
-	#simulation.tps = %TPS.value
-	simulation.run()
 
 
 func _sim_mode_step_pressed() -> void:
@@ -705,7 +678,17 @@ func _cancel_pressed() -> void:
 	%StepPanel.hide()
 	%TPSPanel.hide()
 
-func _sim_stopped(_ticks: int) -> void:
-	%SimModeStep.disabled = false
-	%SimModeTPS.disabled = false
-	%SimModeStop.disabled = true
+func _sim_stopped() -> void:
+	%SimulateButton.disabled = false
+	%SimStatus.text = "Simulation stopped."
+	
+	%TotalTicks.text = "%s Ticks simulated in Total." % Global.format_int(simulation.tick)
+	%DeltaTicks.text = "+ %s Ticks simulated." % Global.format_int(simulation.stats["ticks_run"])
+	%TimePerTick.text = "%s usec / Tick" % Global.format_int(simulation.stats["time_per_tick"])
+	%TimeTaken.text = "%s usecs taken" % Global.format_int(simulation.stats["time_taken"])
+
+
+func _simulate_button_pressed() -> void:
+	simulation.run(%SimSteps.value)
+	%SimStatus.text = "Simulation running"
+	%SimulateButton.disabled = true

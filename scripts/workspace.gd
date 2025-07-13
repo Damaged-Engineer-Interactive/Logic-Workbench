@@ -539,6 +539,8 @@ func update_workspace() -> void:
 
 
 func _workspace_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	if from_node == to_node: # cyclic connections with the same gate are forbidden
+		return
 	var connection := Connection.create(from_node, from_port, to_node, to_port)
 	circuit.add_connection(connection)
 	%Workspace.connect_node(from_node, from_port, to_node, to_port, false)

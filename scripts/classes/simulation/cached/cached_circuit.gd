@@ -81,7 +81,7 @@ func _init(from: Circuit) -> void:
 	var out_connected_gates: Array[int] = []
 	ticks = 1
 	for gate: GateDescription in f_gates.values():
-		var cached = CachedGate.from_description(gate)
+		var cached = CachedGate.new(gate)
 		cached.id = id_count
 		gate_map[id_count] = cached
 		dependency[id_count] = []

@@ -48,6 +48,12 @@ func _init(from: CachedCircuit) -> void:
 	task_id = WorkerThreadPool.add_group_task(_thread_simulate_gate, gates.size(), gates.size(), true, "Set Defaults")
 	# cleanup
 	WorkerThreadPool.wait_for_group_task_completion(task_id)
+	
+	# Set all values to their default
+	connections = circuit.connections.values()
+	task_id = WorkerThreadPool.add_group_task(_thread_simulate_connection, connections.size(), connections.size(), true, "Simulate Connections")
+	# cleanup
+	WorkerThreadPool.wait_for_group_task_completion(task_id)
 	task_id = -1
 	
 	## Start the Thread Manager
@@ -92,7 +98,7 @@ func _thread_manager():
 func _thread_simulate_tick():
 	for rank: int in circuit.parallel_schedule.keys():
 		_thread_simulate_rank(rank)
-		_thread_simulate_connections()
+		#_thread_simulate_connections()
 	tick += 1
 
 func _thread_simulate_rank(rank: int) -> void:
@@ -113,20 +119,13 @@ func _thread_simulate_connections() -> void:
 # Called by the threads on every Connection
 func _thread_simulate_connection(id: int):
 	var connection: CachedConnection = connections[id]
-	connection.to_gate.inputs[connection.to_port] = connection.from_gate.outputs[connection.from_port].copy()
+	connection.to_gate.inputs[connection.to_port] = connection.from_gate.outputs[connection.from_port]
 
 # Called by the threads on every Gate
 # same for connections, but without ranks
 func _thread_simulate_gate(id: int):
 	var gate: CachedGate = gates[id]
-	gate.mutex.lock()
-
-	# sim here
-	match gate.type:
-		"COMBINATIONAL.AND.#":
-			pass
-
-	gate.mutex.unlock()
+	gate.sim_function.call()
 
 # Called by the thread manager
 func _sim_stop() -> void:

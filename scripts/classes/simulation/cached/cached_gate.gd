@@ -12,6 +12,19 @@ extends Object
 # Enums
 
 # Constants
+var TYPE_FUNCTION_MAP: Dictionary[String, Callable] = {
+	"ROUTING.MUX.#": _simulate_routing_mux,
+	"ROUTING.DEMUX.#": _simulate_routing_demux,
+	"ROUTING.CONVERTER.#": _simulate_routing_converter,
+	
+	"COMBINATIONAL.AND.#": _simulate_combinational_and,
+	"COMBINATIONAL.NAND.#": _simulate_combinational_nand,
+	"COMBINATIONAL.OR.#": _simulate_combinational_or,
+	"COMBINATIONAL.NOR.#": _simulate_combinational_nor,
+	"COMBINATIONAL.NOT.#": _simulate_combinational_not,
+	"COMBINATIONAL.XOR.#": _simulate_combinational_xor,
+	"COMBINATIONAL.XNOR.#": _simulate_combinational_xnor,
+}
 
 # @export variables
 
@@ -39,7 +52,7 @@ var inputs: Array[Value]
 ## The Output States of the Gate
 var outputs: Array[Value]
 
-var mutex: Mutex
+var sim_function: Callable
 
 var data: Dictionary
 
@@ -48,34 +61,62 @@ var data: Dictionary
 # @onready variables
 
 # optional built-in _init() function
-static func from_description(from: GateDescription) -> CachedGate:
-	var gate: CachedGate = CachedGate.new()
-	gate.type = from.type
-	gate.mutex = Mutex.new()
+func _init(from: GateDescription) -> void:
+	type = from.type
 	
-	gate.is_const = true if from.type == "CONST" else false
-	gate.is_static = gate.is_const
-	gate.ticks = from.ticks
-	gate.data = from.data
+	is_const = true if from.type == "CONST" else false
+	is_static = is_const
+	ticks = from.ticks
+	data = from.data
+	
+	sim_function = TYPE_FUNCTION_MAP.get(type)
 	
 	for input: PinDescription in from.inputs:
-		gate.inputs.append(Value.from_description(input.state))
+		inputs.append(ValueHelper.value(input.state.size))
 	
 	for output: PinDescription in from.outputs:
-		gate.outputs.append(Value.from_description(output.state))
-	
-	return gate
+		outputs.append(ValueHelper.value(output.state.size))
 
-# optional built-in _enter_tree() function
+# simulate function
+func _simulate_routing_mux() -> void:
+	if inputs[0].get_bit_tri(0) == 1:
+		outputs[0].tri()
+	elif inputs[0].get_bit_value(0) == 1:
+		outputs[0].from(inputs[2])
+	else:
+		outputs[0].from(inputs[1])
 
-# optional built-in _ready() function
+func _simulate_routing_demux() -> void:
+	if inputs[0].get_bit_tri(0) == 1:
+		outputs[0].tri()
+		outputs[1].tri()
+	elif inputs[0].get_bit_value(0) == 1:
+		outputs[1].from(inputs[1])
+		outputs[0].low()
+	else:
+		outputs[0].from(inputs[1])
+		outputs[1].low()
 
-# remaining built-in functions
+func _simulate_routing_converter() -> void:
+	assert(false, "not implemented")
 
-# virtual functions to override
+func _simulate_combinational_and() -> void:
+	outputs[0].arithmetic_and(inputs[0], inputs[1])
 
-# public functions
+func _simulate_combinational_nand() -> void:
+	outputs[0].arithmetic_nand(inputs[0], inputs[1])
 
-# private functions
+func _simulate_combinational_or() -> void:
+	outputs[0].arithmetic_or(inputs[0], inputs[1])
 
-# subclasses
+func _simulate_combinational_nor() -> void:
+	outputs[0].arithmetic_nor(inputs[0], inputs[1])
+
+func _simulate_combinational_not() -> void:
+	outputs[0].arithmetic_not(inputs[0])
+
+func _simulate_combinational_xor() -> void:
+	outputs[0].arithmetic_xor(inputs[0], inputs[1])
+
+func _simulate_combinational_xnor() -> void:
+	outputs[0].arithmetic_xnor(inputs[0], inputs[1])

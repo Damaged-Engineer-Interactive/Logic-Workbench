@@ -12,7 +12,9 @@ extends Object
 # Enums
 
 # Constants
-const INVALID_CHARS = ': / \\ ? * " | % < >'
+const INVALID_CHARS: Array[String] = [":", "/", "\\", "?", "*", "\"", "|", "%", "<", ">"]
+const INVALID_CHARS_PATTERN: String = r'[:\\/\\?\\*"\|%<>]'
+const INVALID_CHARS_STRING: String = r': / \ ? * " | % < >'
 
 # @export variables
 
@@ -110,7 +112,9 @@ static func load(path: String) -> Project: # only loads metadata & circuits. doe
 	Global.active_project = res
 	if text != "[END]":
 		while true:
-			var gate: Circuit = Circuit.load(path.get_base_dir() + "/circuits/%s.lwc" % text).to_description()
+			var gate: Circuit = Circuit.load(path.get_base_dir() + "/circuits/%s.lwc" % text)
+			if not gate: continue
+			gate = gate.to_description()
 			res.gates[gate.type] = gate
 			GateRegistry.add_gate(gate)
 			text = file.get_line()

@@ -1042,6 +1042,464 @@ placeholder_text = "0 usecs taken"
 alignment = 1
 editable = false
 
+[node name="Inputs" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vo7lu")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="InputsLabel" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Input Values"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+horizontal_scroll_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="Information" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/Information"]
+custom_minimum_size = Vector2(350, 35)
+layout_mode = 2
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/Information"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Value(s)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InputsContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="12#34#56#78" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="LineEdit" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78"]
+custom_minimum_size = Vector2(350, 35)
+layout_mode = 2
+placeholder_text = "A"
+alignment = 1
+editable = false
+
+[node name="Values" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="0" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="1" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 1
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="2" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 2
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="3" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="4" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 1
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="5" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 2
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="6" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="7" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 1
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="8" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 2
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="9" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="10" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 1
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="11" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 2
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="12" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="13" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 1
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="14" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 2
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="15" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "L"
+popup/item_0/id = 0
+popup/item_1/text = "H"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="Outputs" type="PanelContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vo7lu")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="OutputsLabel" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Output Values"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Information" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/Information"]
+custom_minimum_size = Vector2(350, 35)
+layout_mode = 2
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/Information"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Value(s)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OutputsContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="12#34#56#78" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="LineEdit" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78"]
+custom_minimum_size = Vector2(350, 35)
+layout_mode = 2
+placeholder_text = "A"
+alignment = 1
+editable = false
+
+[node name="Values" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="0" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "L"
+
+[node name="1" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "H"
+
+[node name="2" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "Z"
+
+[node name="3" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "L"
+
+[node name="4" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "H"
+
+[node name="5" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "Z"
+
+[node name="6" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "L"
+
+[node name="7" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "H"
+
+[node name="8" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "Z"
+
+[node name="9" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "L"
+
+[node name="10" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "H"
+
+[node name="11" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "Z"
+
+[node name="12" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "L"
+
+[node name="13" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "H"
+
+[node name="14" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "Z"
+
+[node name="15" type="Button" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Outputs/VBoxContainer/OutputsContainer/12#34#56#78/Values"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_type_variation = &"BlueButton"
+disabled = true
+text = "L"
+
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/MainMenu" to="." method="_main_menu_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Gate" to="." method="_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Visualiser" to="." method="_visualiser_pressed"]

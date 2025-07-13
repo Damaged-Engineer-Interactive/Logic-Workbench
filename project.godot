@@ -69,6 +69,7 @@ folder_colors={
 "res://scenes/": "blue",
 "res://scripts/": "purple",
 "res://styles/": "orange",
+"res://styles/ui/button_blue/": "blue",
 "res://styles/ui/button_green/": "green",
 "res://styles/ui/button_red/": "red"
 }

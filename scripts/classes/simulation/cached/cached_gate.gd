@@ -13,9 +13,13 @@ extends Object
 
 # Constants
 var TYPE_FUNCTION_MAP: Dictionary[String, Callable] = {
+	"IO.INPUT.#": _simulate_nothing,
+	"IO.OUTPUT.#": _simulate_nothing,
+	
 	"ROUTING.MUX.#": _simulate_routing_mux,
 	"ROUTING.DEMUX.#": _simulate_routing_demux,
-	"ROUTING.CONVERTER.#": _simulate_routing_converter,
+	"ROUTING.CONVERTER.#-A": _simulate_routing_converter_a,
+	"ROUTING.CONVERTER.#-B": _simulate_routing_converter_b,
 	
 	"COMBINATIONAL.AND.#": _simulate_combinational_and,
 	"COMBINATIONAL.NAND.#": _simulate_combinational_nand,
@@ -69,15 +73,22 @@ func _init(from: GateDescription) -> void:
 	ticks = from.ticks
 	data = from.data
 	
-	sim_function = TYPE_FUNCTION_MAP.get(type)
-	
 	for input: PinDescription in from.inputs:
 		inputs.append(ValueHelper.value(input.state.size))
 	
 	for output: PinDescription in from.outputs:
 		outputs.append(ValueHelper.value(output.state.size))
+	
+	var type_suffix: String = ""
+	if type == "ROUTING.CONVERTER.#":
+		type_suffix = "-A" if inputs.size() == 1 else "-B"
+	
+	sim_function = TYPE_FUNCTION_MAP.get(type + type_suffix)
 
 # simulate function
+func _simulate_nothing() -> void:
+	return
+
 func _simulate_routing_mux() -> void:
 	if inputs[0].get_bit_tri(0) == 1:
 		outputs[0].tri()
@@ -97,8 +108,30 @@ func _simulate_routing_demux() -> void:
 		outputs[0].from(inputs[1])
 		outputs[1].low()
 
-func _simulate_routing_converter() -> void:
-	assert(false, "not implemented")
+# high bitsize -> low bitsize
+func _simulate_routing_converter_a() -> void:
+	var value: Value = inputs[0]
+	var offset: int = 0
+	var size: int = data["outputbits"]
+	for i: int in range(outputs.size()):
+		var output: Value = outputs[i]
+		for bit: int in range(size):
+			var j: int = bit + offset
+			output.set_bit_value(bit, value.get_bit_value(j))
+			output.set_bit_tri(bit, value.get_bit_tri(j))
+		offset += size
+
+# low bitsize -> high bitsize
+func _simulate_routing_converter_b() -> void:
+	var value: Value = outputs[0]
+	var offset: int = 0
+	var size: int = data["inputbits"]
+	for i: int in range(inputs.size()):
+		var input: Value = inputs[i]
+		for bit: int in range(size):
+			var j: int = bit + offset
+			value.set_bit_value(j, input.get_bit_value(bit))
+			value.set_bit_tri(j, input.get_bit_tri(bit))
 
 func _simulate_combinational_and() -> void:
 	outputs[0].arithmetic_and(inputs[0], inputs[1])

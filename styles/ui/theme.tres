@@ -1,8 +1,11 @@
-[gd_resource type="Theme" load_steps=13 format=3 uid="uid://dx5vo52uog5ln"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://dx5vo52uog5ln"]
 
 [ext_resource type="StyleBox" uid="uid://cqsgfaiaeyxyj" path="res://styles/ui/bordered_panel.tres" id="1_bupoi"]
 [ext_resource type="StyleBox" uid="uid://dxeg1fmixtili" path="res://styles/ui/button_green/disabled.tres" id="1_lsuel"]
+[ext_resource type="StyleBox" uid="uid://bkjeqr44wsjv5" path="res://styles/ui/button_blue/disabled.tres" id="1_vpyft"]
+[ext_resource type="StyleBox" uid="uid://j7jmtiywacu6" path="res://styles/ui/button_blue/hover.tres" id="2_mk1lg"]
 [ext_resource type="StyleBox" uid="uid://lhpmguhxf2hq" path="res://styles/ui/button_green/focus.tres" id="2_q2al3"]
+[ext_resource type="StyleBox" uid="uid://ci0mmcrxwq346" path="res://styles/ui/button_blue/normal.tres" id="3_5jfg7"]
 [ext_resource type="StyleBox" uid="uid://byy401bslkm0b" path="res://styles/ui/button_green/hover.tres" id="3_wihfl"]
 [ext_resource type="StyleBox" uid="uid://bnctwn4gac77n" path="res://styles/ui/button_green/normal.tres" id="4_4qlax"]
 [ext_resource type="StyleBox" uid="uid://4jhk7cin680w" path="res://styles/ui/button_green/pressed.tres" id="5_aa2n1"]
@@ -14,6 +17,13 @@
 [ext_resource type="StyleBox" uid="uid://d0ts5thqy3of0" path="res://styles/ui/button_red/pressed.tres" id="9_bupoi"]
 
 [resource]
+BlueButton/base_type = &"Button"
+BlueButton/colors/font_disabled_color = Color(0.405, 0.44625, 0.9, 1)
+BlueButton/colors/font_hover_pressed_color = Color(0.405, 0.44625, 0.9, 1)
+BlueButton/colors/font_pressed_color = Color(0.405, 0.44625, 0.9, 1)
+BlueButton/styles/disabled = ExtResource("1_vpyft")
+BlueButton/styles/hover = ExtResource("2_mk1lg")
+BlueButton/styles/normal = ExtResource("3_5jfg7")
 BorderedPanel/base_type = &"PanelContainer"
 BorderedPanel/styles/panel = ExtResource("1_bupoi")
 Button/colors/font_color = Color(0, 0, 0, 1)

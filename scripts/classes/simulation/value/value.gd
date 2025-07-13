@@ -1,10 +1,19 @@
 class_name Value
 extends RefCounted
 
+enum TYPES { UNKNOWN, LOW }
+
 var size: int
 
 func _init(_size: int) -> void:
 	size = _size
+
+func get_type() -> TYPES:
+	return TYPES.UNKNOWN
+
+func get_bit(_offset: int) -> int:
+	push_error("Must be implemented by sub-class!")
+	return 0
 
 func get_bit_value(_offset: int) -> int:
 	push_error("Must be implemented by sub-class!")
@@ -14,6 +23,18 @@ func get_bit_tri(_offset: int) -> int:
 	push_error("Must be implemented by sub-class!")
 	return 0
 
+func set_bit(_offset: int, _value: int) -> void:
+	push_error("Must be implemented by sub-class!")
+	return
+
+func set_bit_value(_offset: int, _value: int) -> void:
+	push_error("Must be implemented by sub-class!")
+	return
+
+func set_bit_tri(_offset: int, _value: int) -> void:
+	push_error("Must be implemented by sub-class!")
+	return
+
 func get_range_value(_offset: int, _size: int) -> int:
 	push_error("Must be implemented by sub-class!")
 	return 0
@@ -22,7 +43,23 @@ func get_range_tri(_offset: int, _size: int) -> int:
 	push_error("Must be implemented by sub-class!")
 	return 0
 
-func from(from: Value) -> void:
+func get_full_value() -> int:
+	push_error("Must be implemented by sub-class!")
+	return 0
+
+func get_full_tri() -> int:
+	push_error("Must be implemented by sub-class!")
+	return 0
+
+func set_full_value(_value: int) -> void:
+	push_error("Must be implemented by sub-class!")
+	return
+
+func set_full_tri(_value: int) -> void:
+	push_error("Must be implemented by sub-class!")
+	return
+
+func from(_from: Value) -> void:
 	push_error("Must be implemented by sub-class!")
 	return
 

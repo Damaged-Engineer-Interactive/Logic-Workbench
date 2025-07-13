@@ -22,6 +22,9 @@ var gates: Dictionary[int, CachedGate]
 ## The Connections of the Circuit
 var connections: Dictionary[int, CachedConnection]
 
+var inputs: Dictionary[CachedGate, String]
+var outputs: Dictionary[CachedGate, String]
+
 ## The Parallel schedule of the CachedCircuit
 var parallel_schedule: Dictionary[int, Array]
 
@@ -92,9 +95,11 @@ func _init(from: Circuit) -> void:
 		if gate.type == "IO.INPUT.#":
 			rank_map[id_count] = 0
 			in_connected_gates.append(id_count)
+			inputs[cached] = from.input_config[gate.id].name
 		elif gate.type == "IO.OUTPUT.#":
 			rank_map[id_count] = 255
 			out_connected_gates.append(id_count)
+			outputs[cached] = from.output_config[gate.id].name
 		id_count += 1
 	
 	id_count = 0

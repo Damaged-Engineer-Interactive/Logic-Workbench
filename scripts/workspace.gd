@@ -378,15 +378,27 @@ func _save_gate_pressed() -> void:
 	var correct: bool = true
 	var reason: String = "Unable to save!"
 	
+	var regex: RegEx = RegEx.new()
+	regex.compile(Project.INVALID_CHARS_PATTERN)
+	
 	if %RegistryCategoryName.text == "":
 		correct = false
 		reason = "Category must not be empty"
+	elif regex.search(%RegistryCategoryName.text):
+		correct = false
+		reason = "Category must not contain any of the following characters : %s" % Project.INVALID_CHARS_STRING
 	elif %RegistryGateName.text == "":
 		correct = false
 		reason = "Gate Name must not be empty"
+	elif regex.search(%RegistryGateName.text):
+		correct = false
+		reason = "Gate Name must not contain any of the following characters : %s" % Project.INVALID_CHARS_STRING
 	elif %RegistryGateVersion.text == "":
 		correct = false
 		reason = "Gate Version must not be empty"
+	elif regex.search(%RegistryGateVersion.text):
+		correct = false
+		reason = "Gate Version must not contain any of the following characters : %s" % Project.INVALID_CHARS_STRING
 	elif registry_selected in GateRegistry.builtin_gates:
 		correct = false
 		reason = "Can't override a Builtin Gate!"
@@ -401,6 +413,9 @@ func _save_gate_pressed() -> void:
 		circuit.name = %RegistryGateName.text
 		circuit.type = "%s.%s.%s" % [%RegistryCategoryName.text, %RegistryGateName.text, %RegistryGateVersion.text]
 		circuit.color = %RegistryGateColor.color
+		for character: String in Project.INVALID_CHARS:
+			circuit.name.replace(character, "")
+			circuit.type.replace(character, "")
 		for gate: GateDescription in circuit.gates.values():
 			gate.position = gate_visual_map[gate.id].position_offset
 		GateRegistry.add_gate(circuit.to_description())
@@ -649,6 +664,8 @@ func _generate_pressed() -> void:
 	simulation = Simulation.new(cached)
 	simulation.sim_stopped.connect(_sim_stopped)
 	add_child(simulation)
+	
+	_redraw_sim_io()
 
 
 func _clear_pressed() -> void:
@@ -656,6 +673,9 @@ func _clear_pressed() -> void:
 	%Clear.disabled = true
 	%Checker.disabled = true
 	%SimControls.hide()
+	_redraw_sim_io()
+	%Inputs.hide()
+	%Outputs.hide()
 	
 	if simulation:
 		simulation.clean()
@@ -666,14 +686,6 @@ func _clear_pressed() -> void:
 func _delete_gate_pressed() -> void:
 	GateRegistry.remove_gate(registry_selected)
 	_check_if_loadable()
-
-
-func _sim_mode_step_pressed() -> void:
-	%StepPanel.show()
-
-
-func _sim_mode_tps_pressed() -> void:
-	%TPSPanel.show()
 
 
 func _cancel_pressed() -> void:
@@ -688,9 +700,96 @@ func _sim_stopped() -> void:
 	%DeltaTicks.text = "+ %s Ticks simulated." % Global.format_int(simulation.stats["ticks_run"])
 	%TimePerTick.text = "%s usec / Tick" % Global.format_int(simulation.stats["time_per_tick"])
 	%TimeTaken.text = "%s usecs taken" % Global.format_int(simulation.stats["time_taken"])
+	
+	_redraw_sim_io()
 
 
 func _simulate_button_pressed() -> void:
 	simulation.run(%SimSteps.value)
 	%SimStatus.text = "Simulation running"
 	%SimulateButton.disabled = true
+	%Inputs.hide()
+	%Outputs.hide()
+
+func _redraw_sim_io() -> void:
+	for child: Node in %InputsContainer.get_children():
+		%InputsContainer.remove_child(child)
+	
+	for child: Node in %OutputsContainer.get_children():
+		%OutputsContainer.remove_child(child)
+	
+	if not simulation:
+		return
+	
+	var inputs: Dictionary[CachedGate, String] = simulation.circuit.inputs
+	if inputs.size() > 0:
+		%Inputs.show()
+		
+		for input: CachedGate in inputs.keys():
+			var row: HBoxContainer = _make_io_row(inputs[input], input, true)
+			%InputsContainer.add_child(row)
+	
+	var outputs: Dictionary[CachedGate, String] = simulation.circuit.outputs
+	if outputs.size() > 0:
+		%Outputs.show()
+		
+		for output: CachedGate in outputs.keys():
+			var row: HBoxContainer = _make_io_row(outputs[output], output, false)
+			%OutputsContainer.add_child(row)
+
+func _make_io_row(_name: String, gate: CachedGate, input: bool) -> HBoxContainer:
+	var res := HBoxContainer.new()
+	res.name = str(gate.id)
+	var label := LineEdit.new()
+	label.name = "Name"
+	label.editable = false
+	label.placeholder_text = _name
+	label.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.custom_minimum_size = Vector2(350.0, 35.0)
+	res.add_child(label)
+	var values := HBoxContainer.new()
+	values.name = "Values"
+	values.alignment = BoxContainer.ALIGNMENT_CENTER
+	values.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	res.add_child(values)
+	if input:
+		var value: Value = gate.outputs[0]
+		for bit: int in range(0, value.size):
+			var button: OptionButton = _make_in_bit_button(value, bit)
+			values.add_child(button)
+	else:
+		var value: Value = gate.inputs[0]
+		for bit: int in range(0, value.size):
+			var button: Button = _make_out_bit_button(value, bit)
+			values.add_child(button)
+	return res
+
+func _make_in_bit_button(value: Value, offset: int) -> OptionButton:
+	var res := OptionButton.new()
+	res.custom_minimum_size = Vector2(45.0, 0)
+	res.name = str(offset)
+	res.add_item("L", 0)
+	res.add_item("H", 1)
+	res.add_item("Z", 2)
+	res.select(value.get_bit(offset))
+	res.item_selected.connect(_ui_input_updated.bind(value, offset))
+	res.theme_type_variation = "BlueButton"
+	return res
+
+func _make_out_bit_button(value: Value, offset: int) -> Button:
+	const INT_STR_MAP: Dictionary[int, String] = {
+		0: "L",
+		1: "H",
+		2: "Z"
+	}
+	
+	var res := Button.new()
+	res.custom_minimum_size = Vector2(45.0, 0)
+	res.name = str(offset)
+	res.text = INT_STR_MAP.get(value.get_bit(offset))
+	res.theme_type_variation = "BlueButton"
+	res.disabled = true
+	return res
+
+func _ui_input_updated(_selected: int, value: Value, offset: int) -> void:
+	value.set_bit(offset, _selected)

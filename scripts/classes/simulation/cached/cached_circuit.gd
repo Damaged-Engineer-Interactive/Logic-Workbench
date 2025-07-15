@@ -246,6 +246,7 @@ func _compute_rank(id: int, visited: Array[int], map: Dictionary[int, int], depe
 		if id in visited:
 			return 0
 		var max_rank = 0
+		visited.append(id)
 		for p_id: int in dependency[id]:
 			max_rank = max(max_rank, _compute_rank(p_id, visited, map, dependency))
 		max_rank += 1

@@ -83,7 +83,7 @@ func uses_to_io() -> bool: # inputs
 func uses_io() -> bool:
 	return uses_from_io() or uses_to_io()
 
-func _to_string() -> String:
+func template() -> String:
 	return from_gate + "#" + str(from_port) + ":" + to_gate + "#" + str(to_port)
 
 func save() -> Dictionary:

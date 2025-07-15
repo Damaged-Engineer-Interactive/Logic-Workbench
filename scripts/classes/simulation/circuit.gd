@@ -94,22 +94,22 @@ func remove_gate(gate_id: String) -> Array:
 	return [gate, removed]
 
 func add_connection(connection: Connection) -> String:
-	if _conn_id_map.has(str(connection)):
-		return _conn_id_map[str(connection)]
-	_conn_id_map[str(connection)] = connection.id
+	if _conn_id_map.has(connection.template()):
+		return _conn_id_map[connection.template()]
+	_conn_id_map[connection.template()] = connection.id
 	connections[connection.id] = connection
 	_gate_conn_map[connection.from_gate].append(connection)
 	_gate_conn_map[connection.to_gate].append(connection)
 	return connection.id
 
 func remove_connection(connection_template: Connection) -> Connection:
-	var connection_id: String = _conn_id_map.get(str(connection_template))
+	var connection_id: String = _conn_id_map.get(connection_template.template())
 	var connection: Connection = connections.get(connection_id)
 	
 	connections.erase(connection_id)
 	_gate_conn_map[connection.from_gate].erase(connection)
 	_gate_conn_map[connection.to_gate].erase(connection)
-	_conn_id_map.erase(str(connection))
+	_conn_id_map.erase(connection.template())
 	return connection
 
 func is_empty() -> bool:
@@ -138,13 +138,13 @@ func copy() -> Circuit:
 	var old_new_map: Dictionary[String, String] = {}
 	for gate: GateDescription in gates.values():
 		var new_gate: GateDescription = gate.copy()
-		res.gates[new_gate.id] = new_gate
+		res.add_gate(new_gate)
 		old_new_map[gate.id] = new_gate.id
 	for connection: Connection in connections.values():
 		var new_connection: Connection = connection.copy()
 		new_connection.from_gate = old_new_map[connection.from_gate]
 		new_connection.to_gate = old_new_map[connection.to_gate]
-		res.connections[new_connection.id] = new_connection
+		res.add_connection(new_connection)
 	for _id: String in input_config.keys():
 		res.input_config[old_new_map[_id]] = input_config[_id].copy()
 	for _id: String in output_config.keys():
@@ -313,7 +313,7 @@ static func load(path: String) -> Circuit: # load using full path
 			var gate: GateDescription = GateRegistry.get_gate(segments[1]).from_data(d)
 			gate.id = segments[0]
 			gate.position = str_to_var(segments[2])
-			res.gates[segments[0]] = gate
+			res.add_gate(gate)
 			text = file.get_line()
 			if text == "[CONNECTIONS]":
 				break
@@ -327,7 +327,7 @@ static func load(path: String) -> Circuit: # load using full path
 		conn.from_port = int(segments[2])
 		conn.to_gate = segments[3]
 		conn.to_port = int(segments[4])
-		res.connections[segments[0]] = conn
+		res.add_connection(conn)
 		text = file.get_line()
 		if text == "[END]":
 			break

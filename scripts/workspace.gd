@@ -18,12 +18,14 @@ var visual_gate_map: Dictionary[StringName, GateDescription] = {}
 
 func _ready() -> void:
 	%Workspace.snapping_distance = int(VisualGate.SNAP)
+	%TabContainer.current_tab = 0
 	_make_gate_tree()
 	_clear_gate_data()
 	circuit = Circuit.new()
 	redraw_io()
 	_clear_pressed()
 	GateRegistry.updated.connect(_make_gate_tree)
+	%InfoPopup.popup()
 
 #region VISUALISATION
 func _make_gate_tree() -> void:
@@ -419,7 +421,7 @@ func _save_gate_pressed() -> void:
 		for gate: GateDescription in circuit.gates.values():
 			gate.position = gate_visual_map[gate.id].position_offset
 		GateRegistry.add_gate(circuit.to_description())
-		call_deferred(&"_make_gate_tree")
+		_make_gate_tree()
 	else: # cant save
 		var stylebox: StyleBoxFlat = %SaveGate.get("theme_override_styles/disabled")
 		var color: Color = stylebox.bg_color

@@ -213,8 +213,6 @@ func flatten_recursive() -> Array[Dictionary]: # [Gates, Connections]
 
 func to_description() -> Circuit:
 	var res: Circuit = copy() # make a copy...
-	push_warning("Check TODO")
-	# TODO : calculate ticks
 	res.inputs = res.input_config.values()
 	res.outputs = res.output_config.values()
 	return res # done? ...

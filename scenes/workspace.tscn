@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://do74jybl4u754"]
+[gd_scene load_steps=21 format=3 uid="uid://do74jybl4u754"]
 
 [ext_resource type="Script" uid="uid://qsmxyfyvadxw" path="res://scripts/workspace.gd" id="1_7cefc"]
 [ext_resource type="Theme" uid="uid://dx5vo52uog5ln" path="res://styles/ui/theme.tres" id="2_vo7lu"]
@@ -42,6 +42,17 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7cefc"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7cefc"]
+bg_color = Color(0.12549, 0.168627, 0.207843, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vo7lu"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -65,10 +76,6 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cnvne"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_thvsl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wjago"]
 
@@ -132,16 +139,41 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7cefc"]
-bg_color = Color(0.12549, 0.168627, 0.207843, 1)
-border_width_left = 1
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cnvne"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_thvsl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ychec"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.126, 0.1694, 0.21, 0.941176)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffegw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.126, 0.1694, 0.21, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghqjl"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
+draw_center = false
 border_width_top = 1
-border_width_right = 1
 border_width_bottom = 1
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
 
 [node name="Root" type="PanelContainer"]
 anchors_preset = 15
@@ -172,17 +204,17 @@ text = "Main Menu"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Gate" type="Button" parent="VBoxContainer/TopBar/Buttons"]
-custom_minimum_size = Vector2(200, 35)
-layout_mode = 2
-theme = ExtResource("2_vo7lu")
-text = "Gate"
-
 [node name="Visualiser" type="Button" parent="VBoxContainer/TopBar/Buttons"]
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
 theme = ExtResource("2_vo7lu")
 text = "Visualiser"
+
+[node name="Gate" type="Button" parent="VBoxContainer/TopBar/Buttons"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 2
+theme = ExtResource("2_vo7lu")
+text = "Gate"
 
 [node name="Simulator" type="Button" parent="VBoxContainer/TopBar/Buttons"]
 custom_minimum_size = Vector2(200, 35)
@@ -208,6 +240,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_7cefc")
@@ -220,11 +253,264 @@ theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_7cefc")
 current_tab = 2
 tabs_visible = false
 
+[node name="Visualiser" type="VSplitContainer" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_constants/autohide = 0
+theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_7cefc")
+dragger_visibility = 1
+metadata/_tab_index = 0
+
+[node name="Workspace" type="GraphEdit" parent="VBoxContainer/TabContainer/Visualiser"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
+snapping_distance = 25
+right_disconnects = true
+show_zoom_label = true
+show_grid_buttons = false
+show_arrange_button = false
+
+[node name="BottomBar" type="PanelContainer" parent="VBoxContainer/TabContainer/Visualiser"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar"]
+layout_mode = 2
+
+[node name="GateTree" type="Tree" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hovered_dimmed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hovered_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vo7lu")
+hide_root = true
+
+[node name="GateInfo" type="PanelContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo"]
+layout_mode = 2
+
+[node name="Sections" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GateInfo" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate Name"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="GateName" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+editable = false
+
+[node name="Label-2" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate Type"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="GateType" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+editable = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GateData" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BitSize" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/BitSize"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Bit Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/BitSize"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 16.0
+value = 1.0
+alignment = 1
+suffix = "Bit(s)"
+
+[node name="InputName" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Example : IN A"
+alignment = 1
+max_length = 20
+
+[node name="InputCount" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputCount"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input Count"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputCount"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 512.0
+value = 2.0
+alignment = 1
+suffix = "Input(s)"
+
+[node name="InputBits" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputBits"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input Bit Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputBits"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 16.0
+value = 1.0
+alignment = 1
+suffix = "Bit(s)"
+
+[node name="OutputName" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Output Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputName"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Example : OUT"
+alignment = 1
+max_length = 20
+
+[node name="OutputCount" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputCount"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Output Count"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputCount"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 512.0
+value = 2.0
+alignment = 1
+suffix = "Output(s)"
+
+[node name="OutputBits" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputBits"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Output Bit Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputBits"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 16.0
+value = 1.0
+alignment = 1
+suffix = "Bit(s)"
+
+[node name="AddGate" type="Button" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 35)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kq4ke")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
+text = "Add Gate to Circuit"
+
 [node name="Gate" type="PanelContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
-metadata/_tab_index = 0
+metadata/_tab_index = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gate"]
 layout_mode = 2
@@ -631,259 +917,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
 disabled = true
 text = "Delete Gate"
 
-[node name="Visualiser" type="VSplitContainer" parent="VBoxContainer/TabContainer"]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 0
-theme_override_constants/autohide = 0
-theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_7cefc")
-dragger_visibility = 1
-metadata/_tab_index = 1
-
-[node name="Workspace" type="GraphEdit" parent="VBoxContainer/TabContainer/Visualiser"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
-snapping_distance = 25
-right_disconnects = true
-show_zoom_label = true
-show_grid_buttons = false
-show_arrange_button = false
-
-[node name="BottomBar" type="PanelContainer" parent="VBoxContainer/TabContainer/Visualiser"]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar"]
-layout_mode = 2
-
-[node name="GateTree" type="Tree" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hovered_dimmed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hovered_color = Color(1, 1, 1, 1)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/panel = SubResource("StyleBoxFlat_vo7lu")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_vo7lu")
-hide_root = true
-
-[node name="GateInfo" type="PanelContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_wjago")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo"]
-layout_mode = 2
-
-[node name="Sections" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="GateInfo" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 0)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-text = "Gate Name"
-horizontal_alignment = 1
-vertical_alignment = 2
-
-[node name="GateName" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-editable = false
-
-[node name="Label-2" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-text = "Gate Type"
-horizontal_alignment = 1
-vertical_alignment = 2
-
-[node name="GateType" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/GateInfo"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-editable = false
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="GateData" type="VBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="BitSize" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/BitSize"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Bit Size"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/BitSize"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = 1.0
-max_value = 16.0
-value = 1.0
-alignment = 1
-suffix = "Bit(s)"
-
-[node name="InputName" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputName"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Input Name"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Value" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputName"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Example : IN A"
-alignment = 1
-max_length = 20
-
-[node name="InputCount" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputCount"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Input Count"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputCount"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = 2.0
-max_value = 512.0
-value = 2.0
-alignment = 1
-suffix = "Input(s)"
-
-[node name="InputBits" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputBits"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Input Bit Size"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/InputBits"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = 1.0
-max_value = 16.0
-value = 1.0
-alignment = 1
-suffix = "Bit(s)"
-
-[node name="OutputName" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputName"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Output Name"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Value" type="LineEdit" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputName"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Example : OUT"
-alignment = 1
-max_length = 20
-
-[node name="OutputCount" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputCount"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Output Count"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputCount"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = 2.0
-max_value = 512.0
-value = 2.0
-alignment = 1
-suffix = "Output(s)"
-
-[node name="OutputBits" type="HBoxContainer" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputBits"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Output Bit Size"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Value" type="SpinBox" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/Sections/ScrollContainer/GateData/OutputBits"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = 1.0
-max_value = 16.0
-value = 1.0
-alignment = 1
-suffix = "Bit(s)"
-
-[node name="AddGate" type="Button" parent="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 35)
-layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_wjago")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_kq4ke")
-theme_override_styles/hover = SubResource("StyleBoxFlat_cnvne")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_thvsl")
-theme_override_styles/normal = SubResource("StyleBoxFlat_c1nar")
-text = "Add Gate to Circuit"
-
 [node name="Simulator" type="PanelContainer" parent="VBoxContainer/TabContainer"]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
@@ -1060,26 +1093,18 @@ text = "Input Values"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-horizontal_scroll_mode = 4
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer"]
-layout_mode = 2
-
-[node name="Information" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="Information" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Name" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/Information"]
+[node name="Name" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/Information"]
 custom_minimum_size = Vector2(350, 35)
 layout_mode = 2
 text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/Information"]
+[node name="Value" type="Label" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/Information"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1087,27 +1112,27 @@ text = "Value(s)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="InputsContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="InputsContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="12#34#56#78" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer"]
+[node name="12#34#56#78" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Name" type="LineEdit" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78"]
+[node name="Name" type="LineEdit" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78"]
 custom_minimum_size = Vector2(350, 35)
 layout_mode = 2
 placeholder_text = "A"
 alignment = 1
 editable = false
 
-[node name="Values" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78"]
+[node name="Values" type="HBoxContainer" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="0" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="0" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1121,7 +1146,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="1" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="1" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1135,7 +1160,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="2" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="2" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1149,7 +1174,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="3" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="3" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1163,7 +1188,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="4" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="4" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1177,7 +1202,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="5" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="5" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1191,7 +1216,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="6" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="6" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1205,7 +1230,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="7" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="7" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1219,7 +1244,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="8" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="8" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1233,7 +1258,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="9" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="9" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1247,7 +1272,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="10" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="10" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1261,7 +1286,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="11" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="11" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1275,7 +1300,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="12" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="12" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1289,7 +1314,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="13" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="13" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1303,7 +1328,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="14" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="14" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1317,7 +1342,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Z"
 popup/item_2/id = 2
 
-[node name="15" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/ScrollContainer/VBoxContainer/InputsContainer/12#34#56#78/Values"]
+[node name="15" type="OptionButton" parent="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/Inputs/VBoxContainer/InputsContainer/12#34#56#78/Values"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 theme_type_variation = &"BlueButton"
@@ -1500,10 +1525,168 @@ theme_type_variation = &"BlueButton"
 disabled = true
 text = "L"
 
+[node name="PopupPanel" type="PopupPanel" parent="."]
+initial_position = 2
+size = Vector2i(600, 3307)
+visible = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_ychec")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 592.0
+offset_bottom = 3299.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PopupPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Left" type="VBoxContainer" parent="PopupPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Left"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Visualiser" type="PanelContainer" parent="PopupPanel/VBoxContainer/HBoxContainer/Left"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ffegw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Visualiser"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Visualiser/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Visualiser"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Visualiser/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_ghqjl")
+
+[node name="Text" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Visualiser/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Here you can build your circuit by adding inputs, outputs, gates and connect them with each other."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Gate" type="PanelContainer" parent="PopupPanel/VBoxContainer/HBoxContainer/Left"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ffegw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Gate"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Gate/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Gate"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Gate/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_ghqjl")
+
+[node name="Text" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Gate/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "This is where you save the circuit that you made in the visualiser or load it again when you want to change or simulate it."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Simulator" type="PanelContainer" parent="PopupPanel/VBoxContainer/HBoxContainer/Left"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ffegw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Simulator"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Simulator/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Simulator"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Simulator/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_ghqjl")
+
+[node name="Text" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Left/Simulator/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "This is where you save the circuit that you made in the visualiser or load it again when you want to change or simulate it."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Right" type="VBoxContainer" parent="PopupPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Right"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Guides"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Guide1" type="PanelContainer" parent="PopupPanel/VBoxContainer/HBoxContainer/Right"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ffegw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel/VBoxContainer/HBoxContainer/Right/Guide1"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Right/Guide1/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Saving a Circuit"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PopupPanel/VBoxContainer/HBoxContainer/Right/Guide1/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_ghqjl")
+
+[node name="Text" type="Label" parent="PopupPanel/VBoxContainer/HBoxContainer/Right/Guide1/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Create your Circuit in the Visualiser
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/MainMenu" to="." method="_main_menu_pressed"]
-[connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Gate" to="." method="_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Visualiser" to="." method="_visualiser_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Gate" to="." method="_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TopBar/Buttons/Simulator" to="." method="_simulator_pressed"]
+[connection signal="connection_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_connection_request"]
+[connection signal="delete_nodes_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_delete_nodes_request"]
+[connection signal="disconnection_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_disconnection_request"]
+[connection signal="item_selected" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateTree" to="." method="_gate_tree_item_selected"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/AddGate" to="." method="_add_gate_pressed"]
 [connection signal="item_selected" from="VBoxContainer/TabContainer/Gate/HBoxContainer/RegistryTree" to="." method="_registry_tree_item_selected"]
 [connection signal="text_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/CategoryName/RegistryCategoryName" to="." method="_check_if_loadable" unbinds=1]
 [connection signal="text_changed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/GateInfo/VBoxContainer/HBoxContainer/GateName/RegistryGateName" to="." method="_check_if_loadable" unbinds=1]
@@ -1513,11 +1696,6 @@ text = "L"
 [connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer/NewGate" to="." method="_new_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2/LoadGate" to="." method="_load_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Gate/HBoxContainer/ScrollContainer/RegistryData/Buttons/VBoxContainer/HBoxContainer-2/DeleteGate" to="." method="_delete_gate_pressed"]
-[connection signal="connection_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_connection_request"]
-[connection signal="delete_nodes_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_delete_nodes_request"]
-[connection signal="disconnection_request" from="VBoxContainer/TabContainer/Visualiser/Workspace" to="." method="_workspace_disconnection_request"]
-[connection signal="item_selected" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateTree" to="." method="_gate_tree_item_selected"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Visualiser/BottomBar/HBoxContainer/GateInfo/VBoxContainer/AddGate" to="." method="_add_gate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Generate" to="." method="_generate_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/TopButtons/HBoxContainer/Clear" to="." method="_clear_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Simulator/MarginContainer/VBoxContainer/SimControls/VBoxContainer/Actions/SimulateButton" to="." method="_simulate_button_pressed"]
